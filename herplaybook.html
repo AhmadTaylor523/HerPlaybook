@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<title>HerPlaybook — Football Finally Explained</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & BASE ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{font-family:'Inter',system-ui,sans-serif;background:#0A0A0A;color:#fff;min-height:100dvh;overflow-x:hidden;}
+button{border:none;background:none;cursor:pointer;font:inherit;color:inherit;}
+input{font:inherit;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+
+/* ─── TOKENS ────────────────────────────────────────────────── */
+:root{
+  --ink:#0A0A0A;
+  --spark:#FF3D87;
+  --rose:#FF85B3;
+  --surface:#131313;
+  --raised:#1A1A1A;
+  --card-fill:rgba(255,255,255,0.07);
+  --card-border:rgba(255,255,255,0.10);
+  --text-primary:#ffffff;
+  --text-secondary:rgba(255,255,255,0.6);
+  --text-tertiary:rgba(255,255,255,0.35);
+  --success:#22C55E;
+  --warning:#F59E0B;
+  --r-sm:4px;--r-md:10px;--r-lg:16px;--r-xl:22px;--r-full:100px;
+  --tab-h:80px;
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+
+/* ─── SCROLLBAR ─────────────────────────────────────────────── */
+::-webkit-scrollbar{width:0;height:0;}
+
+/* ─── LAYOUT ─────────────────────────────────────────────────── */
+#app{position:relative;width:100%;min-height:100dvh;}
+.page{display:none;flex-direction:column;min-height:100dvh;padding-bottom:calc(var(--tab-h) + var(--safe-bottom) + 12px);}
+.page.active{display:flex;}
+.scroll-content{flex:1;overflow-y:auto;padding:16px 20px 0;}
+
+/* Watch page overrides – no padding, full screen */
+#page-watch{padding-bottom:0;}
+#page-watch.active{display:block;}
+
+/* ─── FLOATING TAB BAR ──────────────────────────────────────── */
+#tab-bar{
+  position:fixed;bottom:calc(var(--safe-bottom) + 12px);left:50%;
+  transform:translateX(-50%);
+  width:calc(100% - 40px);max-width:480px;
+  background:var(--raised);
+  border:0.5px solid var(--card-border);
+  border-radius:26px;
+  padding:6px 8px;
+  display:flex;align-items:center;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  z-index:9000;
+}
+.tab-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:10px 4px;border-radius:var(--r-lg);
+  transition:background 0.2s;
+  position:relative;
+}
+.tab-btn.active{background:rgba(255,255,255,0.11);}
+.tab-icon{font-size:20px;transition:transform 0.2s;line-height:1;}
+.tab-btn.active .tab-icon{transform:scale(1.1);}
+.tab-label{
+  font-size:10px;font-weight:600;letter-spacing:0.2px;
+  color:var(--text-tertiary);transition:color 0.2s;
+}
+.tab-btn.active .tab-label{color:#fff;}
+
+/* ─── CARDS ─────────────────────────────────────────────────── */
+.card{
+  background:var(--card-fill);
+  border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);
+  padding:16px;
+}
+.card-sm{border-radius:var(--r-lg);}
+.card-hoverable{transition:background 0.15s,transform 0.15s;}
+.card-hoverable:active{background:rgba(255,255,255,0.11);transform:scale(0.985);}
+
+/* ─── TYPOGRAPHY ─────────────────────────────────────────────── */
+.display{font-size:34px;font-weight:800;line-height:1.1;}
+.title{font-size:24px;font-weight:700;}
+.headline{font-size:17px;font-weight:600;}
+.body-text{font-size:15px;font-weight:400;line-height:1.55;color:var(--text-secondary);}
+.label{font-size:13px;font-weight:500;color:var(--text-secondary);}
+.caption{font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;}
+.overline{font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--rose);}
+
+/* ─── BUTTONS ────────────────────────────────────────────────── */
+.btn-primary{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;padding:16px;gap:8px;
+  background:var(--spark);color:#fff;
+  border-radius:var(--r-lg);
+  font-size:15px;font-weight:600;
+  transition:opacity 0.15s,transform 0.15s;
+}
+.btn-primary:active{opacity:0.9;transform:scale(0.99);}
+.btn-primary.disarmed{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);}
+.btn-ghost{
+  display:flex;align-items:center;justify-content:center;
+  width:100%;padding:14px;
+  color:var(--text-secondary);font-size:15px;font-weight:600;
+  border-radius:var(--r-lg);
+  transition:opacity 0.15s;
+}
+.btn-ghost:active{opacity:0.7;}
+
+/* ─── PILLS / TAGS ──────────────────────────────────────────── */
+.tag{
+  display:inline-block;
+  font-size:11px;font-weight:600;letter-spacing:0.3px;
+  color:var(--rose);padding:4px 10px;
+  background:rgba(255,61,135,0.1);border-radius:var(--r-full);
+}
+.tip-pill{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 14px;
+  background:rgba(255,61,135,0.06);
+  border:0.5px solid rgba(255,61,135,0.12);
+  border-radius:var(--r-full);
+  font-size:13px;color:var(--text-secondary);
+}
+
+/* ─── SECTION LABEL ─────────────────────────────────────────── */
+.section-label{
+  font-size:11px;font-weight:600;letter-spacing:0.8px;
+  text-transform:uppercase;color:var(--text-tertiary);
+}
+
+/* ─── HOME PAGE ──────────────────────────────────────────────── */
+.home-header{display:flex;align-items:center;justify-content:space-between;padding:16px 0 4px;}
+.home-title{font-size:26px;font-weight:700;}
+.home-subtitle{font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--text-tertiary);}
+.gear-btn{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;transition:opacity 0.15s;
+}
+.gear-btn:active{opacity:0.7;}
+
+.continue-banner{
+  display:flex;align-items:center;gap:14px;
+  padding:16px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);cursor:pointer;
+  transition:background 0.15s,transform 0.15s;
+}
+.continue-banner:active{background:rgba(255,255,255,0.11);transform:scale(0.99);}
+.continue-banner-text{flex:1;}
+.continue-arrow{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--spark);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.streak-card{
+  padding:16px;
+  background:rgba(255,61,135,0.08);
+  border:0.5px solid rgba(255,61,135,0.15);
+  border-radius:var(--r-xl);
+}
+.streak-num{font-size:28px;font-weight:700;line-height:1;}
+.streak-unit{font-size:13px;font-weight:500;color:var(--text-secondary);}
+.streak-msg{font-size:11px;font-weight:600;letter-spacing:0.3px;color:var(--rose);}
+
+.progress-card{
+  padding:16px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.ring-wrap{position:relative;width:64px;height:64px;}
+.ring-wrap svg{transform:rotate(-90deg);}
+.ring-pct{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;
+}
+.ring-track{fill:none;stroke:rgba(255,255,255,0.08);stroke-width:8;}
+.ring-fill{fill:none;stroke:var(--spark);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 0.6s ease;}
+
+.featured-card{
+  display:flex;align-items:center;gap:16px;
+  padding:16px;
+  border-radius:var(--r-xl);
+  cursor:pointer;transition:background 0.15s,transform 0.15s;
+}
+.featured-card:active{transform:scale(0.99);}
+.featured-card.primary{
+  background:rgba(255,61,135,0.12);
+  border:0.5px solid rgba(255,61,135,0.2);
+}
+.featured-card.secondary{
+  background:var(--card-fill);
+  border:0.5px solid var(--card-border);
+}
+.featured-icon{
+  width:46px;height:46px;border-radius:var(--r-md);
+  background:rgba(255,255,255,0.12);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.featured-icon.accent{background:rgba(255,61,135,0.12);}
+.featured-card-text{flex:1;}
+.featured-card-title{font-size:16px;font-weight:600;}
+.featured-card-sub{font-size:13px;color:var(--text-secondary);margin-top:2px;}
+.chevron-right{font-size:13px;color:var(--text-tertiary);}
+
+.secondary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.secondary-card{
+  padding:14px;min-height:110px;
+  display:flex;flex-direction:column;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);cursor:pointer;
+  transition:background 0.15s,transform 0.15s;
+}
+.secondary-card:active{background:rgba(255,255,255,0.11);transform:scale(0.98);}
+.secondary-card-icon{
+  width:38px;height:38px;border-radius:var(--r-md);
+  background:rgba(255,61,135,0.12);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;margin-bottom:auto;
+}
+.secondary-card-title{font-size:14px;font-weight:600;margin-top:10px;}
+.secondary-card-sub{font-size:11px;font-weight:600;letter-spacing:0.3px;color:var(--text-secondary);}
+
+.term-card{
+  padding:16px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);cursor:pointer;
+  transition:background 0.15s,transform 0.15s;
+}
+.term-card:active{background:rgba(255,255,255,0.11);transform:scale(0.99);}
+.term-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.term-title{font-size:24px;font-weight:700;margin:6px 0;}
+.term-def{font-size:15px;color:var(--text-secondary);line-height:1.5;}
+
+/* ─── HUB PAGES (BASICS / IQ) ──────────────────────────────── */
+.hub-header{padding:12px 0 4px;}
+.hub-title{font-size:24px;font-weight:700;}
+.hub-sub{font-size:13px;color:var(--text-secondary);margin-top:2px;}
+.hub-goal{
+  display:flex;align-items:center;gap:12px;
+  padding:14px;margin-top:12px;
+  background:rgba(255,61,135,0.08);
+  border:0.5px solid rgba(255,61,135,0.15);
+  border-radius:var(--r-lg);
+}
+.hub-goal-icon{font-size:18px;color:var(--spark);flex-shrink:0;}
+.hub-goal-label{font-size:11px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;color:var(--rose);}
+.hub-goal-text{font-size:13px;color:var(--text-secondary);margin-top:2px;}
+
+.expand-tile{
+  display:flex;align-items:center;gap:14px;
+  padding:16px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);cursor:pointer;
+  transition:background 0.15s,transform 0.15s;
+}
+.expand-tile:active{background:rgba(255,255,255,0.11);transform:scale(0.985);}
+.expand-tile-icon{
+  width:44px;height:44px;border-radius:var(--r-md);
+  background:rgba(255,61,135,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.expand-tile-text{flex:1;}
+.expand-tile-title{font-size:16px;font-weight:600;}
+.expand-tile-sub{font-size:13px;color:var(--text-secondary);margin-top:3px;}
+
+/* ─── MODAL / SHEET ─────────────────────────────────────────── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:8000;
+  background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+  align-items:flex-end;justify-content:center;
+}
+.modal-overlay.open{display:flex;}
+.modal-sheet{
+  width:100%;max-width:540px;
+  background:var(--ink);
+  border-top-left-radius:28px;border-top-right-radius:28px;
+  border:0.5px solid var(--card-border);
+  padding:0 20px 32px;
+  transform:translateY(100%);
+  transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);
+  max-height:90dvh;overflow-y:auto;
+}
+.modal-overlay.open .modal-sheet{transform:translateY(0);}
+.modal-drag{
+  width:36px;height:4px;border-radius:2px;
+  background:rgba(255,255,255,0.2);
+  margin:12px auto 20px;
+}
+.modal-sheet-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.modal-sheet-icon{
+  width:48px;height:48px;border-radius:14px;
+  background:rgba(255,61,135,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.modal-sheet-title{font-size:20px;font-weight:700;}
+.modal-sheet-sub{font-size:13px;color:var(--text-secondary);margin-top:2px;}
+
+.sheet-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;border-radius:14px;
+  background:rgba(255,255,255,0.05);
+  cursor:pointer;transition:background 0.15s;
+  margin-bottom:6px;
+}
+.sheet-row:active,.sheet-row.selected{background:rgba(255,61,135,0.15);}
+.sheet-row.selected{outline:0.5px solid rgba(255,61,135,0.3);}
+.sheet-row-title{font-size:14px;font-weight:600;color:var(--text-secondary);}
+.sheet-row.selected .sheet-row-title{color:#fff;}
+.sheet-row-trail{font-size:11px;font-weight:600;letter-spacing:0.4px;color:var(--text-tertiary);}
+.sheet-row.selected .sheet-row-trail{color:var(--rose);}
+
+/* ─── LESSON DETAIL ─────────────────────────────────────────── */
+.detail-page{
+  display:none;position:fixed;inset:0;z-index:7000;
+  background:var(--ink);overflow-y:auto;
+  flex-direction:column;
+}
+.detail-page.open{display:flex;}
+.detail-nav{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 20px 8px;
+  position:sticky;top:0;background:rgba(10,10,10,0.92);
+  backdrop-filter:blur(12px);z-index:10;
+}
+.back-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:pointer;transition:opacity 0.15s;
+}
+.back-btn:active{opacity:0.7;}
+.detail-nav-title{font-size:16px;font-weight:600;flex:1;text-align:center;}
+.detail-content{padding:16px 20px 80px;}
+
+.lesson-hero-tag{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+.lesson-hero-title{font-size:28px;font-weight:700;line-height:1.2;margin-bottom:8px;}
+.lesson-section-card{
+  padding:16px;margin-bottom:12px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);
+}
+.lesson-section-heading{font-size:16px;font-weight:600;margin-bottom:8px;}
+.lesson-section-body{font-size:15px;color:var(--text-secondary);line-height:1.6;}
+.related-term-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px;margin-bottom:8px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-lg);cursor:pointer;
+  transition:background 0.15s;
+}
+.related-term-row:active{background:rgba(255,255,255,0.11);}
+.related-term-icon{
+  width:36px;height:36px;border-radius:var(--r-md);
+  background:rgba(255,61,135,0.1);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  flex-shrink:0;
+}
+.completion-btn{
+  display:flex;align-items:center;gap:12px;
+  width:100%;padding:16px 20px;margin-top:8px;
+  border-radius:var(--r-lg);cursor:pointer;
+  font-size:15px;font-weight:600;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  transition:background 0.2s,border-color 0.2s;
+}
+.completion-btn.done{
+  background:rgba(255,61,135,0.12);
+  border-color:rgba(255,61,135,0.3);
+  color:var(--spark);
+}
+.completion-icon{font-size:18px;}
+
+/* ─── TERM DETAIL ───────────────────────────────────────────── */
+.term-hero{padding-top:12px;margin-bottom:16px;}
+.term-hero-title{font-size:34px;font-weight:800;margin:8px 0;}
+.term-info-card{
+  padding:16px;margin-bottom:12px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);
+}
+
+/* ─── GLOSSARY ──────────────────────────────────────────────── */
+.search-bar{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-lg);margin-bottom:12px;
+}
+.search-bar input{
+  flex:1;background:none;border:none;outline:none;
+  font-size:15px;color:#fff;
+}
+.search-bar input::placeholder{color:var(--text-tertiary);}
+.search-icon{font-size:14px;color:var(--text-tertiary);}
+.clear-btn{font-size:16px;color:var(--text-tertiary);cursor:pointer;}
+.glossary-row{
+  display:flex;align-items:center;gap:12px;
+  padding:14px;margin-bottom:8px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);cursor:pointer;
+  transition:background 0.15s;
+}
+.glossary-row:active{background:rgba(255,255,255,0.11);}
+.glossary-row-text{flex:1;}
+.glossary-row-title{font-size:15px;font-weight:600;}
+.glossary-row-def{font-size:13px;color:var(--text-tertiary);margin-top:2px;}
+
+/* ─── QUIZ ──────────────────────────────────────────────────── */
+.quiz-progress-bar{
+  height:4px;background:var(--card-fill);
+  border-radius:2px;overflow:hidden;margin-bottom:24px;
+}
+.quiz-progress-fill{height:100%;background:var(--spark);border-radius:2px;transition:width 0.4s ease;}
+.quiz-prompt{font-size:20px;font-weight:700;margin-bottom:20px;line-height:1.35;}
+.option-row{
+  display:flex;align-items:center;gap:12px;
+  padding:14px;margin-bottom:8px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-lg);cursor:pointer;
+  transition:background 0.2s,border-color 0.2s;
+}
+.option-row:active{background:rgba(255,255,255,0.11);}
+.option-row.selected{background:rgba(255,61,135,0.15);border-color:rgba(255,61,135,0.4);}
+.option-row.correct{background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.4);}
+.option-row.wrong{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.4);}
+.option-letter{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--card-fill);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:var(--text-tertiary);flex-shrink:0;
+}
+.option-row.selected .option-letter{background:var(--spark);color:#fff;}
+.option-text{font-size:15px;font-weight:500;color:var(--text-secondary);flex:1;}
+.option-row.selected .option-text,.option-row.correct .option-text{color:#fff;}
+.option-check{font-size:16px;}
+.explanation-card{
+  padding:16px;margin:12px 0;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);
+  animation:slideUp 0.3s ease;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* Score ring */
+.score-ring-wrap{
+  display:flex;flex-direction:column;align-items:center;
+  gap:20px;padding:32px 0;
+}
+.score-ring{position:relative;width:120px;height:120px;}
+.score-ring svg{transform:rotate(-90deg);}
+.score-ring-inner{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+}
+.score-fraction{font-size:26px;font-weight:700;}
+.score-word{font-size:12px;color:var(--text-tertiary);}
+.score-headline{font-size:24px;font-weight:700;text-align:center;}
+.score-sub{font-size:15px;color:var(--text-secondary);text-align:center;margin-top:6px;line-height:1.5;}
+
+/* ─── ═══ WATCH / TIKTOK ═══ ────────────────────────────────── */
+#watch-feed{
+  height:100dvh;overflow-y:scroll;
+  scroll-snap-type:y mandatory;
+  -webkit-overflow-scrolling:touch;
+}
+
+.clip-slide{
+  height:100dvh;width:100%;
+  scroll-snap-align:start;
+  position:relative;overflow:hidden;
+}
+
+/* Animated gradient background replacing actual video */
+.clip-bg{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.clip-bg-1{background:linear-gradient(160deg,#1a0a14 0%,#0A0A0A 40%,#1a0514 100%);}
+.clip-bg-2{background:linear-gradient(160deg,#0a0a1a 0%,#0A0A0A 40%,#0a1a14 100%);}
+.clip-bg-3{background:linear-gradient(160deg,#1a0a0a 0%,#0A0A0A 40%,#0a0a1a 100%);}
+
+/* Animated particles on clip bg */
+.particle{
+  position:absolute;border-radius:50%;
+  background:var(--spark);opacity:0.06;
+  animation:float 6s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-30px) scale(1.1);}
+}
+
+/* Football field lines overlay */
+.field-art{
+  position:absolute;inset:0;opacity:0.04;
+  background-image:
+    linear-gradient(rgba(255,255,255,1) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,1) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+
+/* Play indicator */
+.play-indicator{
+  width:80px;height:80px;border-radius:50%;
+  background:rgba(255,61,135,0.15);border:2px solid rgba(255,61,135,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;
+  backdrop-filter:blur(8px);
+  animation:pulse-ring 2.5s ease-in-out infinite;
+}
+@keyframes pulse-ring{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,61,135,0.3);}
+  50%{box-shadow:0 0 0 20px rgba(255,61,135,0);}
+}
+
+/* Bottom gradient overlay */
+.clip-gradient{
+  position:absolute;bottom:0;left:0;right:0;
+  height:70%;
+  background:linear-gradient(to top,rgba(0,0,0,0.95) 0%,rgba(0,0,0,0.5) 50%,transparent 100%);
+  pointer-events:none;
+}
+
+/* Clip metadata - bottom left */
+.clip-meta{
+  position:absolute;bottom:0;left:0;right:80px;
+  padding:20px 16px calc(var(--tab-h) + var(--safe-bottom) + 20px);
+}
+.clip-duration{
+  display:inline-block;
+  font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;
+  color:var(--rose);margin-bottom:6px;
+}
+.clip-title{font-size:22px;font-weight:800;line-height:1.2;margin-bottom:6px;}
+.clip-subtitle{font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:12px;}
+.clip-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.clip-tag{
+  font-size:11px;font-weight:600;
+  padding:3px 10px;border-radius:var(--r-full);
+  background:rgba(255,61,135,0.2);
+  border:0.5px solid rgba(255,61,135,0.3);
+  color:var(--rose);
+}
+.explain-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 20px;
+  background:var(--spark);color:#fff;
+  border-radius:var(--r-full);
+  font-size:14px;font-weight:700;
+  box-shadow:0 4px 20px rgba(255,61,135,0.4);
+  transition:transform 0.15s,opacity 0.15s;
+}
+.explain-btn:active{transform:scale(0.96);opacity:0.9;}
+
+/* Right sidebar actions */
+.clip-actions{
+  position:absolute;right:12px;bottom:0;
+  padding-bottom:calc(var(--tab-h) + var(--safe-bottom) + 20px);
+  display:flex;flex-direction:column;align-items:center;gap:22px;
+}
+.action-item{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;}
+.action-circle{
+  width:48px;height:48px;border-radius:50%;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(8px);
+  border:0.5px solid rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  transition:background 0.15s,transform 0.15s;
+}
+.action-circle:active{background:rgba(255,255,255,0.2);transform:scale(0.9);}
+.action-circle.liked{background:rgba(255,61,135,0.3);border-color:rgba(255,61,135,0.5);}
+.action-circle.saved{background:rgba(255,213,61,0.2);border-color:rgba(255,213,61,0.4);}
+.action-label{font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);}
+
+/* Scroll hint arrows */
+.scroll-hint{
+  position:absolute;right:50%;transform:translateX(50%);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  opacity:0.5;font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;
+}
+.scroll-hint.up{top:calc(var(--safe-bottom) + 16px);}
+.scroll-hint.down{bottom:calc(var(--tab-h) + var(--safe-bottom) + 90px);}
+.scroll-hint-arrow{font-size:18px;animation:bounce 1.5s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+
+/* Explanation panel (slides up from bottom) */
+.explain-panel{
+  position:fixed;inset:0;z-index:8500;
+  display:none;align-items:flex-end;
+}
+.explain-panel.open{display:flex;}
+.explain-backdrop{
+  position:absolute;inset:0;background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(4px);
+}
+.explain-sheet{
+  position:relative;z-index:1;width:100%;
+  background:#111;
+  border-top-left-radius:28px;border-top-right-radius:28px;
+  border:0.5px solid var(--card-border);
+  padding:0 20px calc(40px + var(--safe-bottom));
+  max-height:80dvh;overflow-y:auto;
+  transform:translateY(100%);
+  transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);
+}
+.explain-panel.open .explain-sheet{transform:translateY(0);}
+.explain-drag{
+  width:36px;height:4px;border-radius:2px;
+  background:rgba(255,255,255,0.2);
+  margin:12px auto 20px;
+}
+.explain-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.explain-title{font-size:20px;font-weight:700;}
+.explain-close{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;cursor:pointer;
+}
+.explain-overline{font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--rose);margin-bottom:8px;}
+.explain-body{font-size:16px;color:var(--text-secondary);line-height:1.65;}
+.explain-related{
+  margin-top:20px;padding:14px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-lg);
+}
+.explain-related-title{font-size:13px;font-weight:600;margin-bottom:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.6px;}
+.related-term-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;margin:4px 4px 0 0;
+  background:rgba(255,61,135,0.1);border:0.5px solid rgba(255,61,135,0.2);
+  border-radius:var(--r-full);cursor:pointer;
+  font-size:13px;font-weight:600;color:var(--rose);
+  transition:background 0.15s;
+}
+.related-term-chip:active{background:rgba(255,61,135,0.2);}
+
+/* Video counter indicator (TikTok dots) */
+.clip-counter{
+  position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;z-index:10;
+}
+.counter-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.3);
+  transition:background 0.3s,transform 0.3s;
+}
+.counter-dot.active{background:#fff;transform:scale(1.3);}
+
+/* Watch page header (visible at top before entering feed) */
+.watch-header{
+  position:absolute;top:0;left:0;right:0;z-index:10;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) 20px 12px;
+  background:linear-gradient(to bottom,rgba(10,10,10,0.9) 0%,transparent 100%);
+  pointer-events:none;
+}
+.watch-header-title{font-size:16px;font-weight:700;text-align:center;}
+.watch-header-sub{font-size:12px;color:rgba(255,255,255,0.5);text-align:center;margin-top:2px;}
+
+/* ─── LOADING SCREEN ────────────────────────────────────────── */
+#loading-screen{
+  position:fixed;inset:0;z-index:99999;
+  background:var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:20px;
+  transition:opacity 0.5s ease,visibility 0.5s;
+}
+#loading-screen.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.loading-logo{
+  width:72px;height:72px;border-radius:20px;
+  background:rgba(255,61,135,0.15);border:0.5px solid rgba(255,61,135,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;
+  animation:logo-pulse 1.5s ease-in-out infinite;
+}
+@keyframes logo-pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+.loading-brand{font-size:24px;font-weight:800;}
+.loading-sub{font-size:14px;color:var(--text-secondary);}
+.loading-bar{
+  width:120px;height:3px;background:rgba(255,255,255,0.1);
+  border-radius:2px;overflow:hidden;
+}
+.loading-bar-fill{
+  height:100%;width:0%;background:var(--spark);border-radius:2px;
+  animation:load 1.2s ease forwards 0.3s;
+}
+@keyframes load{to{width:100%;}}
+
+/* ─── ONBOARDING ────────────────────────────────────────────── */
+#onboarding{
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:var(--ink);
+  flex-direction:column;justify-content:center;
+  padding:32px 24px;
+  overflow-y:auto;
+}
+#onboarding.show{display:flex;}
+.ob-logo{
+  width:64px;height:64px;border-radius:18px;
+  background:rgba(255,61,135,0.15);border:0.5px solid rgba(255,61,135,0.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;margin-bottom:24px;
+}
+.ob-headline{font-size:36px;font-weight:800;margin-bottom:8px;}
+.ob-sub{font-size:18px;color:var(--text-secondary);margin-bottom:32px;line-height:1.4;}
+.ob-label{font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:12px;}
+.ob-card{
+  display:flex;align-items:center;gap:14px;
+  padding:16px;margin-bottom:10px;
+  border-radius:var(--r-lg);cursor:pointer;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  transition:background 0.2s,border-color 0.2s;
+}
+.ob-card.selected{
+  background:rgba(255,61,135,0.12);
+  border-color:rgba(255,61,135,0.35);
+}
+.ob-radio{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--card-fill);border:1.5px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:background 0.2s,border-color 0.2s;
+}
+.ob-card.selected .ob-radio{background:var(--spark);border-color:var(--spark);}
+.ob-radio-check{font-size:11px;color:#fff;display:none;}
+.ob-card.selected .ob-radio-check{display:block;}
+.ob-card-title{font-size:15px;font-weight:600;color:var(--text-secondary);}
+.ob-card.selected .ob-card-title{color:#fff;}
+.ob-card-sub{font-size:13px;color:var(--text-tertiary);margin-top:2px;}
+
+/* ─── SETTINGS SHEET ────────────────────────────────────────── */
+.settings-row{
+  display:flex;align-items:center;gap:14px;
+  padding:16px 0;
+  border-bottom:0.5px solid var(--card-border);
+}
+.settings-row:last-child{border-bottom:none;}
+.settings-icon{font-size:18px;width:32px;text-align:center;color:var(--spark);}
+.settings-title{font-size:15px;font-weight:600;flex:1;}
+.settings-val{font-size:14px;color:var(--text-tertiary);}
+
+/* ─── TRANSITIONS & ANIMATIONS ──────────────────────────────── */
+.fade-in{animation:fadeIn 0.4s ease both;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.page > .scroll-content > *{animation:fadeIn 0.35s ease both;}
+.page > .scroll-content > *:nth-child(2){animation-delay:0.05s;}
+.page > .scroll-content > *:nth-child(3){animation-delay:0.1s;}
+.page > .scroll-content > *:nth-child(4){animation-delay:0.15s;}
+.page > .scroll-content > *:nth-child(5){animation-delay:0.2s;}
+.page > .scroll-content > *:nth-child(6){animation-delay:0.25s;}
+
+/* ─── SPACING UTILS ─────────────────────────────────────────── */
+.gap-4{display:flex;flex-direction:column;gap:4px;}
+.gap-8{display:flex;flex-direction:column;gap:8px;}
+.gap-10{display:flex;flex-direction:column;gap:10px;}
+.gap-12{display:flex;flex-direction:column;gap:12px;}
+.gap-16{display:flex;flex-direction:column;gap:16px;}
+.gap-20{display:flex;flex-direction:column;gap:20px;}
+.mt-4{margin-top:4px;} .mt-8{margin-top:8px;} .mt-12{margin-top:12px;} .mt-16{margin-top:16px;} .mt-20{margin-top:20px;} .mt-24{margin-top:24px;}
+.mb-4{margin-bottom:4px;} .mb-8{margin-bottom:8px;} .mb-12{margin-bottom:12px;} .mb-16{margin-bottom:16px;}
+.w-full{width:100%;}
+.flex-row{display:flex;align-items:center;}
+.flex-between{display:flex;align-items:center;justify-content:space-between;}
+.flex-1{flex:1;}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media(min-width:480px){
+  .page{max-width:480px;margin:0 auto;}
+  #tab-bar{max-width:440px;}
+  .clip-slide{max-width:480px;}
+  #watch-feed{display:flex;flex-direction:column;align-items:center;}
+  .watch-header{max-width:480px;left:50%;transform:translateX(-50%);}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  LOADING SCREEN                                             -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="loading-screen">
+  <div class="loading-logo">🏈</div>
+  <div class="loading-brand">HerPlaybook</div>
+  <div class="loading-sub">Football, finally explained.</div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  ONBOARDING                                                 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="onboarding">
+  <div class="ob-logo">🏈</div>
+  <div class="ob-headline">HerPlaybook</div>
+  <div class="ob-sub">Football — finally explained for you.</div>
+  <div class="ob-label">Where are you starting from?</div>
+  <div id="ob-profiles"></div>
+  <button class="btn-primary mt-24" id="ob-cta" onclick="finishOnboarding()">
+    <span>Get Started</span><span>→</span>
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  MAIN APP                                                   -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- ── HOME ─────────────────────────────────────────────── -->
+  <div class="page active" id="page-home">
+    <div class="scroll-content gap-16">
+      <div class="home-header">
+        <div>
+          <div class="home-subtitle" id="greeting-text">GOOD MORNING</div>
+          <div class="home-title">HerPlaybook</div>
+        </div>
+        <button class="gear-btn" onclick="openSettings()">⚙️</button>
+      </div>
+
+      <!-- Continue Learning -->
+      <div class="continue-banner card-hoverable" onclick="openLessonById('basics-01')">
+        <div class="continue-banner-text">
+          <div class="overline">Continue</div>
+          <div class="headline mt-4" id="continue-title">How the Game Works</div>
+          <div class="label mt-4" id="continue-meta">4 min · Downs, first downs, and the goal of an offense</div>
+        </div>
+        <div class="continue-arrow">→</div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="stats-row">
+        <div class="streak-card">
+          <div class="overline mb-4">Streak</div>
+          <div class="flex-row" style="gap:4px;align-items:baseline;">
+            <div class="streak-num" id="streak-num">0</div>
+            <div class="streak-unit">days</div>
+          </div>
+          <div class="streak-msg mt-4" id="streak-msg">Start today</div>
+        </div>
+        <div class="progress-card">
+          <div class="overline">Basics</div>
+          <div class="ring-wrap">
+            <svg viewBox="0 0 64 64" width="64" height="64">
+              <circle class="ring-track" cx="32" cy="32" r="28"/>
+              <circle class="ring-fill" id="home-ring" cx="32" cy="32" r="28"
+                stroke-dasharray="175.9" stroke-dashoffset="175.9"/>
+            </svg>
+            <div class="ring-pct" id="home-pct">0%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start Here -->
+      <div class="gap-10">
+        <div class="section-label">Start Here</div>
+        <div class="featured-card primary card-hoverable" onclick="switchTab('basics')">
+          <div class="featured-icon">📖</div>
+          <div class="featured-card-text">
+            <div class="featured-card-title">Learn the Basics</div>
+            <div class="featured-card-sub">Downs, scoring, penalties, positions</div>
+          </div>
+          <div class="chevron-right">›</div>
+        </div>
+        <div class="secondary-grid">
+          <div class="secondary-card" onclick="switchTab('watch')">
+            <div class="secondary-card-icon">▶️</div>
+            <div class="secondary-card-title">Watch & Learn</div>
+            <div class="secondary-card-sub">Live clips</div>
+          </div>
+          <div class="secondary-card" onclick="switchTab('iq')">
+            <div class="secondary-card-icon">⚡</div>
+            <div class="secondary-card-title">Football IQ</div>
+            <div class="secondary-card-sub">Quiz + glossary</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Term of the Day -->
+      <div class="gap-10">
+        <div class="section-label">Term of the Day</div>
+        <div class="term-card" onclick="openTermById('blitz')">
+          <div class="term-card-header">
+            <div class="overline">Term of the Day</div>
+            <span style="font-size:14px;color:var(--text-tertiary);">↗</span>
+          </div>
+          <div class="term-title">Blitz</div>
+          <div class="term-def">When the defense rushes extra players to pressure the QB.</div>
+          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag">defense</span><span class="tag">basics</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:8px;"></div>
+    </div>
+  </div>
+
+  <!-- ── BASICS ─────────────────────────────────────────────── -->
+  <div class="page" id="page-basics">
+    <div class="scroll-content gap-16">
+      <div class="hub-header">
+        <div class="hub-title">Football Basics</div>
+        <div class="hub-sub">Short lessons that make watching easy.</div>
+        <div class="hub-goal">
+          <div class="hub-goal-icon">📖</div>
+          <div>
+            <div class="hub-goal-label">Today's goal</div>
+            <div class="hub-goal-text">Learn one concept in under 5 minutes.</div>
+          </div>
+        </div>
+      </div>
+      <div class="expand-tile card-hoverable" onclick="openModal('modal-lessons')">
+        <div class="expand-tile-icon">📖</div>
+        <div class="expand-tile-text">
+          <div class="expand-tile-title">Start Basics Lessons</div>
+          <div class="expand-tile-sub">3–5 min each · track your progress</div>
+        </div>
+        <span style="font-size:13px;color:var(--text-tertiary);">›</span>
+      </div>
+      <div class="expand-tile card-hoverable" onclick="openModal('modal-glossary')">
+        <div class="expand-tile-icon">📚</div>
+        <div class="expand-tile-text">
+          <div class="expand-tile-title">Glossary</div>
+          <div class="expand-tile-sub">Search any term while you watch</div>
+        </div>
+        <span style="font-size:13px;color:var(--text-tertiary);">›</span>
+      </div>
+      <div class="tip-pill">
+        <span style="color:var(--spark);">✦</span>
+        Tip: use the Glossary during a live game.
+      </div>
+
+      <!-- Progress summary -->
+      <div class="gap-8">
+        <div class="section-label">Your Progress</div>
+        <div class="card">
+          <div class="flex-between mb-8">
+            <span style="font-size:14px;font-weight:600;">Basics</span>
+            <span class="label" id="basics-progress-label">0 / 4 completed</span>
+          </div>
+          <div style="height:4px;background:var(--card-fill);border-radius:2px;overflow:hidden;">
+            <div id="basics-progress-bar" style="height:100%;background:var(--spark);border-radius:2px;transition:width 0.5s ease;width:0%;"></div>
+          </div>
+        </div>
+      </div>
+      <div style="height:8px;"></div>
+    </div>
+  </div>
+
+  <!-- ── WATCH (TikTok) ────────────────────────────────────── -->
+  <div class="page" id="page-watch">
+    <div class="watch-header">
+      <div class="watch-header-title">Watch & Learn</div>
+      <div class="watch-header-sub">Swipe up for next clip</div>
+    </div>
+    <!-- Counter dots -->
+    <div class="clip-counter" id="clip-counter"></div>
+    <div id="watch-feed"></div>
+  </div>
+
+  <!-- ── IQ ─────────────────────────────────────────────────── -->
+  <div class="page" id="page-iq">
+    <div class="scroll-content gap-16">
+      <div class="hub-header">
+        <div class="hub-title">Football IQ</div>
+        <div class="hub-sub">Fast reps that make terms stick.</div>
+        <div class="hub-goal">
+          <div class="hub-goal-icon">🧠</div>
+          <div>
+            <div class="hub-goal-label">Today's goal</div>
+            <div class="hub-goal-text">Take one mini quiz to lock it in.</div>
+          </div>
+        </div>
+      </div>
+      <div class="expand-tile card-hoverable" onclick="openModal('modal-quizzes')">
+        <div class="expand-tile-icon">⚡</div>
+        <div class="expand-tile-text">
+          <div class="expand-tile-title">Mini Quizzes</div>
+          <div class="expand-tile-sub">Quick checks · 1–2 minutes</div>
+        </div>
+        <span style="font-size:13px;color:var(--text-tertiary);">›</span>
+      </div>
+      <div class="expand-tile card-hoverable" onclick="startDailyIQ()">
+        <div class="expand-tile-icon">📅</div>
+        <div class="expand-tile-text">
+          <div class="expand-tile-title">Daily IQ</div>
+          <div class="expand-tile-sub">One question a day · build your streak</div>
+        </div>
+        <span style="font-size:13px;color:var(--text-tertiary);">›</span>
+      </div>
+      <div class="expand-tile card-hoverable" onclick="openDetail('detail-glossary')">
+        <div class="expand-tile-icon">📚</div>
+        <div class="expand-tile-text">
+          <div class="expand-tile-title">Glossary</div>
+          <div class="expand-tile-sub">Look up any football term</div>
+        </div>
+        <span style="font-size:13px;color:var(--text-tertiary);">›</span>
+      </div>
+      <div class="tip-pill">
+        <span style="color:var(--spark);">✦</span>
+        Tip: short quizzes beat cramming — do one, then stop.
+      </div>
+
+      <!-- Quiz results history -->
+      <div class="gap-8">
+        <div class="section-label">Available Quizzes</div>
+        <div id="quiz-list-preview"></div>
+      </div>
+      <div style="height:8px;"></div>
+    </div>
+  </div>
+
+</div><!-- end #app -->
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  FLOATING TAB BAR                                           -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<nav id="tab-bar">
+  <button class="tab-btn active" data-tab="home" onclick="switchTab('home')">
+    <span class="tab-icon">🏠</span>
+    <span class="tab-label">Home</span>
+  </button>
+  <button class="tab-btn" data-tab="basics" onclick="switchTab('basics')">
+    <span class="tab-icon">📖</span>
+    <span class="tab-label">Basics</span>
+  </button>
+  <button class="tab-btn" data-tab="watch" onclick="switchTab('watch')">
+    <span class="tab-icon">▶️</span>
+    <span class="tab-label">Watch</span>
+  </button>
+  <button class="tab-btn" data-tab="iq" onclick="switchTab('iq')">
+    <span class="tab-icon">⚡</span>
+    <span class="tab-label">IQ</span>
+  </button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  MODALS                                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<!-- Lessons Modal -->
+<div class="modal-overlay" id="modal-lessons" onclick="overlayClose(event,'modal-lessons')">
+  <div class="modal-sheet">
+    <div class="modal-drag"></div>
+    <div class="modal-sheet-header">
+      <div class="modal-sheet-icon">📖</div>
+      <div>
+        <div class="modal-sheet-title">Basics Lessons</div>
+        <div class="modal-sheet-sub">Pick a lesson to begin.</div>
+      </div>
+    </div>
+    <div class="overline mb-8">Lessons</div>
+    <div id="lessons-list"></div>
+    <button class="btn-primary mt-16" id="lessons-cta" onclick="startSelectedLesson()">
+      <span>Start Lessons</span><span>→</span>
+    </button>
+  </div>
+</div>
+
+<!-- Glossary Modal -->
+<div class="modal-overlay" id="modal-glossary" onclick="overlayClose(event,'modal-glossary')">
+  <div class="modal-sheet">
+    <div class="modal-drag"></div>
+    <div class="modal-sheet-header">
+      <div class="modal-sheet-icon">📚</div>
+      <div>
+        <div class="modal-sheet-title">Glossary</div>
+        <div class="modal-sheet-sub">Search or tap a term.</div>
+      </div>
+    </div>
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="glossary-search" placeholder="Search terms…" oninput="filterGlossary(this.value)">
+      <span class="clear-btn" onclick="clearGlossarySearch()">✕</span>
+    </div>
+    <div class="overline mb-8">Key Terms</div>
+    <div id="glossary-list"></div>
+  </div>
+</div>
+
+<!-- Quizzes Modal -->
+<div class="modal-overlay" id="modal-quizzes" onclick="overlayClose(event,'modal-quizzes')">
+  <div class="modal-sheet">
+    <div class="modal-drag"></div>
+    <div class="modal-sheet-header">
+      <div class="modal-sheet-icon">⚡</div>
+      <div>
+        <div class="modal-sheet-title">Mini Quizzes</div>
+        <div class="modal-sheet-sub">Pick one to begin.</div>
+      </div>
+    </div>
+    <div class="overline mb-8">Choose a Quiz</div>
+    <div id="quiz-picker-list"></div>
+    <button class="btn-primary disarmed mt-16" id="quiz-cta" onclick="startSelectedQuiz()">
+      <span>Start Quiz</span><span>→</span>
+    </button>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="modal-settings" onclick="overlayClose(event,'modal-settings')">
+  <div class="modal-sheet">
+    <div class="modal-drag"></div>
+    <div class="modal-sheet-header">
+      <div class="modal-sheet-icon">⚙️</div>
+      <div>
+        <div class="modal-sheet-title">Settings</div>
+        <div class="modal-sheet-sub">HerPlaybook</div>
+      </div>
+    </div>
+    <div style="margin-top:8px;">
+      <div class="settings-row">
+        <span class="settings-icon">👤</span>
+        <span class="settings-title">Learning Profile</span>
+        <span class="settings-val" id="settings-profile">Brand New</span>
+      </div>
+      <div class="settings-row">
+        <span class="settings-icon">🔥</span>
+        <span class="settings-title">Current Streak</span>
+        <span class="settings-val" id="settings-streak">0 days</span>
+      </div>
+      <div class="settings-row">
+        <span class="settings-icon">✅</span>
+        <span class="settings-title">Lessons Completed</span>
+        <span class="settings-val" id="settings-completed">0 / 4</span>
+      </div>
+      <div class="settings-row" style="cursor:pointer;" onclick="resetProgress()">
+        <span class="settings-icon">🔄</span>
+        <span class="settings-title">Reset Progress</span>
+        <span class="settings-val" style="color:var(--spark);">Reset</span>
+      </div>
+      <div class="settings-row" style="cursor:pointer;" onclick="resetOnboarding()">
+        <span class="settings-icon">🏁</span>
+        <span class="settings-title">Re-run Onboarding</span>
+        <span class="settings-val" style="color:var(--spark);">Run</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  DETAIL PAGES                                               -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<!-- Lesson Detail -->
+<div class="detail-page" id="detail-lesson">
+  <div class="detail-nav">
+    <button class="back-btn" onclick="closeDetail('detail-lesson')">←</button>
+    <div class="detail-nav-title" id="lesson-detail-nav-title"></div>
+    <div style="width:36px;"></div>
+  </div>
+  <div class="detail-content" id="lesson-detail-content"></div>
+</div>
+
+<!-- Term Detail -->
+<div class="detail-page" id="detail-term">
+  <div class="detail-nav">
+    <button class="back-btn" onclick="closeDetail('detail-term')">←</button>
+    <div class="detail-nav-title" id="term-detail-nav-title">Term</div>
+    <div style="width:36px;"></div>
+  </div>
+  <div class="detail-content" id="term-detail-content"></div>
+</div>
+
+<!-- Glossary Detail -->
+<div class="detail-page" id="detail-glossary">
+  <div class="detail-nav">
+    <button class="back-btn" onclick="closeDetail('detail-glossary')">←</button>
+    <div class="detail-nav-title">Glossary</div>
+    <div style="width:36px;"></div>
+  </div>
+  <div class="detail-content">
+    <div class="search-bar mt-8">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="glossary-full-search" placeholder="Search terms…" oninput="filterFullGlossary(this.value)">
+      <span class="clear-btn" onclick="clearFullGlossarySearch()">✕</span>
+    </div>
+    <div id="glossary-full-list" class="mt-8"></div>
+  </div>
+</div>
+
+<!-- Quiz Runner -->
+<div class="detail-page" id="detail-quiz">
+  <div class="detail-nav">
+    <button class="back-btn" onclick="closeDetail('detail-quiz')">←</button>
+    <div class="detail-nav-title" id="quiz-detail-nav-title"></div>
+    <div style="width:36px;"></div>
+  </div>
+  <div class="detail-content" id="quiz-content"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  EXPLAIN PANEL (Watch overlay)                             -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="explain-panel" id="explain-panel">
+  <div class="explain-backdrop" onclick="closeExplainPanel()"></div>
+  <div class="explain-sheet">
+    <div class="explain-drag"></div>
+    <div class="explain-header">
+      <div class="explain-title" id="explain-title">What Just Happened</div>
+      <button class="explain-close" onclick="closeExplainPanel()">✕</button>
+    </div>
+    <div class="explain-overline">What you're seeing</div>
+    <div class="explain-body" id="explain-body"></div>
+    <div class="explain-related mt-16" id="explain-related"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  JAVASCRIPT                                                 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+// ─── DATA ──────────────────────────────────────────────────────
+const TERMS = [
+  {id:'down',title:'Down',short:'A single play attempt.',full:'A down is one play attempt. The offense gets four downs to gain 10 yards. If they gain 10+ yards, they earn a new set of four downs (a first down).',example:"It's 3rd down and 4 — they need 4 yards for a first down.",tags:['basics','rules']},
+  {id:'first-down',title:'First Down',short:'A reset to a new set of 4 downs.',full:'A first down happens when the offense gains 10 or more yards from the line to gain within the current set of downs. That earns a new set of four downs.',example:'A 12-yard run on 2nd and 8 is a first down.',tags:['basics']},
+  {id:'touchdown',title:'Touchdown',short:'6 points for reaching the end zone.',full:'A touchdown is worth 6 points and is scored when a player carries the ball into the opponent\'s end zone, catches the ball in the end zone, or recovers the ball in the end zone.',example:'A WR catches a pass in the end zone: touchdown.',tags:['scoring','basics']},
+  {id:'field-goal',title:'Field Goal',short:'3 points from a kick through the uprights.',full:'A field goal is worth 3 points and is scored when the kicker kicks the ball through the goalposts and over the crossbar during a live play.',example:'4th and 6 at the 22 — they kick a field goal attempt.',tags:['scoring']},
+  {id:'offsides',title:'Offsides',short:'A player crosses the line early before the snap.',full:'Offsides is called when a player is over the line of scrimmage at the time of the snap or causes an opponent to react early by being in the neutral zone.',example:'A defender jumps early and is across the line when the ball is snapped.',tags:['penalty','rules']},
+  {id:'blitz',title:'Blitz',short:'When the defense rushes extra players to pressure the QB.',full:'A blitz is a defensive strategy where additional players (often linebackers or defensive backs) rush the quarterback instead of dropping into coverage. Blitzing can create quick pressure, but it may leave fewer defenders covering receivers.',example:'They send 6 rushers — that\'s a blitz to force a fast throw.',tags:['defense','basics']},
+  {id:'snap',title:'Snap',short:'The play begins when the ball is hiked.',full:'The snap is when the center passes the ball between their legs to the quarterback (or a holder/punter) to officially begin a play. Every play starts with a snap.',example:'The QB calls hike — that\'s the snap.',tags:['basics','rules']},
+  {id:'line-of-scrimmage',title:'Line of Scrimmage',short:'The invisible line where a play starts.',full:'The line of scrimmage is the imaginary line across the field where the ball is placed at the start of each play. Neither team can cross it until the ball is snapped.',example:'Both teams line up on either side of the line of scrimmage.',tags:['basics','rules']},
+];
+
+const LESSONS = [
+  {id:'basics-01',title:'How the Game Works',subtitle:'Downs, first downs, and the goal of an offense',minutes:4,category:'Basics',sections:[{heading:'The goal',body:'Move the ball down the field to score. The offense tries to gain yards; the defense tries to stop them.'},{heading:'Downs',body:'The offense gets 4 downs to gain 10 yards. Gain 10+ yards and you get a first down (reset to 1st down).'},{heading:'Why 4th down matters',body:'On 4th down, teams often punt (give the ball away but push the opponent back) or attempt a field goal if close enough.'}],related:['down','first-down','field-goal']},
+  {id:'basics-02',title:'Scoring 101',subtitle:'Touchdowns, field goals, and extra points',minutes:3,category:'Basics',sections:[{heading:'Touchdown',body:'Worth 6 points. Score by entering the end zone with possession.'},{heading:'Extra point / Two-point',body:'After a touchdown, teams can kick for 1 point or run/pass from close range for 2.'},{heading:'Field goal',body:'Worth 3 points. Typically attempted on 4th down within range.'}],related:['touchdown','field-goal']},
+  {id:'basics-03',title:'Common Penalties',subtitle:'The flags you\'ll see most often',minutes:3,category:'Basics',sections:[{heading:'Why penalties happen',body:'Rules keep the game fair and safe. Penalties usually cost yards.'},{heading:'Offsides',body:'A player crosses the line too early before the snap.'},{heading:'Holding (common)',body:'Blocking illegally by grabbing a defender. You\'ll hear this a lot.'}],related:['offsides']},
+  {id:'basics-04',title:'Down & Distance',subtitle:'How down + yards-to-go shape what teams call',minutes:4,category:'Basics',sections:[{heading:'What it means',body:'Down & distance tells you the situation: the current down (1st/2nd/3rd/4th) and how many yards are needed for a first down.'},{heading:'Why it matters',body:'Teams choose plays based on distance. 3rd-and-short might be a run; 3rd-and-long often calls for a pass.'},{heading:'Quick examples',body:'2nd & 2: many options. 3rd & 10: likely pass. 4th & 1: punt, field goal, or go for it depending on field position.'}],related:['down','first-down']},
+];
+
+const CLIPS = [
+  {id:'w1',title:'Big Run',subtitle:'Why it broke open',duration:'0:20',tags:['offense','run'],
+   explanation:'A big run happens when the offense creates a clear lane with strong blocking, and the runner hits the gap before the defense can fill it. Watch the offensive linemen — they\'re creating the hole. The running back\'s job is to read the blocks and hit the right gap at full speed.',
+   related:['line-of-scrimmage','down'],
+   gradient:'clip-bg-1',emoji:'🏃‍♂️'},
+  {id:'w2',title:'Blitz Pressure',subtitle:'Why the QB had no time',duration:'0:20',tags:['defense','blitz'],
+   explanation:'A blitz sends extra defenders to rush the QB. Instead of dropping into coverage, linebackers or even defensive backs sprint toward the quarterback. It creates fast pressure but can leave fewer players in coverage — a gamble by the defense.',
+   related:['blitz','line-of-scrimmage'],
+   gradient:'clip-bg-2',emoji:'💨'},
+  {id:'w3',title:'Down & Distance',subtitle:'Why the playcall changed',duration:'0:20',tags:['rules','basics'],
+   explanation:'Down and distance shapes every play call. 3rd and long (like 3rd & 10) almost always means a pass — you need yards fast. 3rd and short (like 3rd & 1) keeps both options open. 4th down is when teams decide whether to punt, try a field goal, or go for it.',
+   related:['down','first-down'],
+   gradient:'clip-bg-3',emoji:'📋'},
+];
+
+const QUIZZES = [
+  {id:'iq-1',title:'Downs & First Downs',questions:[
+    {id:'q1',prompt:'How many downs does the offense get to gain 10 yards?',options:['2','3','4','5'],correct:2,explanation:'The offense gets 4 downs to gain 10 yards. Gaining 10+ yards earns a first down.'},
+    {id:'q2',prompt:'A first down means…',options:['You score 3 points','You reset to a new set of 4 downs','The defense gets the ball','The quarter ends'],correct:1,explanation:'A first down gives the offense a new set of 4 downs.'},
+    {id:'q3',prompt:'What typically happens on 4th down?',options:['The team always scores','A punt or field goal attempt','The game pauses','Players switch sides'],correct:1,explanation:'On 4th down teams usually punt to push the opponent back or kick a field goal if close enough.'},
+  ]},
+  {id:'iq-2',title:'Scoring Basics',questions:[
+    {id:'q1',prompt:'How many points is a touchdown worth?',options:['3','6','7','2'],correct:1,explanation:'A touchdown is worth 6 points.'},
+    {id:'q2',prompt:'How many points is a field goal worth?',options:['1','2','3','6'],correct:2,explanation:'A field goal is worth 3 points.'},
+    {id:'q3',prompt:'After a touchdown, the easiest extra points option scores…',options:['1 point (kick)','2 points (run/pass)','3 points (another kick)','0 points'],correct:0,explanation:'The extra point kick is worth 1 point. Going for 2 with a run or pass is worth 2 but harder.'},
+  ]},
+  {id:'daily',title:'Daily IQ: Quick Flag Check',questions:[
+    {id:'q1',prompt:'Offsides happens when…',options:['A player crosses the line early before the snap','A receiver steps out of bounds','The QB throws the ball away','A kicker misses wide'],correct:0,explanation:'Offsides is called when a player is over the line early at the snap.'},
+  ]},
+];
+
+const PROFILES = [
+  {id:'brand-new',label:'Brand New',sub:'I barely know the rules.'},
+  {id:'casual',label:'Casual Viewer',sub:'I watch sometimes but get lost.'},
+  {id:'learning',label:'Learning Fast',sub:'I understand the basics, want more.'},
+];
+
+// ─── STATE ─────────────────────────────────────────────────────
+const LS = {
+  get:(k,d)=>{ try{ const v=localStorage.getItem(k); return v!==null?JSON.parse(v):d; }catch(e){return d;} },
+  set:(k,v)=>{ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} },
+};
+
+let completed = LS.get('completed',{});
+let likedClips = LS.get('likedClips',{});
+let savedClips = LS.get('savedClips',{});
+let streak = LS.get('streak',0);
+let lastVisit = LS.get('lastVisit',null);
+let selectedLesson = null;
+let selectedQuiz = null;
+let currentClipIndex = 0;
+let activeQuiz = null;
+let quizState = {};
+
+// ─── INIT ──────────────────────────────────────────────────────
+window.addEventListener('load',()=>{
+  updateStreak();
+  setTimeout(()=>{
+    document.getElementById('loading-screen').classList.add('hidden');
+    const hasOnboarded = LS.get('hasOnboarded',false);
+    if(!hasOnboarded){ showOnboarding(); } else { initApp(); }
+  },1600);
+});
+
+function initApp(){
+  renderGreeting();
+  renderStats();
+  renderContinueLearning();
+  renderLessonsList();
+  renderGlossaryList('');
+  renderQuizPicker();
+  renderQuizListPreview();
+  buildWatchFeed();
+  renderQuizListPreview();
+}
+
+// ─── STREAK ────────────────────────────────────────────────────
+function updateStreak(){
+  const today = new Date().toDateString();
+  if(!lastVisit){ streak=1; }
+  else if(lastVisit===today){ /* same day */ }
+  else{
+    const diff=(new Date(today)-new Date(lastVisit))/(1000*60*60*24);
+    if(diff===1){ streak++; } else if(diff>1){ streak=1; }
+  }
+  LS.set('streak',streak);
+  LS.set('lastVisit',today);
+}
+
+// ─── GREETING ──────────────────────────────────────────────────
+function renderGreeting(){
+  const h=new Date().getHours();
+  const g = h<12?'GOOD MORNING':h<17?'GOOD AFTERNOON':'GOOD EVENING';
+  document.getElementById('greeting-text').textContent=g;
+}
+
+// ─── STATS ─────────────────────────────────────────────────────
+function renderStats(){
+  const total=LESSONS.length;
+  const done=LESSONS.filter(l=>completed[l.id]).length;
+  const pct=total>0?done/total:0;
+
+  document.getElementById('streak-num').textContent=streak;
+  document.getElementById('streak-msg').textContent=streak>0?'Keep going 🔥':'Start today';
+  document.getElementById('home-pct').textContent=Math.round(pct*100)+'%';
+
+  // Ring
+  const circ=175.9;
+  const offset=circ-(pct*circ);
+  document.getElementById('home-ring').style.strokeDashoffset=offset;
+
+  // Basics bar
+  const pctPct=Math.round(pct*100);
+  const bar=document.getElementById('basics-progress-bar');
+  const label=document.getElementById('basics-progress-label');
+  if(bar){ bar.style.width=pctPct+'%'; }
+  if(label){ label.textContent=done+' / '+total+' completed'; }
+
+  // Settings
+  const sp=document.getElementById('settings-streak');
+  const sc=document.getElementById('settings-completed');
+  if(sp) sp.textContent=streak+' days';
+  if(sc) sc.textContent=done+' / '+total;
+
+  const prof=document.getElementById('settings-profile');
+  if(prof){ const p=LS.get('profile','Brand New'); prof.textContent=p; }
+}
+
+// ─── CONTINUE LEARNING ─────────────────────────────────────────
+function renderContinueLearning(){
+  const next=LESSONS.find(l=>!completed[l.id])||LESSONS[0];
+  document.getElementById('continue-title').textContent=next.title;
+  document.getElementById('continue-meta').textContent=next.minutes+' min · '+next.subtitle;
+  document.querySelector('.continue-banner').onclick=()=>openLessonById(next.id);
+}
+
+// ─── TABS ──────────────────────────────────────────────────────
+function switchTab(tab){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const page=document.getElementById('page-'+tab);
+  if(page) page.classList.add('active');
+  const btn=document.querySelector('[data-tab="'+tab+'"]');
+  if(btn) btn.classList.add('active');
+
+  if(tab==='home'){ renderStats(); renderContinueLearning(); }
+  if(tab==='watch'){ syncClipCounter(); }
+}
+
+// ─── MODALS ────────────────────────────────────────────────────
+function openModal(id){
+  const m=document.getElementById(id);
+  if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; }
+}
+function closeModal(id){
+  const m=document.getElementById(id);
+  if(m){ m.classList.remove('open'); document.body.style.overflow=''; }
+}
+function overlayClose(e,id){
+  if(e.target.classList.contains('modal-overlay')) closeModal(id);
+}
+function openSettings(){
+  renderStats();
+  openModal('modal-settings');
+}
+
+// ─── DETAIL PAGES ──────────────────────────────────────────────
+function openDetail(id){
+  const d=document.getElementById(id);
+  if(d){ d.classList.add('open'); document.body.style.overflow='hidden'; }
+}
+function closeDetail(id){
+  const d=document.getElementById(id);
+  if(d){ d.classList.remove('open'); document.body.style.overflow=''; }
+}
+
+// ─── ONBOARDING ────────────────────────────────────────────────
+function showOnboarding(){
+  const el=document.getElementById('onboarding');
+  el.classList.add('show');
+  const container=document.getElementById('ob-profiles');
+  container.innerHTML=PROFILES.map((p,i)=>`
+    <div class="ob-card${i===0?' selected':''}" id="ob-${p.id}" onclick="selectProfile('${p.id}')">
+      <div class="ob-radio"><span class="ob-radio-check">✓</span></div>
+      <div>
+        <div class="ob-card-title">${p.label}</div>
+        <div class="ob-card-sub">${p.sub}</div>
+      </div>
+    </div>`).join('');
+}
+let selectedProfile=PROFILES[0].id;
+function selectProfile(id){
+  selectedProfile=id;
+  document.querySelectorAll('.ob-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('ob-'+id)?.classList.add('selected');
+}
+function finishOnboarding(){
+  const p=PROFILES.find(x=>x.id===selectedProfile);
+  LS.set('hasOnboarded',true);
+  LS.set('profile',p?p.label:'Brand New');
+  document.getElementById('onboarding').classList.remove('show');
+  initApp();
+}
+function resetOnboarding(){
+  closeModal('modal-settings');
+  LS.set('hasOnboarded',false);
+  showOnboarding();
+}
+function resetProgress(){
+  if(confirm('Reset all lesson progress?')){
+    completed={};
+    LS.set('completed',{});
+    renderStats();
+    renderLessonsList();
+    closeModal('modal-settings');
+  }
+}
+
+// ─── LESSONS ───────────────────────────────────────────────────
+function renderLessonsList(){
+  const container=document.getElementById('lessons-list');
+  if(!container) return;
+  container.innerHTML=LESSONS.map(l=>{
+    const done=completed[l.id];
+    return `<div class="sheet-row${selectedLesson?.id===l.id?' selected':''}" onclick="selectLesson('${l.id}')">
+      <span class="sheet-row-title">${done?'✅ ':''} ${l.title}</span>
+      <span class="sheet-row-trail">${l.minutes}:00</span>
+    </div>`;
+  }).join('');
+}
+function selectLesson(id){
+  selectedLesson=LESSONS.find(l=>l.id===id);
+  document.querySelectorAll('#lessons-list .sheet-row').forEach(r=>r.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  const cta=document.getElementById('lessons-cta');
+  cta.querySelector('span').textContent='Start: '+selectedLesson.title;
+  cta.classList.remove('disarmed');
+}
+function startSelectedLesson(){
+  if(!selectedLesson) return;
+  closeModal('modal-lessons');
+  setTimeout(()=>openLesson(selectedLesson),150);
+}
+function openLessonById(id){
+  const l=LESSONS.find(x=>x.id===id);
+  if(l) openLesson(l);
+}
+function openLesson(lesson){
+  document.getElementById('lesson-detail-nav-title').textContent=lesson.title;
+  const done=completed[lesson.id];
+  const related=lesson.related.map(id=>TERMS.find(t=>t.id===id)).filter(Boolean);
+
+  document.getElementById('lesson-detail-content').innerHTML=`
+    <div class="lesson-hero-tag">
+      <span class="overline">${lesson.category}</span>
+      <span style="color:var(--text-tertiary);margin:0 4px;">·</span>
+      <span class="caption" style="color:var(--text-tertiary);">${lesson.minutes} MIN</span>
+    </div>
+    <div class="lesson-hero-title">${lesson.title}</div>
+    <div class="label mb-16">${lesson.subtitle}</div>
+    ${lesson.sections.map(s=>`
+      <div class="lesson-section-card mb-12">
+        <div class="lesson-section-heading">${s.heading}</div>
+        <div class="lesson-section-body">${s.body}</div>
+      </div>`).join('')}
+    ${related.length?`
+      <div class="overline mb-8 mt-4">Related Terms</div>
+      ${related.map(t=>`
+        <div class="related-term-row" onclick="openTermById('${t.id}')">
+          <div class="related-term-icon">📄</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:600;">${t.title}</div>
+            <div class="label">${t.short}</div>
+          </div>
+          <span style="font-size:13px;color:var(--text-tertiary);">›</span>
+        </div>`).join('')}`:''}
+    <button class="completion-btn mt-8${done?' done':''}" id="lesson-complete-btn" onclick="toggleLessonComplete('${lesson.id}')">
+      <span class="completion-icon">${done?'✅':'⭕'}</span>
+      <span>${done?'Completed':'Mark as Completed'}</span>
+    </button>
+  `;
+  openDetail('detail-lesson');
+}
+function toggleLessonComplete(id){
+  completed[id]=!completed[id];
+  if(!completed[id]) delete completed[id];
+  LS.set('completed',completed);
+  const btn=document.getElementById('lesson-complete-btn');
+  if(btn){
+    btn.className='completion-btn mt-8'+(completed[id]?' done':'');
+    btn.innerHTML=`<span class="completion-icon">${completed[id]?'✅':'⭕'}</span><span>${completed[id]?'Completed ':'Mark as Completed'}</span>`;
+    if(completed[id]){ btn.innerHTML+=' <span style="margin-left:auto;">🎉</span>'; }
+  }
+  renderStats();
+  renderLessonsList();
+}
+
+// ─── TERMS / GLOSSARY ──────────────────────────────────────────
+function openTermById(id){
+  const t=TERMS.find(x=>x.id===id);
+  if(t) openTerm(t);
+}
+function openTerm(term){
+  document.getElementById('term-detail-nav-title').textContent=term.title;
+  document.getElementById('term-detail-content').innerHTML=`
+    <div class="term-hero">
+      ${term.tags[0]?`<div class="overline">${term.tags[0]}</div>`:''}
+      <div class="term-hero-title">${term.title}</div>
+      <div class="label">${term.short}</div>
+    </div>
+    <div class="term-info-card mb-12">
+      <div class="overline mb-8">Definition</div>
+      <div class="body-text">${term.full}</div>
+    </div>
+    <div class="term-info-card mb-12">
+      <div class="overline mb-8">In a Game</div>
+      <div class="body-text">${term.example}</div>
+    </div>
+    ${term.tags.length?`
+      <div class="overline mb-8">Tags</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        ${term.tags.map(t=>`<span class="tag">${t}</span>`).join('')}
+      </div>`:''}
+    <div style="height:40px;"></div>
+  `;
+  openDetail('detail-term');
+}
+function renderGlossaryList(query){
+  const container=document.getElementById('glossary-list');
+  if(!container) return;
+  const q=query.toLowerCase().trim();
+  const filtered=TERMS.filter(t=>!q||t.title.toLowerCase().includes(q)||t.short.toLowerCase().includes(q)||t.tags.some(tag=>tag.includes(q)));
+  container.innerHTML=filtered.length?filtered.map(t=>`
+    <div class="sheet-row" onclick="openTermFromSheet('${t.id}')">
+      <div style="flex:1;">
+        <div class="sheet-row-title">${t.title}</div>
+      </div>
+      ${t.tags[0]?`<span class="sheet-row-trail">${t.tags[0]}</span>`:''}
+    </div>`).join(''):`<div style="color:var(--text-tertiary);font-size:14px;padding:12px 0;">No terms found.</div>`;
+}
+function filterGlossary(q){ renderGlossaryList(q); }
+function clearGlossarySearch(){ document.getElementById('glossary-search').value=''; renderGlossaryList(''); }
+function openTermFromSheet(id){
+  closeModal('modal-glossary');
+  setTimeout(()=>openTermById(id),150);
+}
+function renderFullGlossary(query){
+  const container=document.getElementById('glossary-full-list');
+  if(!container) return;
+  const q=query.toLowerCase().trim();
+  const filtered=TERMS.filter(t=>!q||t.title.toLowerCase().includes(q)||t.short.toLowerCase().includes(q)||t.full.toLowerCase().includes(q)||t.tags.some(tag=>tag.includes(q)));
+  container.innerHTML=filtered.length?filtered.map(t=>`
+    <div class="glossary-row" onclick="openTermById('${t.id}')">
+      <div class="glossary-row-text">
+        <div class="glossary-row-title">${t.title}</div>
+        <div class="glossary-row-def">${t.short}</div>
+      </div>
+      ${t.tags[0]?`<span class="tag">${t.tags[0]}</span>`:''}
+      <span style="font-size:13px;color:var(--text-tertiary);margin-left:8px;">›</span>
+    </div>`).join(''):`<div style="color:var(--text-tertiary);padding:12px;">No results.</div>`;
+}
+function filterFullGlossary(q){ renderFullGlossary(q); }
+function clearFullGlossarySearch(){ document.getElementById('glossary-full-search').value=''; renderFullGlossary(''); }
+
+// ─── WATCH / TIKTOK FEED ───────────────────────────────────────
+function buildWatchFeed(){
+  const feed=document.getElementById('watch-feed');
+  if(!feed) return;
+  feed.innerHTML='';
+
+  CLIPS.forEach((clip,i)=>{
+    const slide=document.createElement('div');
+    slide.className='clip-slide';
+    slide.id='clip-'+i;
+
+    // Particle positions
+    const particles=Array.from({length:8},(_,j)=>`
+      <div class="particle" style="
+        width:${60+j*40}px;height:${60+j*40}px;
+        left:${(j*13)%100}%;top:${(j*17+20)%90}%;
+        animation-delay:${j*0.7}s;animation-duration:${5+j*0.8}s;
+      "></div>`).join('');
+
+    slide.innerHTML=`
+      <div class="clip-bg ${clip.gradient}">
+        <div class="field-art"></div>
+        ${particles}
+        <div class="play-indicator">${clip.emoji}</div>
+      </div>
+      <div class="clip-gradient"></div>
+
+      ${i>0?`<div class="scroll-hint up" style="top:calc(env(safe-area-inset-top,0px)+60px);">
+        <div class="scroll-hint-arrow" style="transform:rotate(180deg);">↓</div>
+        <div>Previous</div>
+      </div>`:''}
+
+      <div class="clip-meta">
+        <div class="clip-duration">${clip.duration}</div>
+        <div class="clip-title">${clip.title}</div>
+        <div class="clip-subtitle">${clip.subtitle}</div>
+        <div class="clip-tags">${clip.tags.map(t=>`<span class="clip-tag">${t}</span>`).join('')}</div>
+        <button class="explain-btn" onclick="openExplainPanel(${i})">
+          💡 Explain This Play
+        </button>
+      </div>
+
+      <div class="clip-actions">
+        <div class="action-item" onclick="toggleLike(${i},this)">
+          <div class="action-circle ${likedClips[clip.id]?'liked':''}">
+            ${likedClips[clip.id]?'❤️':'🤍'}
+          </div>
+          <span class="action-label" id="like-count-${i}">${likedClips[clip.id]?'Liked':'Like'}</span>
+        </div>
+        <div class="action-item" onclick="toggleSave(${i},this)">
+          <div class="action-circle ${savedClips[clip.id]?'saved':''}">
+            ${savedClips[clip.id]?'🔖':'🏷️'}
+          </div>
+          <span class="action-label" id="save-label-${i}">${savedClips[clip.id]?'Saved':'Save'}</span>
+        </div>
+        <div class="action-item" onclick="shareClip(${i})">
+          <div class="action-circle">↗</div>
+          <span class="action-label">Share</span>
+        </div>
+        <div class="action-item" onclick="openExplainPanel(${i})">
+          <div class="action-circle">💡</div>
+          <span class="action-label">Explain</span>
+        </div>
+      </div>
+
+      ${i<CLIPS.length-1?`<div class="scroll-hint down">
+        <div>Next</div>
+        <div class="scroll-hint-arrow">↓</div>
+      </div>`:''}
+    `;
+    feed.appendChild(slide);
+  });
+
+  // Counter dots
+  const counter=document.getElementById('clip-counter');
+  if(counter){
+    counter.innerHTML=CLIPS.map((_,i)=>`<div class="counter-dot${i===0?' active':''}" id="dot-${i}"></div>`).join('');
+  }
+
+  // Scroll listener for counter + autoplay simulation
+  feed.addEventListener('scroll',onFeedScroll,{passive:true});
+
+  // Touch swipe support
+  let touchStartY=0;
+  feed.addEventListener('touchstart',e=>{ touchStartY=e.touches[0].clientY; },{passive:true});
+  feed.addEventListener('touchend',e=>{
+    const dy=touchStartY-e.changedTouches[0].clientY;
+    if(Math.abs(dy)>50){
+      const dir=dy>0?1:-1;
+      scrollToClip(currentClipIndex+dir);
+    }
+  },{passive:true});
+}
+
+function onFeedScroll(){
+  const feed=document.getElementById('watch-feed');
+  if(!feed) return;
+  const h=window.innerHeight;
+  const idx=Math.round(feed.scrollTop/h);
+  if(idx!==currentClipIndex && idx>=0 && idx<CLIPS.length){
+    currentClipIndex=idx;
+    syncClipCounter();
+  }
+}
+function syncClipCounter(){
+  CLIPS.forEach((_,i)=>{
+    const dot=document.getElementById('dot-'+i);
+    if(dot) dot.className='counter-dot'+(i===currentClipIndex?' active':'');
+  });
+}
+function scrollToClip(idx){
+  idx=Math.max(0,Math.min(CLIPS.length-1,idx));
+  const feed=document.getElementById('watch-feed');
+  if(feed){ feed.scrollTo({top:idx*window.innerHeight,behavior:'smooth'}); }
+  currentClipIndex=idx;
+  syncClipCounter();
+}
+function toggleLike(i,el){
+  const clip=CLIPS[i];
+  likedClips[clip.id]=!likedClips[clip.id];
+  if(!likedClips[clip.id]) delete likedClips[clip.id];
+  LS.set('likedClips',likedClips);
+  const circle=el.querySelector('.action-circle');
+  const label=el.querySelector('.action-label');
+  if(likedClips[clip.id]){
+    circle.textContent='❤️'; circle.className='action-circle liked';
+    label.textContent='Liked';
+  } else {
+    circle.textContent='🤍'; circle.className='action-circle';
+    label.textContent='Like';
+  }
+}
+function toggleSave(i,el){
+  const clip=CLIPS[i];
+  savedClips[clip.id]=!savedClips[clip.id];
+  if(!savedClips[clip.id]) delete savedClips[clip.id];
+  LS.set('savedClips',savedClips);
+  const circle=el.querySelector('.action-circle');
+  const label=el.querySelector('.action-label');
+  if(savedClips[clip.id]){
+    circle.textContent='🔖'; circle.className='action-circle saved';
+    label.textContent='Saved';
+  } else {
+    circle.textContent='🏷️'; circle.className='action-circle';
+    label.textContent='Save';
+  }
+}
+function shareClip(i){
+  const clip=CLIPS[i];
+  if(navigator.share){
+    navigator.share({title:'HerPlaybook: '+clip.title,text:clip.explanation,url:window.location.href});
+  } else {
+    navigator.clipboard?.writeText(window.location.href);
+    alert('Link copied!');
+  }
+}
+function openExplainPanel(i){
+  const clip=CLIPS[i];
+  document.getElementById('explain-title').textContent=clip.title;
+  document.getElementById('explain-body').textContent=clip.explanation;
+  const related=clip.related.map(id=>TERMS.find(t=>t.id===id)).filter(Boolean);
+  const relContainer=document.getElementById('explain-related');
+  if(related.length){
+    relContainer.style.display='block';
+    relContainer.innerHTML=`<div class="explain-related-title">Related Terms</div>
+      ${related.map(t=>`<span class="related-term-chip" onclick="openTermFromExplain('${t.id}')">${t.title} →</span>`).join('')}`;
+  } else { relContainer.style.display='none'; }
+  document.getElementById('explain-panel').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeExplainPanel(){
+  document.getElementById('explain-panel').classList.remove('open');
+  document.body.style.overflow='';
+}
+function openTermFromExplain(id){
+  closeExplainPanel();
+  setTimeout(()=>openTermById(id),200);
+}
+
+// ─── QUIZZES ───────────────────────────────────────────────────
+function renderQuizPicker(){
+  const container=document.getElementById('quiz-picker-list');
+  if(!container) return;
+  const quizzes=QUIZZES.slice(0,2);
+  container.innerHTML=quizzes.map(q=>`
+    <div class="sheet-row" id="qp-${q.id}" onclick="selectQuiz('${q.id}')">
+      <span class="sheet-row-title">${q.title}</span>
+      <span class="sheet-row-trail">${q.questions.length} Q</span>
+    </div>`).join('');
+}
+function selectQuiz(id){
+  selectedQuiz=QUIZZES.find(q=>q.id===id);
+  document.querySelectorAll('#quiz-picker-list .sheet-row').forEach(r=>r.classList.remove('selected'));
+  document.getElementById('qp-'+id)?.classList.add('selected');
+  const cta=document.getElementById('quiz-cta');
+  if(cta){ cta.querySelector('span').textContent='Start: '+selectedQuiz.title; cta.classList.remove('disarmed'); }
+}
+function startSelectedQuiz(){
+  if(!selectedQuiz) return;
+  closeModal('modal-quizzes');
+  setTimeout(()=>startQuiz(selectedQuiz),150);
+}
+function startDailyIQ(){
+  const daily=QUIZZES.find(q=>q.id==='daily');
+  if(daily) startQuiz(daily);
+}
+function renderQuizListPreview(){
+  const container=document.getElementById('quiz-list-preview');
+  if(!container) return;
+  container.innerHTML=QUIZZES.slice(0,2).map((q,i)=>`
+    <div class="expand-tile card-hoverable" style="margin-bottom:8px;" onclick="startQuizById('${q.id}')">
+      <div class="expand-tile-icon">⚡</div>
+      <div class="expand-tile-text">
+        <div class="expand-tile-title">${q.title}</div>
+        <div class="expand-tile-sub">${q.questions.length} questions</div>
+      </div>
+      <span style="font-size:13px;color:var(--text-tertiary);">›</span>
+    </div>`).join('');
+}
+function startQuizById(id){
+  const quiz=QUIZZES.find(q=>q.id===id);
+  if(quiz) startQuiz(quiz);
+}
+function startQuiz(quiz){
+  activeQuiz=quiz;
+  quizState={ index:0, selected:null, revealed:false, correct:0, finished:false };
+  document.getElementById('quiz-detail-nav-title').textContent=quiz.title;
+  renderQuizQuestion();
+  openDetail('detail-quiz');
+}
+function renderQuizQuestion(){
+  const q=activeQuiz.questions[quizState.index];
+  const total=activeQuiz.questions.length;
+  const progress=(quizState.index/total*100)+'%';
+
+  if(quizState.finished){ renderQuizResults(); return; }
+
+  document.getElementById('quiz-content').innerHTML=`
+    <div>
+      <div style="font-size:13px;color:var(--text-tertiary);margin-bottom:12px;">Question ${quizState.index+1} of ${total}</div>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${progress}"></div></div>
+      <div class="quiz-prompt">${q.prompt}</div>
+      <div id="options-list">
+        ${q.options.map((opt,i)=>{
+          let cls='option-row';
+          if(quizState.revealed){
+            if(i===q.correct) cls+=' correct';
+            else if(i===quizState.selected) cls+=' wrong';
+          } else if(i===quizState.selected){ cls+=' selected'; }
+          return `<div class="${cls}" onclick="selectOption(${i})">
+            <div class="option-letter">${['A','B','C','D'][i]}</div>
+            <div class="option-text">${opt}</div>
+            ${quizState.revealed && i===q.correct?'<span class="option-check">✅</span>':''}
+            ${quizState.revealed && i===quizState.selected && i!==q.correct?'<span class="option-check">⚠️</span>':''}
+          </div>`;
+        }).join('')}
+      </div>
+      ${quizState.revealed?`<div class="explanation-card">
+        <div class="overline mb-8" style="color:${quizState.selected===q.correct?'var(--success)':'var(--warning)'};">
+          ${quizState.selected===q.correct?'Correct ✓':'Not quite'}
+        </div>
+        <div class="body-text">${q.explanation}</div>
+      </div>`:''}
+      <div style="margin-top:16px;">
+        ${!quizState.revealed?`<button class="btn-primary${quizState.selected===null?' disarmed':''}" onclick="checkAnswer()">
+          <span>Check Answer</span><span>→</span>
+        </button>`:
+        `<button class="btn-primary" onclick="nextQuestion()">
+          <span>${quizState.index+1>=total?'See Results':'Next Question'}</span><span>→</span>
+        </button>`}
+      </div>
+    </div>
+  `;
+}
+function selectOption(i){
+  if(quizState.revealed) return;
+  quizState.selected=i;
+  renderQuizQuestion();
+}
+function checkAnswer(){
+  if(quizState.selected===null) return;
+  const q=activeQuiz.questions[quizState.index];
+  quizState.revealed=true;
+  if(quizState.selected===q.correct) quizState.correct++;
+  renderQuizQuestion();
+}
+function nextQuestion(){
+  if(quizState.index+1>=activeQuiz.questions.length){ quizState.finished=true; renderQuizResults(); return; }
+  quizState.index++;
+  quizState.selected=null;
+  quizState.revealed=false;
+  renderQuizQuestion();
+}
+function renderQuizResults(){
+  const total=activeQuiz.questions.length;
+  const score=quizState.correct;
+  const ratio=score/total;
+  const color=ratio>=0.8?'var(--success)':ratio>=0.5?'var(--warning)':'var(--spark)';
+  const headline=ratio===1?'Perfect score.':ratio>=0.8?'Solid work.':ratio>=0.5?'Getting there.':'Keep practicing.';
+  const sub=ratio===1?'You got every question right. Football IQ rising.':ratio>=0.8?'Almost perfect. One more run and you\'ll nail it.':ratio>=0.5?'You\'re building the foundation. Retake to lock it in.':'Review the explanations and try again — it clicks fast.';
+  const circ=2*Math.PI*50;
+  const offset=circ-(ratio*circ);
+
+  document.getElementById('quiz-content').innerHTML=`
+    <div class="score-ring-wrap">
+      <div class="score-ring">
+        <svg viewBox="0 0 120 120" width="120" height="120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="var(--card-fill)" stroke-width="10"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="${color}" stroke-width="10"
+            stroke-linecap="round"
+            stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}"
+            style="transform:rotate(-90deg);transform-origin:60px 60px;transition:stroke-dashoffset 0.8s ease 0.2s;"/>
+        </svg>
+        <div class="score-ring-inner">
+          <div class="score-fraction">${score}/${total}</div>
+          <div class="score-word">correct</div>
+        </div>
+      </div>
+      <div>
+        <div class="score-headline">${headline}</div>
+        <div class="score-sub">${sub}</div>
+      </div>
+      <div style="width:100%;">
+        <button class="btn-primary" onclick="retakeQuiz()" style="margin-bottom:8px;">
+          <span>Retake Quiz</span><span>→</span>
+        </button>
+        <button class="btn-ghost" onclick="closeDetail('detail-quiz')">Done</button>
+      </div>
+    </div>
+  `;
+}
+function retakeQuiz(){
+  quizState={index:0,selected:null,revealed:false,correct:0,finished:false};
+  renderQuizQuestion();
+}
+
+// ─── KEYBOARD & MISC ───────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    closeExplainPanel();
+    ['modal-lessons','modal-glossary','modal-quizzes','modal-settings'].forEach(closeModal);
+  }
+});
+
+// ─── GLOSSARY FULL PAGE INIT ────────────────────────────────────
+// Called when opening full glossary detail
+const _origOpenDetail=openDetail;
+window.openDetail=function(id){
+  if(id==='detail-glossary') renderFullGlossary('');
+  _origOpenDetail(id);
+};
+
+// Expose so IQ page "Glossary" button works
+window.openGlossaryPage=function(){
+  openDetail('detail-glossary');
+};
+</script>
+</body>
+</html>
