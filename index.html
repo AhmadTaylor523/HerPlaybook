@@ -679,6 +679,153 @@ img{max-width:100%;display:block;}
 .watch-header-title{font-size:16px;font-weight:700;text-align:center;}
 .watch-header-sub{font-size:12px;color:rgba(255,255,255,0.5);text-align:center;margin-top:2px;}
 
+/* ─── AUTH SCREEN ───────────────────────────────────────────── */
+#auth-screen{
+  display:none;position:fixed;inset:0;z-index:99998;
+  background:var(--ink);overflow-y:auto;
+  flex-direction:column;
+}
+#auth-screen.show{display:flex;}
+
+.auth-wrap{
+  flex:1;display:flex;flex-direction:column;
+  padding:48px 24px 40px;
+  max-width:420px;margin:0 auto;width:100%;
+  min-height:100dvh;
+}
+
+/* Animated glow background */
+.auth-glow{
+  position:fixed;top:-120px;left:50%;transform:translateX(-50%);
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,61,135,0.12) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+  animation:glow-pulse 4s ease-in-out infinite;
+}
+@keyframes glow-pulse{0%,100%{opacity:0.6;transform:translateX(-50%) scale(1);}50%{opacity:1;transform:translateX(-50%) scale(1.1);}}
+
+.auth-content{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;}
+
+/* Logo */
+.auth-logo{
+  width:60px;height:60px;border-radius:17px;
+  background:rgba(255,61,135,0.15);
+  border:0.5px solid rgba(255,61,135,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;margin-bottom:20px;
+}
+.auth-headline{font-size:32px;font-weight:800;margin-bottom:6px;}
+.auth-subline{font-size:16px;color:var(--text-secondary);margin-bottom:32px;line-height:1.4;}
+
+/* Toggle tabs */
+.auth-toggle{
+  display:flex;
+  background:rgba(255,255,255,0.06);
+  border:0.5px solid var(--card-border);
+  border-radius:var(--r-lg);
+  padding:4px;margin-bottom:28px;
+}
+.auth-toggle-btn{
+  flex:1;padding:10px;border-radius:12px;
+  font-size:14px;font-weight:600;
+  color:var(--text-tertiary);
+  transition:background 0.2s,color 0.2s;
+}
+.auth-toggle-btn.active{
+  background:var(--spark);color:#fff;
+}
+
+/* Form */
+.auth-field{margin-bottom:14px;}
+.auth-label{
+  font-size:12px;font-weight:600;letter-spacing:0.5px;
+  text-transform:uppercase;color:var(--text-tertiary);
+  margin-bottom:7px;display:block;
+}
+.auth-input{
+  width:100%;padding:14px 16px;
+  background:rgba(255,255,255,0.06);
+  border:0.5px solid var(--card-border);
+  border-radius:var(--r-lg);
+  font-size:15px;color:#fff;outline:none;
+  transition:border-color 0.2s,background 0.2s;
+  -webkit-appearance:none;
+}
+.auth-input::placeholder{color:var(--text-tertiary);}
+.auth-input:focus{
+  border-color:var(--spark);
+  background:rgba(255,61,135,0.06);
+}
+.auth-input.error{border-color:rgba(245,158,11,0.6);background:rgba(245,158,11,0.05);}
+
+/* Error message */
+.auth-error{
+  font-size:12px;color:var(--warning);
+  margin-top:5px;display:none;
+}
+.auth-error.show{display:block;}
+
+/* Global form error */
+.auth-form-error{
+  padding:12px 14px;
+  background:rgba(245,158,11,0.08);
+  border:0.5px solid rgba(245,158,11,0.25);
+  border-radius:var(--r-lg);
+  font-size:13px;color:var(--warning);
+  margin-bottom:16px;display:none;
+}
+.auth-form-error.show{display:block;}
+
+/* Submit btn */
+.auth-submit{
+  width:100%;padding:16px;
+  background:var(--spark);color:#fff;
+  border-radius:var(--r-lg);
+  font-size:16px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:8px;
+  transition:opacity 0.2s,transform 0.15s;
+  box-shadow:0 4px 24px rgba(255,61,135,0.35);
+}
+.auth-submit:active{opacity:0.9;transform:scale(0.99);}
+.auth-submit:disabled{opacity:0.5;box-shadow:none;}
+
+/* Switch link */
+.auth-switch{
+  text-align:center;margin-top:20px;
+  font-size:14px;color:var(--text-secondary);
+}
+.auth-switch-link{color:var(--spark);font-weight:600;cursor:pointer;}
+.auth-switch-link:active{opacity:0.7;}
+
+/* Password strength */
+.pw-strength{margin-top:8px;display:none;}
+.pw-strength.show{display:block;}
+.pw-strength-bar{
+  height:3px;border-radius:2px;
+  background:var(--card-fill);overflow:hidden;
+}
+.pw-strength-fill{height:100%;border-radius:2px;transition:width 0.3s,background 0.3s;}
+.pw-strength-label{font-size:11px;font-weight:600;margin-top:4px;}
+
+/* Divider */
+.auth-divider{
+  display:flex;align-items:center;gap:12px;
+  margin:20px 0;
+}
+.auth-divider-line{flex:1;height:0.5px;background:var(--card-border);}
+.auth-divider-text{font-size:12px;color:var(--text-tertiary);font-weight:500;}
+
+/* Welcome back animation */
+.auth-welcome{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;flex:1;gap:12px;
+  animation:fadeIn 0.4s ease;
+}
+.auth-welcome-icon{font-size:56px;margin-bottom:8px;}
+.auth-welcome-title{font-size:24px;font-weight:700;text-align:center;}
+.auth-welcome-sub{font-size:15px;color:var(--text-secondary);text-align:center;}
+
 /* ─── LOADING SCREEN ────────────────────────────────────────── */
 #loading-screen{
   position:fixed;inset:0;z-index:99999;
@@ -806,6 +953,85 @@ img{max-width:100%;display:block;}
   <div class="loading-brand">HerPlaybook</div>
   <div class="loading-sub">Football, finally explained.</div>
   <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  AUTH SCREEN                                                -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-glow"></div>
+  <div class="auth-wrap">
+    <div class="auth-content">
+
+      <div class="auth-logo">🏈</div>
+      <div class="auth-headline">HerPlaybook</div>
+      <div class="auth-subline">Football — finally explained for you.</div>
+
+      <!-- Toggle -->
+      <div class="auth-toggle">
+        <button class="auth-toggle-btn active" id="toggle-signup" onclick="switchAuthMode('signup')">Create Account</button>
+        <button class="auth-toggle-btn" id="toggle-login" onclick="switchAuthMode('login')">Log In</button>
+      </div>
+
+      <!-- Global error -->
+      <div class="auth-form-error" id="auth-form-error"></div>
+
+      <!-- SIGN UP FORM -->
+      <div id="signup-form">
+        <div class="auth-field">
+          <label class="auth-label">First Name</label>
+          <input class="auth-input" id="signup-name" type="text" placeholder="Your name" autocomplete="given-name">
+          <div class="auth-error" id="err-name">Please enter your name.</div>
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Email</label>
+          <input class="auth-input" id="signup-email" type="email" placeholder="you@example.com" autocomplete="email">
+          <div class="auth-error" id="err-signup-email">Please enter a valid email.</div>
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Password</label>
+          <input class="auth-input" id="signup-password" type="password" placeholder="Create a password" autocomplete="new-password" oninput="checkPasswordStrength(this.value)">
+          <div class="pw-strength" id="pw-strength">
+            <div class="pw-strength-bar"><div class="pw-strength-fill" id="pw-fill"></div></div>
+            <div class="pw-strength-label" id="pw-label"></div>
+          </div>
+          <div class="auth-error" id="err-signup-pw">Password must be at least 6 characters.</div>
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Confirm Password</label>
+          <input class="auth-input" id="signup-confirm" type="password" placeholder="Repeat your password" autocomplete="new-password">
+          <div class="auth-error" id="err-confirm">Passwords don't match.</div>
+        </div>
+        <button class="auth-submit" id="signup-btn" onclick="handleSignup()">
+          <span>Create Account</span><span>→</span>
+        </button>
+        <div class="auth-switch">
+          Already have an account? <span class="auth-switch-link" onclick="switchAuthMode('login')">Log in</span>
+        </div>
+      </div>
+
+      <!-- LOG IN FORM -->
+      <div id="login-form" style="display:none;">
+        <div class="auth-field">
+          <label class="auth-label">Email</label>
+          <input class="auth-input" id="login-email" type="email" placeholder="you@example.com" autocomplete="email">
+          <div class="auth-error" id="err-login-email">Please enter your email.</div>
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Password</label>
+          <input class="auth-input" id="login-password" type="password" placeholder="Your password" autocomplete="current-password">
+          <div class="auth-error" id="err-login-pw">Please enter your password.</div>
+        </div>
+        <button class="auth-submit" id="login-btn" onclick="handleLogin()">
+          <span>Log In</span><span>→</span>
+        </button>
+        <div class="auth-switch">
+          New here? <span class="auth-switch-link" onclick="switchAuthMode('signup')">Create an account</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════ -->
@@ -1155,7 +1381,13 @@ img{max-width:100%;display:block;}
         <span class="settings-title">Re-run Onboarding</span>
         <span class="settings-val" style="color:var(--spark);">Run</span>
       </div>
+      <div class="settings-row" style="cursor:pointer;" onclick="signOut()">
+        <span class="settings-icon">🚪</span>
+        <span class="settings-title">Sign Out</span>
+        <span class="settings-val" style="color:#EF4444;">Sign Out</span>
+      </div>
     </div>
+    <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--text-tertiary);" id="settings-user-email"></div>
   </div>
 </div>
 
@@ -1309,8 +1541,15 @@ window.addEventListener('load',()=>{
   updateStreak();
   setTimeout(()=>{
     document.getElementById('loading-screen').classList.add('hidden');
-    const hasOnboarded = LS.get('hasOnboarded',false);
-    if(!hasOnboarded){ showOnboarding(); } else { initApp(); }
+    const session = getSession();
+    if(!session){
+      // Not logged in — show auth screen
+      document.getElementById('auth-screen').classList.add('show');
+    } else {
+      // Already logged in — go straight in
+      const hasOnboarded = LS.get('hasOnboarded',false);
+      if(!hasOnboarded){ showOnboarding(); } else { initApp(); }
+    }
   },1600);
 });
 
@@ -1342,7 +1581,9 @@ function updateStreak(){
 // ─── GREETING ──────────────────────────────────────────────────
 function renderGreeting(){
   const h=new Date().getHours();
-  const g = h<12?'GOOD MORNING':h<17?'GOOD AFTERNOON':'GOOD EVENING';
+  const time = h<12?'GOOD MORNING':h<17?'GOOD AFTERNOON':'GOOD EVENING';
+  const session = getSession();
+  const g = session ? time+', '+session.name.split(' ')[0].toUpperCase() : time;
   document.getElementById('greeting-text').textContent=g;
 }
 
@@ -1413,6 +1654,9 @@ function overlayClose(e,id){
 }
 function openSettings(){
   renderStats();
+  const session = getSession();
+  const emailEl = document.getElementById('settings-user-email');
+  if(emailEl && session){ emailEl.textContent = 'Signed in as '+session.email; }
   openModal('modal-settings');
 }
 
@@ -1948,6 +2192,135 @@ function renderQuizResults(){
 function retakeQuiz(){
   quizState={index:0,selected:null,revealed:false,correct:0,finished:false};
   renderQuizQuestion();
+}
+
+// ─── AUTH ──────────────────────────────────────────────────────
+let authMode = 'signup';
+
+function switchAuthMode(mode){
+  authMode = mode;
+  document.getElementById('signup-form').style.display = mode==='signup' ? 'block' : 'none';
+  document.getElementById('login-form').style.display  = mode==='login'  ? 'block' : 'none';
+  document.getElementById('toggle-signup').className = 'auth-toggle-btn' + (mode==='signup' ? ' active' : '');
+  document.getElementById('toggle-login').className  = 'auth-toggle-btn' + (mode==='login'  ? ' active' : '');
+  clearAuthErrors();
+}
+
+function clearAuthErrors(){
+  document.querySelectorAll('.auth-error').forEach(e=>e.classList.remove('show'));
+  document.querySelectorAll('.auth-input').forEach(i=>i.classList.remove('error'));
+  const fe = document.getElementById('auth-form-error');
+  fe.classList.remove('show'); fe.textContent='';
+}
+
+function showFormError(msg){
+  const fe = document.getElementById('auth-form-error');
+  fe.textContent = msg; fe.classList.add('show');
+}
+
+function fieldError(inputId, errId){
+  document.getElementById(inputId)?.classList.add('error');
+  document.getElementById(errId)?.classList.add('show');
+}
+
+function checkPasswordStrength(val){
+  const wrap = document.getElementById('pw-strength');
+  const fill = document.getElementById('pw-fill');
+  const label = document.getElementById('pw-label');
+  if(!val){ wrap.classList.remove('show'); return; }
+  wrap.classList.add('show');
+  let score = 0;
+  if(val.length >= 6) score++;
+  if(val.length >= 10) score++;
+  if(/[A-Z]/.test(val)) score++;
+  if(/[0-9]/.test(val)) score++;
+  if(/[^A-Za-z0-9]/.test(val)) score++;
+  const levels = [
+    {w:'20%', bg:'#EF4444', text:'Weak'},
+    {w:'40%', bg:'#F59E0B', text:'Fair'},
+    {w:'60%', bg:'#F59E0B', text:'Okay'},
+    {w:'80%', bg:'#22C55E', text:'Good'},
+    {w:'100%',bg:'#22C55E', text:'Strong'},
+  ];
+  const lvl = levels[Math.min(score, levels.length-1)];
+  fill.style.width = lvl.w;
+  fill.style.background = lvl.bg;
+  label.style.color = lvl.bg;
+  label.textContent = lvl.text;
+}
+
+function getUsers(){ return LS.get('hp_users', []); }
+function saveUsers(users){ LS.set('hp_users', users); }
+function setSession(user){ LS.set('hp_session', {name:user.name, email:user.email}); }
+function getSession(){ return LS.get('hp_session', null); }
+function clearSession(){ localStorage.removeItem('hp_session'); }
+
+function handleSignup(){
+  clearAuthErrors();
+  const name  = document.getElementById('signup-name').value.trim();
+  const email = document.getElementById('signup-email').value.trim().toLowerCase();
+  const pw    = document.getElementById('signup-password').value;
+  const conf  = document.getElementById('signup-confirm').value;
+  let ok = true;
+  if(!name){ fieldError('signup-name','err-name'); ok=false; }
+  if(!email || !email.includes('@')){ fieldError('signup-email','err-signup-email'); ok=false; }
+  if(pw.length < 6){ fieldError('signup-password','err-signup-pw'); ok=false; }
+  if(pw !== conf){ fieldError('signup-confirm','err-confirm'); ok=false; }
+  if(!ok) return;
+
+  const users = getUsers();
+  if(users.find(u=>u.email===email)){
+    showFormError('An account with that email already exists. Try logging in.');
+    return;
+  }
+  const user = {name, email, password:pw, joinedAt: new Date().toISOString()};
+  users.push(user);
+  saveUsers(users);
+  setSession(user);
+  enterApp(user, true);
+}
+
+function handleLogin(){
+  clearAuthErrors();
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const pw    = document.getElementById('login-password').value;
+  let ok = true;
+  if(!email){ fieldError('login-email','err-login-email'); ok=false; }
+  if(!pw){ fieldError('login-password','err-login-pw'); ok=false; }
+  if(!ok) return;
+
+  const users = getUsers();
+  const user  = users.find(u=>u.email===email && u.password===pw);
+  if(!user){
+    showFormError('Incorrect email or password. Try again.');
+    fieldError('login-email','');
+    fieldError('login-password','');
+    return;
+  }
+  setSession(user);
+  enterApp(user, false);
+}
+
+function enterApp(user, isNew){
+  // Show a quick welcome flash
+  const screen = document.getElementById('auth-screen');
+  screen.innerHTML = `<div class="auth-wrap"><div class="auth-content auth-welcome">
+    <div class="auth-welcome-icon">${isNew ? '🎉' : '👋'}</div>
+    <div class="auth-welcome-title">${isNew ? 'Welcome, '+user.name+'!' : 'Welcome back, '+user.name+'!'}</div>
+    <div class="auth-welcome-sub">${isNew ? 'Let\'s get you started.' : 'Good to see you again.'}</div>
+  </div></div>`;
+  setTimeout(()=>{
+    screen.classList.remove('show');
+    const hasOnboarded = LS.get('hasOnboarded', false);
+    if(isNew || !hasOnboarded){ showOnboarding(); }
+    else { initApp(); }
+  }, 1200);
+}
+
+function signOut(){
+  clearSession();
+  closeModal('modal-settings');
+  location.reload();
 }
 
 // ─── KEYBOARD & MISC ───────────────────────────────────────────
