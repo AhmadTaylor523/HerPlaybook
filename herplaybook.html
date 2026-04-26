@@ -679,6 +679,171 @@ img{max-width:100%;display:block;}
 .watch-header-title{font-size:16px;font-weight:700;text-align:center;}
 .watch-header-sub{font-size:12px;color:rgba(255,255,255,0.5);text-align:center;margin-top:2px;}
 
+/* ─── GAMIFICATION ──────────────────────────────────────────── */
+
+/* XP Level Bar */
+.xp-bar-wrap{
+  padding:14px 16px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);
+}
+.xp-bar-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.xp-level-badge{
+  display:flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:700;
+}
+.xp-level-dot{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--spark);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;color:#fff;
+}
+.xp-level-name{font-size:13px;font-weight:600;color:#fff;}
+.xp-to-next{font-size:12px;color:var(--text-tertiary);font-weight:500;}
+.xp-track{height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;}
+.xp-fill{
+  height:100%;border-radius:4px;
+  background:linear-gradient(90deg,var(--spark),#ff6ba8);
+  transition:width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  position:relative;overflow:hidden;
+}
+.xp-fill::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);
+  animation:xp-shimmer 2s ease-in-out infinite;
+}
+@keyframes xp-shimmer{0%{transform:translateX(-100%);}100%{transform:translateX(100%);}}
+
+/* Daily Goal */
+.daily-goal-row{display:flex;align-items:center;gap:10px;margin-top:10px;}
+.daily-goal-label{font-size:12px;color:var(--text-tertiary);font-weight:500;white-space:nowrap;}
+.daily-goal-track{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
+.daily-goal-fill{height:100%;background:var(--success);border-radius:2px;transition:width 0.5s ease;}
+.daily-goal-count{font-size:12px;font-weight:700;color:var(--success);white-space:nowrap;}
+
+/* XP Toast */
+.xp-toast{
+  position:fixed;top:-80px;left:50%;transform:translateX(-50%);
+  z-index:99999;
+  display:flex;align-items:center;gap:8px;
+  padding:12px 20px;
+  background:linear-gradient(135deg,#1a1a1a,#2a1a22);
+  border:0.5px solid rgba(255,61,135,0.4);
+  border-radius:var(--r-full);
+  box-shadow:0 8px 32px rgba(255,61,135,0.25);
+  transition:top 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  white-space:nowrap;
+}
+.xp-toast.show{top:calc(env(safe-area-inset-top,0px) + 16px);}
+.xp-toast-icon{font-size:18px;}
+.xp-toast-text{font-size:14px;font-weight:700;}
+.xp-toast-amount{color:var(--spark);}
+.xp-toast-reason{color:var(--text-secondary);font-size:12px;margin-left:2px;}
+
+/* Level Up Modal */
+#levelup-modal{
+  display:none;position:fixed;inset:0;z-index:99997;
+  background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);
+  align-items:center;justify-content:center;
+}
+#levelup-modal.show{display:flex;}
+.levelup-card{
+  width:calc(100% - 48px);max-width:340px;
+  background:linear-gradient(160deg,#1a0a14,#0a0a14);
+  border:0.5px solid rgba(255,61,135,0.3);
+  border-radius:28px;padding:36px 28px;
+  text-align:center;
+  animation:levelup-pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  box-shadow:0 0 60px rgba(255,61,135,0.2);
+}
+@keyframes levelup-pop{from{opacity:0;transform:scale(0.7);}to{opacity:1;transform:scale(1);}}
+.levelup-emoji{font-size:64px;display:block;margin-bottom:16px;
+  animation:levelup-bounce 0.6s ease 0.3s both;}
+@keyframes levelup-bounce{0%{transform:scale(0);}60%{transform:scale(1.2);}100%{transform:scale(1);}}
+.levelup-label{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--rose);margin-bottom:8px;}
+.levelup-title{font-size:28px;font-weight:800;margin-bottom:6px;}
+.levelup-sub{font-size:15px;color:var(--text-secondary);margin-bottom:24px;}
+.levelup-xp-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;
+  background:rgba(255,61,135,0.12);border:0.5px solid rgba(255,61,135,0.3);
+  border-radius:var(--r-full);
+  font-size:14px;font-weight:700;color:var(--spark);
+  margin-bottom:24px;
+}
+.levelup-cta{
+  width:100%;padding:15px;
+  background:var(--spark);color:#fff;
+  border-radius:var(--r-lg);font-size:16px;font-weight:700;
+  box-shadow:0 4px 20px rgba(255,61,135,0.35);
+  transition:transform 0.15s;
+}
+.levelup-cta:active{transform:scale(0.98);}
+
+/* Achievement Badges */
+.achievements-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.badge-card{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:14px 8px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);
+  transition:transform 0.2s;
+}
+.badge-card.unlocked{
+  background:rgba(255,61,135,0.08);
+  border-color:rgba(255,61,135,0.25);
+}
+.badge-card.unlocked:active{transform:scale(0.96);}
+.badge-icon{
+  font-size:28px;
+  filter:grayscale(1) opacity(0.3);
+  transition:filter 0.4s;
+}
+.badge-card.unlocked .badge-icon{filter:none;}
+.badge-name{font-size:11px;font-weight:600;text-align:center;color:var(--text-tertiary);line-height:1.3;}
+.badge-card.unlocked .badge-name{color:var(--rose);}
+.badge-locked-icon{font-size:14px;color:var(--text-tertiary);}
+
+/* Badge unlock animation */
+@keyframes badge-unlock{
+  0%{transform:scale(1);}
+  30%{transform:scale(1.3) rotate(-5deg);}
+  60%{transform:scale(0.9) rotate(3deg);}
+  100%{transform:scale(1) rotate(0);}
+}
+.badge-card.just-unlocked{animation:badge-unlock 0.6s ease;}
+
+/* Confetti canvas */
+#confetti-canvas{
+  position:fixed;inset:0;z-index:99996;
+  pointer-events:none;
+  display:none;
+}
+#confetti-canvas.active{display:block;}
+
+/* Quiz combo indicator */
+.combo-banner{
+  display:none;
+  padding:10px 16px;
+  background:linear-gradient(135deg,rgba(255,61,135,0.15),rgba(255,133,179,0.1));
+  border:0.5px solid rgba(255,61,135,0.3);
+  border-radius:var(--r-lg);
+  margin-bottom:12px;
+  text-align:center;
+  animation:combo-pop 0.3s ease;
+}
+.combo-banner.show{display:block;}
+@keyframes combo-pop{from{opacity:0;transform:scale(0.95);}to{opacity:1;transform:scale(1);}}
+.combo-text{font-size:15px;font-weight:800;color:var(--spark);}
+.combo-sub{font-size:12px;color:var(--text-secondary);margin-top:2px;}
+
+/* Streak on fire */
+.streak-fire{
+  display:inline-block;
+  animation:fire-shake 0.5s ease-in-out infinite alternate;
+}
+@keyframes fire-shake{from{transform:rotate(-5deg);}to{transform:rotate(5deg);}}
+
 /* ─── AUTH SCREEN ───────────────────────────────────────────── */
 #auth-screen{
   display:none;position:fixed;inset:0;z-index:99998;
@@ -1064,6 +1229,23 @@ img{max-width:100%;display:block;}
         <button class="gear-btn" onclick="openSettings()">⚙️</button>
       </div>
 
+      <!-- XP Level Bar -->
+      <div class="xp-bar-wrap">
+        <div class="xp-bar-top">
+          <div class="xp-level-badge">
+            <div class="xp-level-dot" id="xp-level-num">1</div>
+            <div class="xp-level-name" id="xp-level-name">Rookie Fan</div>
+          </div>
+          <div class="xp-to-next" id="xp-to-next">100 XP to next level</div>
+        </div>
+        <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+        <div class="daily-goal-row">
+          <div class="daily-goal-label">⚡ Daily goal</div>
+          <div class="daily-goal-track"><div class="daily-goal-fill" id="daily-goal-fill" style="width:0%"></div></div>
+          <div class="daily-goal-count" id="daily-goal-count">0 / 50 XP</div>
+        </div>
+      </div>
+
       <!-- Continue Learning -->
       <div class="continue-banner card-hoverable" onclick="openLessonById('basics-01')">
         <div class="continue-banner-text">
@@ -1136,6 +1318,12 @@ img{max-width:100%;display:block;}
             <span class="tag">defense</span><span class="tag">basics</span>
           </div>
         </div>
+      </div>
+
+      <!-- Achievements -->
+      <div class="gap-10">
+        <div class="section-label">Achievements</div>
+        <div class="achievements-grid" id="achievements-grid"></div>
       </div>
 
       <div style="height:8px;"></div>
@@ -1460,6 +1648,34 @@ img{max-width:100%;display:block;}
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════ -->
+<!--  GAMIFICATION OVERLAYS                                      -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<!-- Confetti canvas -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- XP Toast -->
+<div class="xp-toast" id="xp-toast">
+  <span class="xp-toast-icon">⚡</span>
+  <span class="xp-toast-text">
+    <span class="xp-toast-amount" id="xp-toast-amount">+20 XP</span>
+    <span class="xp-toast-reason" id="xp-toast-reason">Lesson complete</span>
+  </span>
+</div>
+
+<!-- Level Up Modal -->
+<div id="levelup-modal">
+  <div class="levelup-card">
+    <span class="levelup-emoji" id="levelup-emoji">🏆</span>
+    <div class="levelup-label">Level Up!</div>
+    <div class="levelup-title" id="levelup-title">Casual Watcher</div>
+    <div class="levelup-sub" id="levelup-sub">You're building your football IQ.</div>
+    <div class="levelup-xp-pill" id="levelup-xp-pill">⚡ Level 2 Unlocked</div>
+    <button class="levelup-cta" onclick="closeLevelUp()">Keep Going →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
 <!--  JAVASCRIPT                                                 -->
 <!-- ═══════════════════════════════════════════════════════════ -->
 <script>
@@ -1562,7 +1778,10 @@ function initApp(){
   renderQuizPicker();
   renderQuizListPreview();
   buildWatchFeed();
-  renderQuizListPreview();
+  // Gamification
+  renderXPBar();
+  renderAchievements();
+  setTimeout(awardDailyLoginXP, 1000);
 }
 
 // ─── STREAK ────────────────────────────────────────────────────
@@ -1778,9 +1997,12 @@ function openLesson(lesson){
   openDetail('detail-lesson');
 }
 function toggleLessonComplete(id){
+  const wasCompleted = !!completed[id];
   completed[id]=!completed[id];
   if(!completed[id]) delete completed[id];
   LS.set('completed',completed);
+  if(completed[id] && !wasCompleted){ awardXP(20,'Lesson complete'); }
+  checkAchievements();
   const btn=document.getElementById('lesson-complete-btn');
   if(btn){
     btn.className='completion-btn mt-8'+(completed[id]?' done':'');
@@ -1960,6 +2182,15 @@ function onFeedScroll(){
   if(idx!==currentClipIndex && idx>=0 && idx<CLIPS.length){
     currentClipIndex=idx;
     syncClipCounter();
+    // Award XP for watching a new clip
+    const watchedKey='hp_watched_'+CLIPS[idx].id;
+    if(!LS.get(watchedKey,false)){
+      LS.set(watchedKey,true);
+      const total = CLIPS.filter((_,i)=>LS.get('hp_watched_'+CLIPS[i].id,false)).length;
+      LS.set('clipsWatched',total);
+      awardXP(10,'Watched: '+CLIPS[idx].title);
+      checkAchievements();
+    }
   }
 }
 function syncClipCounter(){
@@ -2083,7 +2314,7 @@ function startQuizById(id){
 }
 function startQuiz(quiz){
   activeQuiz=quiz;
-  quizState={ index:0, selected:null, revealed:false, correct:0, finished:false };
+  quizState={ index:0, selected:null, revealed:false, correct:0, finished:false, combo:0 };
   document.getElementById('quiz-detail-nav-title').textContent=quiz.title;
   renderQuizQuestion();
   openDetail('detail-quiz');
@@ -2141,7 +2372,14 @@ function checkAnswer(){
   if(quizState.selected===null) return;
   const q=activeQuiz.questions[quizState.index];
   quizState.revealed=true;
-  if(quizState.selected===q.correct) quizState.correct++;
+  const isCorrect = quizState.selected===q.correct;
+  if(isCorrect){
+    quizState.correct++;
+    quizState.combo = (quizState.combo||0)+1;
+    if(quizState.combo>=3){ awardXP(5,'🔥 '+quizState.combo+'-answer combo!'); }
+  } else {
+    quizState.combo=0;
+  }
   renderQuizQuestion();
 }
 function nextQuestion(){
@@ -2155,6 +2393,12 @@ function renderQuizResults(){
   const total=activeQuiz.questions.length;
   const score=quizState.correct;
   const ratio=score/total;
+  // Award XP
+  const xpEarned = ratio===1 ? 30 : 15;
+  awardXP(xpEarned, ratio===1 ? 'Perfect score! 🎯' : 'Quiz complete');
+  if(ratio===1){ LS.set('perfectQuiz',true); setTimeout(triggerConfetti, 600); }
+  LS.set('quizzesDone',(LS.get('quizzesDone',0)+1));
+  checkAchievements();
   const color=ratio>=0.8?'var(--success)':ratio>=0.5?'var(--warning)':'var(--spark)';
   const headline=ratio===1?'Perfect score.':ratio>=0.8?'Solid work.':ratio>=0.5?'Getting there.':'Keep practicing.';
   const sub=ratio===1?'You got every question right. Football IQ rising.':ratio>=0.8?'Almost perfect. One more run and you\'ll nail it.':ratio>=0.5?'You\'re building the foundation. Retake to lock it in.':'Review the explanations and try again — it clicks fast.';
@@ -2192,6 +2436,193 @@ function renderQuizResults(){
 function retakeQuiz(){
   quizState={index:0,selected:null,revealed:false,correct:0,finished:false};
   renderQuizQuestion();
+}
+
+// ─── GAMIFICATION DATA ─────────────────────────────────────────
+const LEVELS = [
+  {level:1, name:'Rookie Fan',        emoji:'🌱', min:0,    max:99,   sub:"You're just getting started."},
+  {level:2, name:'Casual Watcher',    emoji:'👀', min:100,  max:249,  sub:"You're picking things up fast."},
+  {level:3, name:'Game Follower',     emoji:'📺', min:250,  max:449,  sub:"You follow the game now."},
+  {level:4, name:'Play Spotter',      emoji:'🔍', min:450,  max:699,  sub:"You're reading the field."},
+  {level:5, name:'Blitz Blocker',     emoji:'🛡️', min:700,  max:999,  sub:"Defenses don't fool you."},
+  {level:6, name:'Touchdown Tracker', emoji:'🏈', min:1000, max:1399, sub:"You live for the end zone."},
+  {level:7, name:'Field General',     emoji:'⚔️', min:1400, max:1899, sub:"You command the field."},
+  {level:8, name:'Red Zone Expert',   emoji:'🎯', min:1900, max:2499, sub:"Elite football knowledge."},
+  {level:9, name:'Gridiron Scholar',  emoji:'📚', min:2500, max:3199, sub:"You know this game deeply."},
+  {level:10,name:'Her Playbook Pro',  emoji:'🏆', min:3200, max:99999,sub:"The pinnacle. You've mastered it."},
+];
+
+const ACHIEVEMENTS = [
+  {id:'first-lesson', icon:'🏈', name:'First Down',    desc:'Complete your first lesson.',  check:()=>Object.keys(completed).length>=1},
+  {id:'all-lessons',  icon:'📚', name:'Scholar',       desc:'Complete all 4 lessons.',       check:()=>LESSONS.every(l=>completed[l.id])},
+  {id:'first-quiz',   icon:'⚡', name:'Sharp Mind',    desc:'Complete your first quiz.',     check:()=>LS.get('quizzesDone',0)>=1},
+  {id:'perfect-quiz', icon:'🎯', name:'Perfect Play',  desc:'Get 100% on any quiz.',        check:()=>LS.get('perfectQuiz',false)},
+  {id:'watch-all',    icon:'👁️', name:'Film Room',     desc:'Watch all 3 clips.',           check:()=>Object.keys(likedClips).length>=3||LS.get('clipsWatched',0)>=3},
+  {id:'streak-3',     icon:'🔥', name:'On Fire',       desc:'Reach a 3-day streak.',        check:()=>streak>=3},
+];
+
+const DAILY_GOAL_XP = 50;
+
+// ─── XP HELPERS ────────────────────────────────────────────────
+function getXP(){ return LS.get('hp_xp', 0); }
+function setXP(v){ LS.set('hp_xp', v); }
+function getDailyXP(){
+  const today = new Date().toDateString();
+  const d = LS.get('hp_daily_xp', {date:'', xp:0});
+  if(d.date !== today) return 0;
+  return d.xp;
+}
+function addDailyXP(amount){
+  const today = new Date().toDateString();
+  const d = LS.get('hp_daily_xp', {date:'', xp:0});
+  const xp = d.date===today ? d.xp+amount : amount;
+  LS.set('hp_daily_xp', {date:today, xp});
+}
+function getLevelForXP(xp){ return LEVELS.slice().reverse().find(l=>xp>=l.min) || LEVELS[0]; }
+
+function awardXP(amount, reason){
+  const oldXP = getXP();
+  const newXP = oldXP + amount;
+  setXP(newXP);
+  addDailyXP(amount);
+  showXPToast(amount, reason);
+  const oldLevel = getLevelForXP(oldXP);
+  const newLevel = getLevelForXP(newXP);
+  if(newLevel.level > oldLevel.level){ setTimeout(()=>showLevelUp(newLevel), 800); }
+  setTimeout(renderXPBar, 300);
+  checkAchievements();
+}
+
+// ─── XP BAR ────────────────────────────────────────────────────
+function renderXPBar(){
+  const xp = getXP();
+  const lvl = getLevelForXP(xp);
+  const next = LEVELS.find(l=>l.level===lvl.level+1);
+  const pct = next ? Math.min(100, ((xp-lvl.min)/(lvl.max-lvl.min+1))*100) : 100;
+
+  const numEl  = document.getElementById('xp-level-num');
+  const nameEl = document.getElementById('xp-level-name');
+  const nextEl = document.getElementById('xp-to-next');
+  const fillEl = document.getElementById('xp-fill');
+  if(numEl)  numEl.textContent  = lvl.level;
+  if(nameEl) nameEl.textContent = lvl.name;
+  if(nextEl) nextEl.textContent = next ? (lvl.max+1-xp)+' XP to '+next.name : 'Max Level 🏆';
+  if(fillEl) fillEl.style.width = pct+'%';
+
+  // Daily goal
+  const dailyXP = getDailyXP();
+  const goalPct = Math.min(100, (dailyXP/DAILY_GOAL_XP)*100);
+  const goalFill = document.getElementById('daily-goal-fill');
+  const goalCount = document.getElementById('daily-goal-count');
+  if(goalFill) goalFill.style.width = goalPct+'%';
+  if(goalCount) goalCount.textContent = dailyXP+' / '+DAILY_GOAL_XP+' XP';
+  if(goalCount) goalCount.style.color = dailyXP>=DAILY_GOAL_XP ? 'var(--success)' : 'var(--success)';
+}
+
+// ─── XP TOAST ──────────────────────────────────────────────────
+let toastTimeout = null;
+function showXPToast(amount, reason){
+  const toast = document.getElementById('xp-toast');
+  const amtEl = document.getElementById('xp-toast-amount');
+  const resEl = document.getElementById('xp-toast-reason');
+  if(!toast) return;
+  if(toastTimeout) clearTimeout(toastTimeout);
+  amtEl.textContent = '+'+amount+' XP';
+  resEl.textContent = reason ? '· '+reason : '';
+  toast.classList.add('show');
+  toastTimeout = setTimeout(()=>toast.classList.remove('show'), 2400);
+}
+
+// ─── LEVEL UP ──────────────────────────────────────────────────
+function showLevelUp(lvl){
+  document.getElementById('levelup-emoji').textContent = lvl.emoji;
+  document.getElementById('levelup-title').textContent = lvl.name;
+  document.getElementById('levelup-sub').textContent   = lvl.sub;
+  document.getElementById('levelup-xp-pill').textContent = '⚡ Level '+lvl.level+' Unlocked';
+  document.getElementById('levelup-modal').classList.add('show');
+  triggerConfetti();
+}
+function closeLevelUp(){
+  document.getElementById('levelup-modal').classList.remove('show');
+}
+
+// ─── CONFETTI ──────────────────────────────────────────────────
+function triggerConfetti(){
+  const canvas = document.getElementById('confetti-canvas');
+  if(!canvas) return;
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  canvas.classList.add('active');
+  const ctx = canvas.getContext('2d');
+  const pieces = Array.from({length:120},()=>({
+    x: Math.random()*canvas.width,
+    y: -20 - Math.random()*80,
+    r: 4+Math.random()*6,
+    d: 1+Math.random()*3,
+    color: ['#FF3D87','#FF85B3','#ffffff','#FFD700','#a78bfa'][Math.floor(Math.random()*5)],
+    angle: Math.random()*360,
+    spin: (Math.random()-0.5)*8,
+    drift: (Math.random()-0.5)*2,
+  }));
+  let frame = 0;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.angle*Math.PI/180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*0.5);
+      ctx.restore();
+      p.y += p.d; p.x += p.drift; p.angle += p.spin;
+    });
+    frame++;
+    if(frame < 120) requestAnimationFrame(draw);
+    else{ ctx.clearRect(0,0,canvas.width,canvas.height); canvas.classList.remove('active'); }
+  }
+  draw();
+}
+
+// ─── ACHIEVEMENTS ──────────────────────────────────────────────
+function getUnlocked(){ return LS.get('hp_badges', []); }
+function checkAchievements(){
+  const unlocked = getUnlocked();
+  let changed = false;
+  ACHIEVEMENTS.forEach(a=>{
+    if(!unlocked.includes(a.id) && a.check()){
+      unlocked.push(a.id);
+      changed = true;
+      setTimeout(()=>showAchievementToast(a), 1200);
+    }
+  });
+  if(changed){ LS.set('hp_badges', unlocked); renderAchievements(); }
+}
+function showAchievementToast(a){
+  showXPToast(0, a.name+' badge unlocked '+a.icon);
+  document.getElementById('xp-toast-amount').textContent = a.icon;
+}
+function renderAchievements(){
+  const container = document.getElementById('achievements-grid');
+  if(!container) return;
+  const unlocked = getUnlocked();
+  container.innerHTML = ACHIEVEMENTS.map(a=>{
+    const done = unlocked.includes(a.id);
+    return `<div class="badge-card${done?' unlocked':''}" title="${a.desc}">
+      <span class="badge-icon">${a.icon}</span>
+      <span class="badge-name">${a.name}</span>
+      ${!done?'<span class="badge-locked-icon">🔒</span>':''}
+    </div>`;
+  }).join('');
+}
+
+// ─── QUIZ COMBO ────────────────────────────────────────────────
+// quizState gets a `combo` counter added dynamically
+
+// ─── DAILY LOGIN XP ────────────────────────────────────────────
+function awardDailyLoginXP(){
+  const today = new Date().toDateString();
+  const last = LS.get('hp_last_login_xp', '');
+  if(last !== today){ LS.set('hp_last_login_xp', today); awardXP(5, 'Daily login'); }
 }
 
 // ─── AUTH ──────────────────────────────────────────────────────
