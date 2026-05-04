@@ -1614,12 +1614,12 @@ img{max-width:100%;display:block;}
       <div class="modal-sheet-icon">⚡</div>
       <div>
         <div class="modal-sheet-title">Mini Quizzes</div>
-        <div class="modal-sheet-sub">Pick one to begin.</div>
+        <div class="modal-sheet-sub">Tap a quiz to start instantly.</div>
       </div>
     </div>
     <div class="overline mb-8">Choose a Quiz</div>
     <div id="quiz-picker-list"></div>
-    <button class="btn-primary disarmed mt-16" id="quiz-cta" onclick="startSelectedQuiz()">
+    <button class="btn-primary disarmed mt-16" id="quiz-cta" onclick="startSelectedQuiz()" style="display:none;">
       <span>Start Quiz</span><span>→</span>
     </button>
   </div>
@@ -2815,11 +2815,17 @@ function renderQuizPicker(){
   const quizzes=QUIZZES.filter(q=>['easy','medium','hard'].includes(q.id));
   container.innerHTML=quizzes.map(q=>{
     const d=DIFF_META[q.difficulty]||DIFF_META.easy;
-    return `<div class="sheet-row" id="qp-${q.id}" onclick="selectQuiz('${q.id}')">
+    return `<div class="sheet-row" id="qp-${q.id}" onclick="launchQuizFromModal('${q.id}')">
       <span class="sheet-row-title">${d.emoji} ${q.title}</span>
-      <span class="sheet-row-trail" style="color:${d.color};">${q.questions.length} Q</span>
+      <span class="sheet-row-trail" style="color:${d.color};">${q.questions.length} Q ›</span>
     </div>`;
   }).join('');
+}
+function launchQuizFromModal(id){
+  const quiz=QUIZZES.find(q=>q.id===id);
+  if(!quiz) return;
+  closeModal('modal-quizzes');
+  setTimeout(()=>startQuiz(quiz),180);
 }
 function selectQuiz(id){
   selectedQuiz=QUIZZES.find(q=>q.id===id);
