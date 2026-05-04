@@ -1446,7 +1446,7 @@ img{max-width:100%;display:block;}
         <div class="card">
           <div class="flex-between mb-8">
             <span style="font-size:14px;font-weight:600;">Basics</span>
-            <span class="label" id="basics-progress-label">0 / 4 completed</span>
+            <span class="label" id="basics-progress-label">0 / 10 completed</span>
           </div>
           <div style="height:4px;background:var(--card-fill);border-radius:2px;overflow:hidden;">
             <div id="basics-progress-bar" style="height:100%;background:var(--spark);border-radius:2px;transition:width 0.5s ease;width:0%;"></div>
@@ -2011,6 +2011,7 @@ function initApp(){
   renderTermOfDay();
   renderLessonsList();
   renderGlossaryList('');
+  renderFullGlossary('');
   renderQuizPicker();
   renderQuizListPreview();
   buildWatchFeed();
@@ -2126,6 +2127,7 @@ function openSettings(){
 function openDetail(id){
   const d=document.getElementById(id);
   if(d){ d.classList.add('open'); document.body.style.overflow='hidden'; }
+  if(id==='detail-glossary') renderFullGlossary('');
 }
 function closeDetail(id){
   const d=document.getElementById(id);
