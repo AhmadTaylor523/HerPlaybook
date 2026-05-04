@@ -1574,12 +1574,12 @@ img{max-width:100%;display:block;}
       <div class="modal-sheet-icon">📖</div>
       <div>
         <div class="modal-sheet-title">Basics Lessons</div>
-        <div class="modal-sheet-sub">Pick a lesson to begin.</div>
+        <div class="modal-sheet-sub">Tap a lesson to open it.</div>
       </div>
     </div>
     <div class="overline mb-8">Lessons</div>
     <div id="lessons-list"></div>
-    <button class="btn-primary mt-16" id="lessons-cta" onclick="startSelectedLesson()">
+    <button class="btn-primary mt-16" id="lessons-cta" onclick="startSelectedLesson()" style="display:none;">
       <span>Start Lessons</span><span>→</span>
     </button>
   </div>
@@ -2106,7 +2106,13 @@ function switchTab(tab){
 // ─── MODALS ────────────────────────────────────────────────────
 function openModal(id){
   const m=document.getElementById(id);
-  if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; }
+  if(!m) return;
+  // Always re-render dynamic content so modal is never empty
+  if(id==='modal-quizzes')  renderQuizPicker();
+  if(id==='modal-lessons')  renderLessonsList();
+  if(id==='modal-glossary') renderGlossaryList('');
+  m.classList.add('open');
+  document.body.style.overflow='hidden';
 }
 function closeModal(id){
   const m=document.getElementById(id);
@@ -2182,11 +2188,15 @@ function renderLessonsList(){
   if(!container) return;
   container.innerHTML=LESSONS.map(l=>{
     const done=completed[l.id];
-    return `<div class="sheet-row${selectedLesson?.id===l.id?' selected':''}" onclick="selectLesson('${l.id}')">
+    return `<div class="sheet-row" onclick="launchLessonFromModal('${l.id}')">
       <span class="sheet-row-title">${done?'✅ ':''} ${l.title}</span>
-      <span class="sheet-row-trail">${l.minutes}:00</span>
+      <span class="sheet-row-trail">${l.minutes}:00 ›</span>
     </div>`;
   }).join('');
+}
+function launchLessonFromModal(id){
+  closeModal('modal-lessons');
+  setTimeout(()=>openLessonById(id),180);
 }
 function selectLesson(id){
   selectedLesson=LESSONS.find(l=>l.id===id);
