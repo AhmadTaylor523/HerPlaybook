@@ -2325,6 +2325,306 @@ function renderFullGlossary(query){
 function filterFullGlossary(q){ renderFullGlossary(q); }
 function clearFullGlossarySearch(){ document.getElementById('glossary-full-search').value=''; renderFullGlossary(''); }
 
+// ─── ANIMATED PLAY SVGs ────────────────────────────────────────
+function getPlaySVG(clipId){
+  // Base field wrapper — shared by all plays
+  function field(uid,content,sty=''){
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="position:absolute;top:0;left:0;display:block;"><style>
+.o${uid}{fill:#FF3D87;stroke:#FF85B3;stroke-width:1.5}
+.d${uid}{fill:#5baae0;stroke:#a8d5f8;stroke-width:1.5}
+.qb${uid}{fill:#be1a5a;stroke:#FF3D87;stroke-width:2}
+.lbl{fill:#fff;font:bold 8px/1 sans-serif;text-anchor:middle;dominant-baseline:central}
+${sty}</style>
+<rect width="390" height="700" fill="#071507"/>
+<rect y="0"   width="390" height="70"  fill="rgba(255,255,255,.024)"/>
+<rect y="140" width="390" height="70"  fill="rgba(255,255,255,.024)"/>
+<rect y="280" width="390" height="70"  fill="rgba(255,255,255,.024)"/>
+<rect y="420" width="390" height="70"  fill="rgba(255,255,255,.024)"/>
+<rect y="560" width="390" height="70"  fill="rgba(255,255,255,.024)"/>
+<line x1="20" y1="70"  x2="370" y2="70"  stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+<line x1="20" y1="140" x2="370" y2="140" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+<line x1="20" y1="210" x2="370" y2="210" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+<line x1="20" y1="420" x2="370" y2="420" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+<line x1="20" y1="490" x2="370" y2="490" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+<line x1="20" y1="560" x2="370" y2="560" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+<text x="195" y="83"  fill="rgba(255,255,255,.28)" font-size="11" font-family="sans-serif" font-weight="600" text-anchor="middle">30</text>
+<text x="195" y="153" fill="rgba(255,255,255,.28)" font-size="11" font-family="sans-serif" font-weight="600" text-anchor="middle">35</text>
+<text x="195" y="433" fill="rgba(255,255,255,.28)" font-size="11" font-family="sans-serif" font-weight="600" text-anchor="middle">40</text>
+<text x="195" y="503" fill="rgba(255,255,255,.28)" font-size="11" font-family="sans-serif" font-weight="600" text-anchor="middle">45</text>
+<line x1="120" y1="40" x2="120" y2="660" stroke="rgba(255,255,255,.2)" stroke-width=".75"/>
+<line x1="270" y1="40" x2="270" y2="660" stroke="rgba(255,255,255,.2)" stroke-width=".75"/>
+<line x1="20" y1="360" x2="370" y2="360" stroke="rgba(255,215,0,.8)" stroke-width="2.5" stroke-dasharray="10,6"/>
+<text x="26" y="354" fill="rgba(255,215,0,.9)" font-family="sans-serif" font-size="10" font-weight="700">LOS</text>
+<defs><marker id="arr${uid}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="inherit"/></marker></defs>
+${content}</svg>`;
+  }
+
+  // ── w1: Big Run ─────────────────────────────────────────────
+  if(clipId==='w1'){const u='w1';return field(u,`
+<style>
+@keyframes rbrun{0%{transform:translate(0,0);opacity:1}60%{transform:translate(8px,-160px);opacity:1}80%{transform:translate(8px,-175px);opacity:0}100%{transform:translate(0,0);opacity:1}}
+@keyframes tlblock{0%,20%{transform:translate(0,0)}70%{transform:translate(-20px,4px)}100%{transform:translate(-20px,4px)}}
+@keyframes trblock{0%,20%{transform:translate(0,0)}70%{transform:translate(20px,4px)}100%{transform:translate(20px,4px)}}
+@keyframes dtpush{0%,25%{transform:translate(0,0)}70%{transform:translate(0,18px)rotate(15deg)}100%{transform:translate(0,18px)rotate(15deg)}}
+@keyframes lbslide{0%,30%{transform:translate(0,0)}80%,100%{transform:translate(-12px,50px)}}
+.rbg{animation:rbrun 3.6s cubic-bezier(.4,0,.2,1) infinite}
+.tlg{animation:tlblock 3.6s ease-in-out infinite}
+.trg{animation:trblock 3.6s ease-in-out infinite}
+.dtg{animation:dtpush 3.6s ease-in-out infinite}
+.lbg{animation:lbslide 3.6s ease-in-out infinite}
+</style>
+<path d="M215,425 L222,350 L222,270" stroke="rgba(255,215,0,.45)" stroke-width="2" stroke-dasharray="6,4" fill="none" marker-end="url(#arrw1)"/>
+<g class="tlg"><circle cx="152" cy="372" r="13" class="ow1"/><text x="152" y="372" class="lbl">T</text></g>
+<circle cx="182" cy="370" r="13" class="ow1"/><text x="182" y="370" class="lbl">G</text>
+<circle cx="212" cy="369" r="13" class="ow1"/><text x="212" y="369" class="lbl">C</text>
+<circle cx="242" cy="370" r="13" class="ow1"/><text x="242" y="370" class="lbl">G</text>
+<g class="trg"><circle cx="272" cy="372" r="13" class="ow1"/><text x="272" y="372" class="lbl">T</text></g>
+<circle cx="68"  cy="368" r="12" class="ow1"/><text x="68"  y="368" class="lbl">WR</text>
+<circle cx="340" cy="368" r="12" class="ow1"/><text x="340" y="368" class="lbl">WR</text>
+<circle cx="212" cy="400" r="14" class="qbw1"/><text x="212" y="400" class="lbl">QB</text>
+<g class="rbg"><circle cx="212" cy="432" r="15" fill="#FF3D87" stroke="#FFD700" stroke-width="2.5"/><text x="212" y="432" class="lbl" style="font-size:9px">RB</text></g>
+<g class="dtg"><circle cx="212" cy="328" r="13" class="dw1"/><text x="212" y="328" class="lbl">DT</text></g>
+<circle cx="172" cy="332" r="12" class="dw1"/><text x="172" y="332" class="lbl">DE</text>
+<circle cx="252" cy="332" r="12" class="dw1"/><text x="252" y="332" class="lbl">DE</text>
+<g class="lbg"><circle cx="192" cy="298" r="13" class="dw1"/><text x="192" y="298" class="lbl">LB</text></g>
+<circle cx="232" cy="298" r="13" class="dw1"/><text x="232" y="298" class="lbl">LB</text>
+<circle cx="88"  cy="288" r="12" class="dw1"/><text x="88"  y="288" class="lbl">CB</text>
+<circle cx="318" cy="288" r="12" class="dw1"/><text x="318" y="288" class="lbl">CB</text>
+<circle cx="195" cy="230" r="12" class="dw1"/><text x="195" y="230" class="lbl">S</text>
+`);}
+
+  // ── w2: Blitz Pressure ──────────────────────────────────────
+  if(clipId==='w2'){const u='w2';return field(u,`
+<style>
+@keyframes lb1blitz{0%,15%{transform:translate(0,0)}70%{transform:translate(-10px,90px)}85%,100%{transform:translate(-10px,90px)}}
+@keyframes lb2blitz{0%,15%{transform:translate(0,0)}70%{transform:translate(10px,90px)}85%,100%{transform:translate(10px,90px)}}
+@keyframes safblitz{0%,20%{transform:translate(0,0)}75%{transform:translate(-5px,135px)}88%,100%{transform:translate(-5px,135px)}}
+@keyframes de1rush{0%,10%{transform:translate(0,0)}65%{transform:translate(12px,55px)}85%,100%{transform:translate(12px,55px)}}
+@keyframes de2rush{0%,10%{transform:translate(0,0)}65%{transform:translate(-12px,55px)}85%,100%{transform:translate(-12px,55px)}}
+@keyframes qbpanic{0%,40%{transform:rotate(0)}45%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}55%{transform:rotate(-3deg)}60%,100%{transform:rotate(0)}}
+.lb1b{animation:lb1blitz 4s ease-in-out infinite}
+.lb2b{animation:lb2blitz 4s ease-in-out infinite}
+.safb{animation:safblitz 4s ease-in-out infinite}
+.de1r{animation:de1rush 4s ease-in-out infinite}
+.de2r{animation:de2rush 4s ease-in-out infinite}
+.qbpan{animation:qbpanic 4s ease-in-out infinite;transform-origin:212px 400px}
+</style>
+<path d="M192,300 C185,340 205,360 210,395" stroke="rgba(255,100,100,.5)" stroke-width="2" stroke-dasharray="6,4" fill="none" marker-end="url(#arrw2)"/>
+<path d="M232,300 C239,340 219,360 214,395" stroke="rgba(255,100,100,.5)" stroke-width="2" stroke-dasharray="6,4" fill="none" marker-end="url(#arrw2)"/>
+<path d="M395,245 C380,290 260,340 216,395"  stroke="rgba(255,100,100,.4)" stroke-width="2.5" stroke-dasharray="7,4" fill="none" marker-end="url(#arrw2)"/>
+<path d="M168,332 L195,362" stroke="rgba(255,100,100,.45)" stroke-width="2" stroke-dasharray="5,3" fill="none" marker-end="url(#arrw2)"/>
+<path d="M252,332 L225,362" stroke="rgba(255,100,100,.45)" stroke-width="2" stroke-dasharray="5,3" fill="none" marker-end="url(#arrw2)"/>
+<circle cx="152" cy="370" r="13" class="ow2"/><text x="152" y="370" class="lbl">T</text>
+<circle cx="182" cy="368" r="13" class="ow2"/><text x="182" y="368" class="lbl">G</text>
+<circle cx="212" cy="367" r="13" class="ow2"/><text x="212" y="367" class="lbl">C</text>
+<circle cx="242" cy="368" r="13" class="ow2"/><text x="242" y="368" class="lbl">G</text>
+<circle cx="272" cy="370" r="13" class="ow2"/><text x="272" y="370" class="lbl">T</text>
+<circle cx="68"  cy="365" r="12" class="ow2"/><text x="68"  y="365" class="lbl">WR</text>
+<circle cx="340" cy="365" r="12" class="ow2"/><text x="340" y="365" class="lbl">WR</text>
+<g class="qbpan"><circle cx="212" cy="400" r="15" class="qbw2"/><text x="212" y="400" class="lbl">QB</text></g>
+<circle cx="212" cy="430" r="13" class="ow2"/><text x="212" y="430" class="lbl">RB</text>
+<circle cx="212" cy="328" r="13" class="dw2"/><text x="212" y="328" class="lbl">DT</text>
+<g class="de1r"><circle cx="168" cy="332" r="12" class="dw2"/><text x="168" y="332" class="lbl">DE</text></g>
+<g class="de2r"><circle cx="252" cy="332" r="12" class="dw2"/><text x="252" y="332" class="lbl">DE</text></g>
+<g class="lb1b"><circle cx="192" cy="298" r="14" fill="#c0392b" stroke="#f7c1c1" stroke-width="2"/><text x="192" y="298" class="lbl">LB</text></g>
+<g class="lb2b"><circle cx="232" cy="298" r="14" fill="#c0392b" stroke="#f7c1c1" stroke-width="2"/><text x="232" y="298" class="lbl">LB</text></g>
+<g class="safb"><circle cx="395" cy="245" r="14" fill="#c0392b" stroke="#f7c1c1" stroke-width="2"/><text x="395" y="245" class="lbl">S</text></g>
+<circle cx="88"  cy="285" r="12" class="dw2"/><text x="88"  y="285" class="lbl">CB</text>
+<circle cx="318" cy="285" r="12" class="dw2"/><text x="318" y="285" class="lbl">CB</text>
+<circle cx="195" cy="230" r="12" class="dw2"/><text x="195" y="230" class="lbl">FS</text>
+`);}
+
+  // ── w3: Down & Distance ─────────────────────────────────────
+  if(clipId==='w3'){const u='w3';return field(u,`
+<style>
+@keyframes chainmove{0%{transform:translateX(0)}50%{transform:translateX(55px)}70%,100%{transform:translateX(55px)}}
+@keyframes ballfwd{0%{transform:translate(0,0);opacity:1}50%{transform:translate(55px,0);opacity:1}65%,85%{transform:translate(55px,0);opacity:1}100%{transform:translate(0,0);opacity:1}}
+@keyframes sitatxt{0%,15%{opacity:0;transform:scale(.85)}25%,65%{opacity:1;transform:scale(1)}80%,100%{opacity:0;transform:scale(.85)}}
+@keyframes firstdown{60%,70%{opacity:0}75%,90%{opacity:1}100%{opacity:0}}
+.chain{animation:chainmove 4s ease-in-out infinite}
+.bfwd{animation:ballfwd 4s ease-in-out infinite}
+.satxt{animation:sitatxt 4s ease-in-out infinite;transform-origin:195px 455px}
+.fdtxt{animation:firstdown 4s ease-in-out infinite}
+</style>
+<circle cx="68"  cy="365" r="12" class="ow3"/><text x="68"  y="365" class="lbl">WR</text>
+<circle cx="340" cy="365" r="12" class="ow3"/><text x="340" y="365" class="lbl">WR</text>
+<circle cx="152" cy="370" r="13" class="ow3"/><text x="152" y="370" class="lbl">T</text>
+<circle cx="182" cy="368" r="13" class="ow3"/><text x="182" y="368" class="lbl">G</text>
+<circle cx="212" cy="367" r="13" class="ow3"/><text x="212" y="367" class="lbl">C</text>
+<circle cx="242" cy="368" r="13" class="ow3"/><text x="242" y="368" class="lbl">G</text>
+<circle cx="272" cy="370" r="13" class="ow3"/><text x="272" y="370" class="lbl">T</text>
+<circle cx="212" cy="400" r="14" class="qbw3"/><text x="212" y="400" class="lbl">QB</text>
+<circle cx="212" cy="328" r="12" class="dw3"/><text x="212" y="328" class="lbl">DT</text>
+<circle cx="172" cy="332" r="11" class="dw3"/><text x="172" y="332" class="lbl">DE</text>
+<circle cx="252" cy="332" r="11" class="dw3"/><text x="252" y="332" class="lbl">DE</text>
+<circle cx="192" cy="298" r="12" class="dw3"/><text x="192" y="298" class="lbl">LB</text>
+<circle cx="232" cy="298" r="12" class="dw3"/><text x="232" y="298" class="lbl">LB</text>
+<circle cx="88"  cy="285" r="11" class="dw3"/><text x="88"  y="285" class="lbl">CB</text>
+<circle cx="318" cy="285" r="11" class="dw3"/><text x="318" y="285" class="lbl">CB</text>
+<g class="chain">
+  <line x1="135" y1="295" x2="135" y2="425" stroke="rgba(255,215,0,.8)" stroke-width="2.5"/>
+  <text x="132" y="284" fill="rgba(255,215,0,.9)" font-family="sans-serif" font-size="10" font-weight="700" text-anchor="middle">1st</text>
+</g>
+<g class="bfwd"><ellipse cx="185" cy="398" rx="10" ry="7" fill="#c8790a" stroke="#e8a82a" stroke-width="1.5"/></g>
+<rect x="120" y="436" width="150" height="50" rx="10" fill="rgba(0,0,0,.65)"/>
+<g class="satxt">
+  <text x="195" y="453" fill="#FF3D87" font-family="sans-serif" font-size="13" font-weight="800" text-anchor="middle">3RD &amp; 10</text>
+  <text x="195" y="474" fill="rgba(255,255,255,.7)" font-family="sans-serif" font-size="11" font-weight="600" text-anchor="middle">Need a first down</text>
+</g>
+<g class="fdtxt">
+  <text x="195" y="453" fill="#22C55E" font-family="sans-serif" font-size="13" font-weight="800" text-anchor="middle">1ST &amp; 10!</text>
+  <text x="195" y="474" fill="rgba(255,255,255,.7)" font-family="sans-serif" font-size="11" font-weight="600" text-anchor="middle">First down! Chain resets</text>
+</g>
+`);}
+
+  // ── w4: Interception ────────────────────────────────────────
+  if(clipId==='w4'){const u='w4';return field(u,`
+<style>
+@keyframes wrroute{0%,20%{transform:translate(0,0)}55%{transform:translate(0,-100px)}70%,100%{transform:translate(0,-100px)}}
+@keyframes ballthrow{0%,25%{transform:translate(0,0);opacity:0}30%{opacity:1}60%{transform:translate(-95px,-130px);opacity:1}65%{transform:translate(-95px,-130px);opacity:0}100%{transform:translate(0,0);opacity:0}}
+@keyframes cbcut{0%,30%{transform:translate(0,0)}62%{transform:translate(0,-40px)}75%,100%{transform:translate(0,-40px)}}
+@keyframes cbreturn{0%,70%{transform:translate(0,0);opacity:0}75%{opacity:1}100%{transform:translate(60px,120px);opacity:1}}
+.wrr{animation:wrroute 4.2s ease-in-out infinite}
+.blt{animation:ballthrow 4.2s ease-in-out infinite}
+.cbc{animation:cbcut 4.2s ease-in-out infinite}
+.cbret{animation:cbreturn 4.2s ease-in-out infinite}
+</style>
+<circle cx="68"  cy="365" r="12" class="ow4"/><text x="68"  y="365" class="lbl">WR</text>
+<circle cx="152" cy="370" r="13" class="ow4"/><text x="152" y="370" class="lbl">T</text>
+<circle cx="182" cy="368" r="13" class="ow4"/><text x="182" y="368" class="lbl">G</text>
+<circle cx="212" cy="367" r="13" class="ow4"/><text x="212" y="367" class="lbl">C</text>
+<circle cx="242" cy="368" r="13" class="ow4"/><text x="242" y="368" class="lbl">G</text>
+<circle cx="272" cy="370" r="13" class="ow4"/><text x="272" y="370" class="lbl">T</text>
+<circle cx="212" cy="400" r="14" class="qbw4"/><text x="212" y="400" class="lbl">QB</text>
+<g class="wrr"><circle cx="320" cy="365" r="13" class="ow4"/><text x="320" y="365" class="lbl">WR</text></g>
+<circle cx="212" cy="328" r="12" class="dw4"/><text x="212" y="328" class="lbl">DT</text>
+<circle cx="172" cy="332" r="11" class="dw4"/><text x="172" y="332" class="lbl">DE</text>
+<circle cx="252" cy="332" r="11" class="dw4"/><text x="252" y="332" class="lbl">DE</text>
+<circle cx="192" cy="298" r="12" class="dw4"/><text x="192" y="298" class="lbl">LB</text>
+<circle cx="232" cy="298" r="12" class="dw4"/><text x="232" y="298" class="lbl">LB</text>
+<circle cx="88"  cy="285" r="11" class="dw4"/><text x="88"  y="285" class="lbl">CB</text>
+<g class="cbc"><circle cx="310" cy="300" r="13" fill="#c0392b" stroke="#f7c1c1" stroke-width="2"/><text x="310" y="300" class="lbl">CB</text></g>
+<circle cx="195" cy="232" r="12" class="dw4"/><text x="195" y="232" class="lbl">FS</text>
+<g class="blt"><ellipse cx="215" cy="395" rx="8" ry="6" fill="#c8790a" stroke="#FFD700" stroke-width="1.5"/></g>
+<g class="cbret"><circle cx="310" cy="260" r="14" fill="#c0392b" stroke="#FFD700" stroke-width="2.5"/><text x="310" y="260" class="lbl">INT!</text></g>
+<path d="M215,395 Q280,310 318,263" stroke="rgba(255,215,0,.4)" stroke-width="1.5" stroke-dasharray="5,4" fill="none"/>
+`);}
+
+  // ── w5: Fumble Recovery ─────────────────────────────────────
+  if(clipId==='w5'){const u='w5';return field(u,`
+<style>
+@keyframes rbhit{0%,20%{transform:translate(0,0)}45%{transform:translate(-8px,-30px)rotate(-20deg)}55%,100%{transform:translate(-12px,-30px)rotate(-25deg);opacity:.4}}
+@keyframes ballbounce{0%,35%{transform:translate(0,0);opacity:0}40%{opacity:1}50%{transform:translate(20px,-25px);opacity:1}65%{transform:translate(30px,5px);opacity:1}80%{transform:translate(22px,8px);opacity:1}100%{transform:translate(22px,8px);opacity:1}}
+@keyframes def1dive{0%,40%{transform:translate(0,0)}80%,100%{transform:translate(22px,55px)}}
+@keyframes off1dive{0%,40%{transform:translate(0,0)}80%,100%{transform:translate(25px,50px)}}
+@keyframes def2dive{0%,40%{transform:translate(0,0)}80%,100%{transform:translate(-5px,60px)}}
+.rbhit{animation:rbhit 4s ease-in-out infinite}
+.ballb{animation:ballbounce 4s ease-in-out infinite}
+.d1dv{animation:def1dive 4s ease-in-out infinite}
+.o1dv{animation:off1dive 4s ease-in-out infinite}
+.d2dv{animation:def2dive 4s ease-in-out infinite}
+</style>
+<circle cx="68"  cy="365" r="12" class="ow5"/><text x="68"  y="365" class="lbl">WR</text>
+<circle cx="340" cy="365" r="12" class="ow5"/><text x="340" y="365" class="lbl">WR</text>
+<circle cx="152" cy="370" r="13" class="ow5"/><text x="152" y="370" class="lbl">T</text>
+<circle cx="182" cy="368" r="13" class="ow5"/><text x="182" y="368" class="lbl">G</text>
+<circle cx="212" cy="367" r="13" class="ow5"/><text x="212" y="367" class="lbl">C</text>
+<circle cx="242" cy="368" r="13" class="ow5"/><text x="242" y="368" class="lbl">G</text>
+<circle cx="272" cy="370" r="13" class="ow5"/><text x="272" y="370" class="lbl">T</text>
+<circle cx="212" cy="400" r="14" class="qbw5"/><text x="212" y="400" class="lbl">QB</text>
+<g class="rbhit"><circle cx="212" cy="345" r="13" fill="#FF3D87" stroke="#FFD700" stroke-width="2"/><text x="212" y="345" class="lbl">RB</text></g>
+<g class="ballb"><ellipse cx="212" cy="343" rx="9" ry="7" fill="#c8790a" stroke="#FFD700" stroke-width="2"/></g>
+<circle cx="212" cy="326" r="13" class="dw5"/><text x="212" y="326" class="lbl">DT</text>
+<circle cx="172" cy="330" r="12" class="dw5"/><text x="172" y="330" class="lbl">DE</text>
+<circle cx="252" cy="330" r="12" class="dw5"/><text x="252" y="330" class="lbl">DE</text>
+<g class="d1dv"><circle cx="192" cy="295" r="13" class="dw5"/><text x="192" y="295" class="lbl">LB</text></g>
+<g class="d2dv"><circle cx="232" cy="295" r="13" class="dw5"/><text x="232" y="295" class="lbl">LB</text></g>
+<g class="o1dv"><circle cx="182" cy="366" r="13" class="ow5"/><text x="182" y="366" class="lbl">G</text></g>
+<circle cx="88"  cy="285" r="11" class="dw5"/><text x="88"  y="285" class="lbl">CB</text>
+<circle cx="318" cy="285" r="11" class="dw5"/><text x="318" y="285" class="lbl">CB</text>
+`);}
+
+  // ── w6: Two-Minute Drill ────────────────────────────────────
+  if(clipId==='w6'){const u='w6';return field(u,`
+<style>
+@keyframes wr1go{0%{transform:translate(0,0)}60%{transform:translate(0,-170px)}80%,100%{transform:translate(20px,-170px)}}
+@keyframes wr2go{0%{transform:translate(0,0)}45%{transform:translate(-15px,-130px)}65%,100%{transform:translate(-15px,-130px)}}
+@keyframes wr3go{0%{transform:translate(0,0)}55%{transform:translate(0,-90px)}70%,100%{transform:translate(30px,-90px)}}
+@keyframes qbhurry{0%,30%{transform:rotate(0)}35%{transform:rotate(6deg)}40%{transform:rotate(-6deg)}45%{transform:rotate(4deg)}50%,100%{transform:rotate(0)}}
+@keyframes clocktick{0%,10%{opacity:0}15%,85%{opacity:1}90%,100%{opacity:0}}
+.w1g{animation:wr1go 3.8s ease-in-out infinite}
+.w2g{animation:wr2go 3.8s .3s ease-in-out infinite}
+.w3g{animation:wr3go 3.8s .15s ease-in-out infinite}
+.qbh{animation:qbhurry 3.8s ease-in-out infinite;transform-origin:212px 388px}
+.clk{animation:clocktick 3.8s ease-in-out infinite}
+</style>
+<path d="M68,360 L68,230 L95,230"  stroke="rgba(255,61,135,.45)" stroke-width="1.5" stroke-dasharray="5,4" fill="none" marker-end="url(#arrw6)"/>
+<path d="M340,360 L340,260 L310,260" stroke="rgba(255,61,135,.45)" stroke-width="1.5" stroke-dasharray="5,4" fill="none" marker-end="url(#arrw6)"/>
+<path d="M302,360 L302,290 L320,290" stroke="rgba(255,61,135,.35)" stroke-width="1.5" stroke-dasharray="5,4" fill="none" marker-end="url(#arrw6)"/>
+<circle cx="152" cy="370" r="13" class="ow6"/><text x="152" y="370" class="lbl">T</text>
+<circle cx="182" cy="368" r="13" class="ow6"/><text x="182" y="368" class="lbl">G</text>
+<circle cx="212" cy="367" r="13" class="ow6"/><text x="212" y="367" class="lbl">C</text>
+<circle cx="242" cy="368" r="13" class="ow6"/><text x="242" y="368" class="lbl">G</text>
+<circle cx="272" cy="370" r="13" class="ow6"/><text x="272" y="370" class="lbl">T</text>
+<g class="qbh"><circle cx="212" cy="388" r="15" class="qbw6"/><text x="212" y="388" class="lbl">QB</text></g>
+<circle cx="212" cy="418" r="12" class="ow6"/><text x="212" y="418" class="lbl">RB</text>
+<g class="w1g"><circle cx="68"  cy="362" r="13" class="ow6"/><text x="68"  y="362" class="lbl">WR</text></g>
+<g class="w2g"><circle cx="340" cy="362" r="13" class="ow6"/><text x="340" y="362" class="lbl">WR</text></g>
+<g class="w3g"><circle cx="302" cy="362" r="12" class="ow6"/><text x="302" y="362" class="lbl">TE</text></g>
+<circle cx="212" cy="328" r="12" class="dw6"/><text x="212" y="328" class="lbl">DT</text>
+<circle cx="172" cy="332" r="11" class="dw6"/><text x="172" y="332" class="lbl">DE</text>
+<circle cx="252" cy="332" r="11" class="dw6"/><text x="252" y="332" class="lbl">DE</text>
+<circle cx="192" cy="298" r="12" class="dw6"/><text x="192" y="298" class="lbl">LB</text>
+<circle cx="232" cy="298" r="12" class="dw6"/><text x="232" y="298" class="lbl">LB</text>
+<circle cx="88"  cy="285" r="11" class="dw6"/><text x="88"  y="285" class="lbl">CB</text>
+<circle cx="318" cy="285" r="11" class="dw6"/><text x="318" y="285" class="lbl">CB</text>
+<g class="clk">
+  <rect x="140" y="460" width="110" height="36" rx="8" fill="rgba(0,0,0,.7)"/>
+  <text x="195" y="474" fill="#FF3D87" font-family="sans-serif" font-size="11" font-weight="800" text-anchor="middle">NO HUDDLE</text>
+  <text x="195" y="488" fill="rgba(255,255,255,.7)" font-family="sans-serif" font-size="10" font-weight="600" text-anchor="middle">⏱ :47 left</text>
+</g>
+`);}
+
+  // ── w7: Penalty Flag ────────────────────────────────────────
+  if(clipId==='w7'){const u='w7';return field(u,`
+<style>
+@keyframes flagfly{0%,15%{transform:translate(0,0)rotate(0);opacity:0}20%{opacity:1}55%{transform:translate(-195px,170px)rotate(380deg);opacity:1}65%,80%{transform:translate(-195px,170px)rotate(380deg);opacity:1}90%,100%{transform:translate(-195px,170px)rotate(380deg);opacity:0}}
+@keyframes penfade{0%,60%{opacity:0;transform:scale(.7)}68%,82%{opacity:1;transform:scale(1)}92%,100%{opacity:0;transform:scale(.7)}}
+.flagg{animation:flagfly 4.5s ease-in-out infinite;transform-origin:375px 230px}
+.pent{animation:penfade 4.5s ease-in-out infinite;transform-origin:195px 470px}
+</style>
+<circle cx="68"  cy="365" r="12" class="ow7"/><text x="68"  y="365" class="lbl">WR</text>
+<circle cx="340" cy="365" r="12" class="ow7"/><text x="340" y="365" class="lbl">WR</text>
+<circle cx="152" cy="370" r="13" class="ow7"/><text x="152" y="370" class="lbl">T</text>
+<circle cx="182" cy="368" r="13" class="ow7"/><text x="182" y="368" class="lbl">G</text>
+<circle cx="212" cy="367" r="13" class="ow7"/><text x="212" y="367" class="lbl">C</text>
+<circle cx="242" cy="368" r="13" class="ow7"/><text x="242" y="368" class="lbl">G</text>
+<circle cx="272" cy="370" r="13" class="ow7"/><text x="272" y="370" class="lbl">T</text>
+<circle cx="212" cy="400" r="14" class="qbw7"/><text x="212" y="400" class="lbl">QB</text>
+<circle cx="212" cy="430" r="12" class="ow7"/><text x="212" y="430" class="lbl">RB</text>
+<circle cx="212" cy="328" r="12" class="dw7"/><text x="212" y="328" class="lbl">DT</text>
+<circle cx="172" cy="332" r="12" class="dw7"/><text x="172" y="332" class="lbl">DE</text>
+<circle cx="252" cy="332" r="12" class="dw7"/><text x="252" y="332" class="lbl">DE</text>
+<circle cx="192" cy="298" r="12" class="dw7"/><text x="192" y="298" class="lbl">LB</text>
+<circle cx="232" cy="298" r="12" class="dw7"/><text x="232" y="298" class="lbl">LB</text>
+<circle cx="88"  cy="285" r="11" class="dw7"/><text x="88"  y="285" class="lbl">CB</text>
+<circle cx="318" cy="285" r="11" class="dw7"/><text x="318" y="285" class="lbl">CB</text>
+<circle cx="195" cy="232" r="12" class="dw7"/><text x="195" y="232" class="lbl">S</text>
+<g class="flagg">
+  <line x1="375" y1="220" x2="375" y2="245" stroke="#888" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="375,220 395,228 375,236" fill="#FFD700" stroke="#e0b800" stroke-width="1"/>
+</g>
+<g class="pent">
+  <rect x="120" y="458" width="150" height="42" rx="10" fill="rgba(255,215,0,.15)" stroke="rgba(255,215,0,.4)" stroke-width="1.5"/>
+  <text x="195" y="474" fill="#FFD700" font-family="sans-serif" font-size="13" font-weight="800" text-anchor="middle">⚑ PENALTY</text>
+  <text x="195" y="491" fill="rgba(255,255,255,.7)" font-family="sans-serif" font-size="10" text-anchor="middle">Holding · 10 yards</text>
+</g>
+`);}
+
+  // Fallback
+  return field(clipId,`<text x="195" y="370" fill="rgba(255,255,255,.5)" font-family="sans-serif" font-size="16" text-anchor="middle">${clipId}</text>`);
+}
+
 // ─── WATCH / TIKTOK FEED ───────────────────────────────────────
 function buildWatchFeed(){
   const feed=document.getElementById('watch-feed');
@@ -2336,19 +2636,9 @@ function buildWatchFeed(){
     slide.className='clip-slide';
     slide.id='clip-'+i;
 
-    // Particle positions
-    const particles=Array.from({length:8},(_,j)=>`
-      <div class="particle" style="
-        width:${60+j*40}px;height:${60+j*40}px;
-        left:${(j*13)%100}%;top:${(j*17+20)%90}%;
-        animation-delay:${j*0.7}s;animation-duration:${5+j*0.8}s;
-      "></div>`).join('');
-
     slide.innerHTML=`
-      <div class="clip-bg ${clip.gradient}">
-        <div class="field-art"></div>
-        ${particles}
-        <div class="play-indicator">${clip.emoji}</div>
+      <div class="clip-bg" style="background:#071507;">
+        ${getPlaySVG(clip.id)}
       </div>
       <div class="clip-gradient"></div>
 
