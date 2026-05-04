@@ -499,6 +499,10 @@ img{max-width:100%;display:block;}
 .clip-bg-1{background:linear-gradient(160deg,#1a0a14 0%,#0A0A0A 40%,#1a0514 100%);}
 .clip-bg-2{background:linear-gradient(160deg,#0a0a1a 0%,#0A0A0A 40%,#0a1a14 100%);}
 .clip-bg-3{background:linear-gradient(160deg,#1a0a0a 0%,#0A0A0A 40%,#0a0a1a 100%);}
+.clip-bg-4{background:linear-gradient(160deg,#0a1a0a 0%,#0A0A0A 40%,#1a1a00 100%);}
+.clip-bg-5{background:linear-gradient(160deg,#1a0505 0%,#0A0A0A 40%,#05051a 100%);}
+.clip-bg-6{background:linear-gradient(160deg,#001a1a 0%,#0A0A0A 40%,#1a0010 100%);}
+.clip-bg-7{background:linear-gradient(160deg,#1a1000 0%,#0A0A0A 40%,#001a10 100%);}
 
 /* Animated particles on clip bg */
 .particle{
@@ -803,6 +807,7 @@ img{max-width:100%;display:block;}
 .badge-name{font-size:11px;font-weight:600;text-align:center;color:var(--text-tertiary);line-height:1.3;}
 .badge-card.unlocked .badge-name{color:var(--rose);}
 .badge-locked-icon{font-size:14px;color:var(--text-tertiary);}
+.badge-desc-small{font-size:9px;font-weight:500;text-align:center;color:var(--rose);line-height:1.3;opacity:0.85;}
 
 /* Badge unlock animation */
 @keyframes badge-unlock{
@@ -820,6 +825,69 @@ img{max-width:100%;display:block;}
   display:none;
 }
 #confetti-canvas.active{display:block;}
+
+/* ─── ME / PROFILE TAB ──────────────────────────────────────── */
+.me-hero{display:flex;align-items:center;gap:14px;padding:4px 0 8px;}
+.me-avatar{
+  width:64px;height:64px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--spark),var(--rose));
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:700;color:#fff;
+}
+.me-hero-info{flex:1;min-width:0;}
+.me-name{font-size:20px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.me-email{font-size:12px;color:var(--text-tertiary);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.me-level-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(255,61,135,0.12);border:0.5px solid rgba(255,61,135,0.25);
+  border-radius:var(--r-full);padding:4px 10px;margin-top:6px;
+  font-size:12px;font-weight:600;color:var(--rose);
+}
+.me-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.me-stat{
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-xl);padding:12px 8px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.me-stat-val{font-size:20px;font-weight:700;color:#fff;}
+.me-stat-label{font-size:10px;font-weight:600;color:var(--text-tertiary);text-align:center;}
+
+/* Streak calendar */
+.streak-calendar{display:flex;justify-content:space-between;gap:6px;}
+.streak-day{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;}
+.streak-dot{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  transition:background 0.3s;
+}
+.streak-dot.active{background:var(--spark);border-color:var(--spark);box-shadow:0 0 8px rgba(255,61,135,0.5);}
+.streak-day-label{font-size:10px;font-weight:600;color:var(--text-tertiary);}
+
+/* Score history */
+.score-history-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:0.5px solid var(--card-border);
+}
+.score-history-row:last-child{border-bottom:none;}
+
+/* Me tab achievements */
+.me-achievements{display:flex;flex-direction:column;gap:10px;}
+.me-badge{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;
+  background:var(--card-fill);border:0.5px solid var(--card-border);
+  border-radius:var(--r-lg);
+}
+.me-badge.unlocked{
+  background:rgba(255,61,135,0.08);
+  border-color:rgba(255,61,135,0.25);
+}
+.me-badge-icon{font-size:24px;flex-shrink:0;filter:grayscale(1) opacity(0.3);}
+.me-badge.unlocked .me-badge-icon{filter:none;}
+.me-badge-name{font-size:14px;font-weight:600;color:var(--text-secondary);flex:1;}
+.me-badge.unlocked .me-badge-name{color:#fff;}
+.me-badge-desc{font-size:11px;color:var(--text-tertiary);text-align:right;max-width:120px;line-height:1.3;}
+.me-badge.unlocked .me-badge-desc{color:var(--rose);}
 
 /* Quiz combo indicator */
 .combo-banner{
@@ -1307,17 +1375,7 @@ img{max-width:100%;display:block;}
       <!-- Term of the Day -->
       <div class="gap-10">
         <div class="section-label">Term of the Day</div>
-        <div class="term-card" onclick="openTermById('blitz')">
-          <div class="term-card-header">
-            <div class="overline">Term of the Day</div>
-            <span style="font-size:14px;color:var(--text-tertiary);">↗</span>
-          </div>
-          <div class="term-title">Blitz</div>
-          <div class="term-def">When the defense rushes extra players to pressure the QB.</div>
-          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
-            <span class="tag">defense</span><span class="tag">basics</span>
-          </div>
-        </div>
+        <div id="term-of-day-card"></div>
       </div>
 
       <!-- Achievements -->
@@ -1385,8 +1443,13 @@ img{max-width:100%;display:block;}
   <!-- ── WATCH (TikTok) ────────────────────────────────────── -->
   <div class="page" id="page-watch">
     <div class="watch-header">
-      <div class="watch-header-title">Watch & Learn</div>
-      <div class="watch-header-sub">Swipe up for next clip</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button onclick="switchTab('home')" style="background:rgba(255,255,255,0.12);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:16px;flex-shrink:0;">‹</button>
+        <div>
+          <div class="watch-header-title">Watch & Learn</div>
+          <div class="watch-header-sub">Swipe up for next clip</div>
+        </div>
+      </div>
     </div>
     <!-- Counter dots -->
     <div class="clip-counter" id="clip-counter"></div>
@@ -1445,6 +1508,17 @@ img{max-width:100%;display:block;}
     </div>
   </div>
 
+  <!-- ── ME / PROFILE ──────────────────────────────────────── -->
+  <div class="page" id="page-me">
+    <div class="scroll-content gap-16">
+      <div class="hub-header">
+        <div class="hub-title">My Profile</div>
+        <div class="hub-sub">Your football journey so far.</div>
+      </div>
+      <div id="me-tab-content"></div>
+    </div>
+  </div>
+
 </div><!-- end #app -->
 
 <!-- ═══════════════════════════════════════════════════════════ -->
@@ -1466,6 +1540,10 @@ img{max-width:100%;display:block;}
   <button class="tab-btn" data-tab="iq" onclick="switchTab('iq')">
     <span class="tab-icon">⚡</span>
     <span class="tab-label">IQ</span>
+  </button>
+  <button class="tab-btn" data-tab="me" onclick="switchTab('me')">
+    <span class="tab-icon">👤</span>
+    <span class="tab-label">Me</span>
   </button>
 </nav>
 
@@ -1689,6 +1767,23 @@ const TERMS = [
   {id:'blitz',title:'Blitz',short:'When the defense rushes extra players to pressure the QB.',full:'A blitz is a defensive strategy where additional players (often linebackers or defensive backs) rush the quarterback instead of dropping into coverage. Blitzing can create quick pressure, but it may leave fewer defenders covering receivers.',example:'They send 6 rushers — that\'s a blitz to force a fast throw.',tags:['defense','basics']},
   {id:'snap',title:'Snap',short:'The play begins when the ball is hiked.',full:'The snap is when the center passes the ball between their legs to the quarterback (or a holder/punter) to officially begin a play. Every play starts with a snap.',example:'The QB calls hike — that\'s the snap.',tags:['basics','rules']},
   {id:'line-of-scrimmage',title:'Line of Scrimmage',short:'The invisible line where a play starts.',full:'The line of scrimmage is the imaginary line across the field where the ball is placed at the start of each play. Neither team can cross it until the ball is snapped.',example:'Both teams line up on either side of the line of scrimmage.',tags:['basics','rules']},
+  {id:'fumble',title:'Fumble',short:'When a ball carrier drops the ball.',full:'A fumble happens when a player who has possession of the ball loses control of it before the play is dead. Either team can recover a fumble — and whoever picks it up gets possession.',example:'The running back gets hit and drops the ball — it\'s a fumble! The defense recovers.',tags:['basics','rules']},
+  {id:'interception',title:'Interception',short:'When a defender catches a pass meant for offense.',full:'An interception (or "pick") happens when a defensive player catches a forward pass thrown by the quarterback. The defense then takes possession of the ball.',example:'The QB throws across the middle — a linebacker steps in front and picks it off.',tags:['defense','basics']},
+  {id:'punt',title:'Punt',short:'Kicking the ball away on 4th down.',full:'A punt is when the offense chooses to kick the ball away on 4th down rather than try to gain the yards needed. It\'s a strategic choice to give the opponent bad field position.',example:'It\'s 4th and 15 at their own 30 — they\'re going to punt.',tags:['special-teams','basics']},
+  {id:'sack',title:'Sack',short:'Tackling the QB behind the line of scrimmage.',full:'A sack occurs when the quarterback is tackled behind the line of scrimmage before throwing a pass. It results in a loss of yards for the offense and is a major defensive win.',example:'The left tackle missed his block and the QB gets sacked for a 7-yard loss.',tags:['defense','basics']},
+  {id:'red-zone',title:'Red Zone',short:'The area inside the opponent\'s 20-yard line.',full:'The red zone is the area of the field between the opponent\'s 20-yard line and the end zone. Scoring becomes harder here because the defense has less space to cover. Teams\' red zone efficiency is a key stat.',example:'They\'re in the red zone at the 14 — this could be 7 points.',tags:['basics','offense']},
+  {id:'two-point-conversion',title:'Two-Point Conversion',short:'A riskier but higher-value play after a TD.',full:'After a touchdown, instead of kicking for 1 extra point, a team can attempt a two-point conversion — running or passing from the 2-yard line into the end zone. Success gives 2 points instead of 1.',example:'Down by 8 with a TD, they go for 2 to tie the game.',tags:['scoring','offense']},
+  {id:'safety',title:'Safety',short:'2 points for the defense — rare but huge.',full:'A safety is scored when the defense tackles the ball carrier in their own end zone. It gives the defense 2 points AND possession of the ball via a free kick.',example:'The QB gets sacked in his own end zone — that\'s a safety, 2 points for the defense.',tags:['defense','scoring']},
+  {id:'holding',title:'Holding',short:'Illegally grabbing an opponent.',full:'Holding is one of the most common penalties in football. It\'s called when a player (usually an offensive lineman) grabs or wraps their arms around a defender who doesn\'t have the ball.',example:'Big gain on the run — but wait, there\'s a flag. Holding on the offense, 10-yard penalty.',tags:['penalty','rules']},
+  {id:'pass-interference',title:'Pass Interference',short:'Illegal contact that prevents a receiver from catching.',full:'Pass interference (PI) is called when a defender makes illegal contact with a receiver while the ball is in the air, preventing a fair catch. Offensive PI can also be called on receivers who push off defenders.',example:'The corner grabs the receiver\'s arm before the ball arrives — pass interference.',tags:['penalty','rules']},
+  {id:'quarterback',title:'Quarterback (QB)',short:'The player who leads and directs the offense.',full:'The quarterback is the most important position in football. They take the snap from center, then either hand the ball off to a runner, throw a pass, or scramble themselves. They call plays and read the defense.',example:'Mahomes drops back, looks left, finds the tight end — 15-yard gain.',tags:['offense','positions']},
+  {id:'wide-receiver',title:'Wide Receiver (WR)',short:'A pass-catching specialist on the outside.',full:'Wide receivers line up on the edges of the offense and run pass routes to get open. Their job is to catch the quarterback\'s throws and gain yards after the catch.',example:'The WR runs a post route, beats the corner, and catches the deep ball.',tags:['offense','positions']},
+  {id:'running-back',title:'Running Back (RB)',short:'The player who carries the ball on runs.',full:'The running back lines up behind the quarterback and either carries the ball on handoffs or catches short passes. Speed, vision, and the ability to break tackles are key skills.',example:'The RB takes the handoff, cuts to the left, and bursts through for 12 yards.',tags:['offense','positions']},
+  {id:'overtime',title:'Overtime',short:'Extra time when the game is tied after regulation.',full:'If an NFL game is tied after 4 quarters, it goes to overtime. In the playoffs, both teams are guaranteed at least one possession unless the first team scores a touchdown.',example:'It\'s 17-17 at the end of the 4th — we\'re going to overtime.',tags:['rules','basics']},
+  {id:'red-flag',title:'Coach\'s Challenge (Red Flag)',short:'When a coach challenges an official\'s call.',full:'Coaches get 2 challenges per game (3 if both succeed). They throw a red flag onto the field to request a video review of a call. If the call is overturned, they keep the challenge. If not, they lose a timeout.',example:'The coach throws the red flag — he thinks the receiver was out of bounds.',tags:['rules','basics']},
+  {id:'two-minute-warning',title:'Two-Minute Warning',short:'An automatic timeout with 2 min left in each half.',full:'The two-minute warning is an automatic stoppage of play when the clock hits 2:00 in the 2nd and 4th quarters. It acts like a timeout and is when games often get most exciting.',example:'Two-minute warning — the trailing team has the ball and is driving.',tags:['rules','basics']},
+  {id:'fourth-and-goal',title:'Fourth and Goal',short:'4th down with the end zone as the only target.',full:'Fourth and goal happens when the offense is close enough that they can\'t get a first down before the end zone — the goal line IS the line to gain. Teams must decide to go for it, kick a field goal, or (very rarely) punt.',example:'4th and goal from the 2 — do they go for the touchdown or kick the field goal?'},
+  {id:'tight-end',title:'Tight End (TE)',short:'A versatile player who blocks and catches passes.',full:'Tight ends are hybrid players — they line up next to the offensive line and can either block like a lineman or run pass routes like a receiver. The best TEs do both.',example:'The TE releases from the line into the flat and catches a 9-yard pass.',tags:['offense','positions']},
 ];
 
 const LESSONS = [
@@ -1696,6 +1791,12 @@ const LESSONS = [
   {id:'basics-02',title:'Scoring 101',subtitle:'Touchdowns, field goals, and extra points',minutes:3,category:'Basics',sections:[{heading:'Touchdown',body:'Worth 6 points. Score by entering the end zone with possession.'},{heading:'Extra point / Two-point',body:'After a touchdown, teams can kick for 1 point or run/pass from close range for 2.'},{heading:'Field goal',body:'Worth 3 points. Typically attempted on 4th down within range.'}],related:['touchdown','field-goal']},
   {id:'basics-03',title:'Common Penalties',subtitle:'The flags you\'ll see most often',minutes:3,category:'Basics',sections:[{heading:'Why penalties happen',body:'Rules keep the game fair and safe. Penalties usually cost yards.'},{heading:'Offsides',body:'A player crosses the line too early before the snap.'},{heading:'Holding (common)',body:'Blocking illegally by grabbing a defender. You\'ll hear this a lot.'}],related:['offsides']},
   {id:'basics-04',title:'Down & Distance',subtitle:'How down + yards-to-go shape what teams call',minutes:4,category:'Basics',sections:[{heading:'What it means',body:'Down & distance tells you the situation: the current down (1st/2nd/3rd/4th) and how many yards are needed for a first down.'},{heading:'Why it matters',body:'Teams choose plays based on distance. 3rd-and-short might be a run; 3rd-and-long often calls for a pass.'},{heading:'Quick examples',body:'2nd & 2: many options. 3rd & 10: likely pass. 4th & 1: punt, field goal, or go for it depending on field position.'}],related:['down','first-down']},
+  {id:'basics-05',title:'Offensive Positions',subtitle:'Who does what on the offense',minutes:5,category:'Basics',sections:[{heading:'Quarterback (QB)',body:'The QB is the leader of the offense. They receive the snap, then hand off, run, or pass the ball. Every play runs through the QB.'},{heading:'Running Back (RB) & Wide Receiver (WR)',body:'The running back lines up behind the QB and carries the ball on run plays or catches short passes. Wide receivers line up on the edges and run routes to catch deep and intermediate passes.'},{heading:'Offensive Line (OL)',body:'Five linemen — center, two guards, two tackles — block for the QB and open running lanes. They don\'t touch the ball but are the most important unit on offense.'},{heading:'Tight End (TE)',body:'A hybrid player who can block like a lineman or run routes like a receiver. The best TEs make the defense guess every play.'}],related:['quarterback','wide-receiver','running-back','tight-end']},
+  {id:'basics-06',title:'Defensive Positions',subtitle:'The players trying to stop the offense',minutes:5,category:'Basics',sections:[{heading:'Defensive Line (DL)',body:'The front defenders — defensive ends and defensive tackle(s) — who line up across from the offensive line. Their job is to stop runs and rush the QB.'},{heading:'Linebackers (LB)',body:'The middle layer of the defense. They stop runs, rush the QB on blitzes, and drop into pass coverage. They need to be strong and fast.'},{heading:'Cornerbacks (CB)',body:'Line up across from wide receivers and try to prevent completions. They\'re the DBs (defensive backs) who shadow the fastest players on the field.'},{heading:'Safeties (S)',body:'Two safeties play deeper in the secondary as the last line of defense. The free safety covers open space; the strong safety plays closer to the line.'}],related:['blitz','line-of-scrimmage']},
+  {id:'basics-07',title:'Common Formations',subtitle:'The shapes teams line up in before the snap',minutes:4,category:'Basics',sections:[{heading:'Why formations matter',body:'Formations tell you what a team is trying to do before the snap. Defenses read formations to predict run or pass. Offenses use formations to create mismatches.'},{heading:'Shotgun & Under Center',body:'In the shotgun, the QB stands a few yards behind the center — great for passing. Under center the QB takes a direct handoff snap — better for run-heavy play.'},{heading:'4-3 and 3-4 Defense',body:'The 4-3 has 4 linemen and 3 linebackers — more pass rush. The 3-4 has 3 linemen and 4 linebackers — more flexible, can confuse with different blitz packages.'},{heading:'Reading the field',body:'Watch where the tight end and extra backs line up. A TE on the line usually signals run; a TE split wide signals pass. These pre-snap reads are key for fans who want to predict plays.'}],related:['blitz','down']},
+  {id:'basics-08',title:'Special Teams',subtitle:'The third phase of the game most fans overlook',minutes:4,category:'Basics',sections:[{heading:'What is special teams?',body:'Special teams is the group of players who take the field for kicking plays — kickoffs, punts, field goals, and extra points. It\'s the third phase alongside offense and defense.'},{heading:'The Punt',body:'On 4th down with too much to gain, teams often punt — kick the ball downfield to pin the other team deep in their territory. The coverage team sprints down to tackle the returner.'},{heading:'Kickoff & Returns',body:'Every half and after every score, the kicking team boots it to the returner. A great return can flip field position in seconds — one of the most explosive plays in football.'},{heading:'Field Goal Unit',body:'Three points. The long snapper hikes to the holder who places the ball for the kicker. The whole operation takes about 1.3 seconds. The offensive line must hold their blocks or the kick gets blocked.'}],related:['field-goal','down','punt']},
+  {id:'basics-09',title:'How a Game Flows',subtitle:'Quarters, the clock, and key moments',minutes:4,category:'Basics',sections:[{heading:'Four quarters',body:'A game is 60 minutes split into four 15-minute quarters. After the 2nd quarter is halftime — about 12 minutes for regular season. The clock stops after incomplete passes, out-of-bounds, and penalties, so real time is much longer.'},{heading:'The Two-Minute Warning',body:'At 2:00 left in each half, the clock automatically stops — a built-in timeout. It\'s a huge moment; teams often save timeouts to set up a two-minute drill when trailing.'},{heading:'Overtime',body:'In the NFL, OT is 10 minutes of sudden death (mostly). The team that scores first wins. But if the first team scores a field goal on the first possession, the other team gets a chance to tie or win. If tied after OT, it\'s a draw in regular season.'},{heading:'Clock management',body:'Trailing teams hurry up and spike the ball to stop the clock. Leading teams run the ball to burn time. Clock management in the final two minutes separates great coaches from average ones.'}],related:['down','field-goal','two-minute-warning']},
+  {id:'basics-10',title:'The Red Zone',subtitle:'Why inside the 20 is completely different football',minutes:4,category:'Basics',sections:[{heading:'What is the red zone?',body:'The red zone is the area between the opponent\'s 20-yard line and the end zone. Offenses enter red zone territory and need to punch it in for a touchdown — settling for a field goal is considered a failure.'},{heading:'Why it shrinks the field',body:'With less field to work with, there\'s no space for receivers to create separation. Routes are shorter, the defense can crowd the line, and every inch matters. It\'s a chess match.'},{heading:'Key red zone plays',body:'Quick slants, fades to the corner, and tight end crossing routes become money plays because they work in tight windows. Goal-line runs with extra blockers are common on 1st-and-goal.'},{heading:'Red zone efficiency',body:'Teams that score touchdowns instead of field goals on most red zone trips win more games. Watch this stat — it separates elite offenses from average ones.'}],related:['touchdown','field-goal','red-zone']},
 ];
 
 const CLIPS = [
@@ -1711,6 +1812,22 @@ const CLIPS = [
    explanation:'Down and distance shapes every play call. 3rd and long (like 3rd & 10) almost always means a pass — you need yards fast. 3rd and short (like 3rd & 1) keeps both options open. 4th down is when teams decide whether to punt, try a field goal, or go for it.',
    related:['down','first-down'],
    gradient:'clip-bg-3',emoji:'📋'},
+  {id:'w4',title:'The Interception',subtitle:'How the defense flipped the game',duration:'0:20',tags:['defense','turnover'],
+   explanation:'An interception happens when a defender catches a pass meant for the offense — instantly switching possession. Great DBs read the QB\'s eyes before the ball is thrown, break on the route, and attack the catch point. One interception can completely change game momentum and field position.',
+   related:['blitz','line-of-scrimmage'],
+   gradient:'clip-bg-4',emoji:'🎯'},
+  {id:'w5',title:'Fumble Recovery',subtitle:'Chaos in the trenches — who got it?',duration:'0:20',tags:['turnover','defense'],
+   explanation:'A fumble occurs when a ball carrier loses possession before being down. Once the ball hits the ground, it\'s live — any player can recover it for their team. Watch the pile: both teams dive on the ball, and refs peel players back to find who secured it first. These wild plays happen in an instant.',
+   related:['down','line-of-scrimmage'],
+   gradient:'clip-bg-5',emoji:'💥'},
+  {id:'w6',title:'Two-Minute Drill',subtitle:'Hurry-up offense under pressure',duration:'0:20',tags:['offense','clock'],
+   explanation:'When time is running out, the offense switches to hurry-up mode — no huddle, quick snaps, and spiking the ball to stop the clock. The QB becomes a real-time tactician, adjusting routes at the line. This is the most exciting phase of any game and where legends are made.',
+   related:['two-minute-warning','first-down'],
+   gradient:'clip-bg-6',emoji:'⏱️'},
+  {id:'w7',title:'Penalty Flag',subtitle:'What does that call even mean?',duration:'0:20',tags:['rules','basics'],
+   explanation:'A yellow flag means a referee spotted a penalty. After the play, the ref announces who was flagged, the infraction, and the yardage. The offended team can accept the penalty or decline it and keep the play\'s result. Common calls: holding (10 yards), pass interference (spot foul), and offsides (5 yards).',
+   related:['offsides','pass-interference','holding'],
+   gradient:'clip-bg-7',emoji:'🚩'},
 ];
 
 const QUIZZES = [
@@ -1876,6 +1993,7 @@ function initApp(){
   renderGreeting();
   renderStats();
   renderContinueLearning();
+  renderTermOfDay();
   renderLessonsList();
   renderGlossaryList('');
   renderQuizPicker();
@@ -1885,6 +2003,8 @@ function initApp(){
   renderXPBar();
   renderAchievements();
   setTimeout(awardDailyLoginXP, 1000);
+  // Track daily visit for streak calendar
+  trackDailyVisit();
 }
 
 // ─── STREAK ────────────────────────────────────────────────────
@@ -1958,8 +2078,13 @@ function switchTab(tab){
   const btn=document.querySelector('[data-tab="'+tab+'"]');
   if(btn) btn.classList.add('active');
 
-  if(tab==='home'){ renderStats(); renderContinueLearning(); }
+  // Hide tab bar on Watch tab so clips aren't covered
+  const tabBar = document.getElementById('tab-bar');
+  if(tabBar){ tabBar.style.display = tab==='watch' ? 'none' : 'flex'; }
+
+  if(tab==='home'){ renderStats(); renderContinueLearning(); renderTermOfDay(); }
   if(tab==='watch'){ syncClipCounter(); }
+  if(tab==='me'){ renderMeTab(); }
 }
 
 // ─── MODALS ────────────────────────────────────────────────────
@@ -2401,9 +2526,178 @@ function startSelectedQuiz(){
   closeModal('modal-quizzes');
   setTimeout(()=>startQuiz(selectedQuiz),150);
 }
+// ─── TERM OF THE DAY ───────────────────────────────────────────
+function getDayOfYear(){
+  const now=new Date(); const start=new Date(now.getFullYear(),0,0);
+  return Math.floor((now-start)/(1000*60*60*24));
+}
+function renderTermOfDay(){
+  const container=document.getElementById('term-of-day-card');
+  if(!container) return;
+  const term=TERMS[getDayOfYear()%TERMS.length];
+  if(!term) return;
+  container.innerHTML=`
+    <div class="term-card" onclick="openTermById('${term.id}')">
+      <div class="term-card-header">
+        <div class="overline">Term of the Day</div>
+        <span style="font-size:14px;color:var(--text-tertiary);">↗</span>
+      </div>
+      <div class="term-title">${term.title}</div>
+      <div class="term-def">${term.short}</div>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        ${(term.tags||[]).slice(0,2).map(t=>`<span class="tag">${t}</span>`).join('')}
+      </div>
+    </div>`;
+}
+
+// ─── DAILY IQ (rotating) ───────────────────────────────────────
 function startDailyIQ(){
-  const daily=QUIZZES.find(q=>q.id==='daily');
-  if(daily) startQuiz(daily);
+  // Collect all questions from easy+medium quizzes as the daily pool
+  const pool=[];
+  QUIZZES.filter(q=>q.id==='easy'||q.id==='medium').forEach(q=>q.questions.forEach(qu=>pool.push(qu)));
+  const todayQ=pool[getDayOfYear()%pool.length];
+  const dailyQuiz={id:'daily',title:'Daily IQ',difficulty:'easy',questions:[todayQ]};
+  startQuiz(dailyQuiz);
+}
+
+// ─── DAILY VISIT TRACKING ──────────────────────────────────────
+function trackDailyVisit(){
+  const today=new Date().toISOString().slice(0,10);
+  const visits=LS.get('hp_visit_days',[]);
+  if(!visits.includes(today)){ visits.push(today); LS.set('hp_visit_days',visits.slice(-90)); }
+}
+
+// ─── SAVE QUIZ RESULT ──────────────────────────────────────────
+function saveQuizResult(quizId, score, total){
+  const history=LS.get('hp_quiz_history',{});
+  if(!history[quizId]) history[quizId]=[];
+  history[quizId].unshift({score,total,date:new Date().toISOString().slice(0,10)});
+  history[quizId]=history[quizId].slice(0,5);
+  LS.set('hp_quiz_history',history);
+}
+
+// ─── ME TAB ────────────────────────────────────────────────────
+function renderMeTab(){
+  const container=document.getElementById('me-tab-content');
+  if(!container) return;
+  const session=getSession()||{name:'Player',email:''};
+  const xp=LS.get('hp_xp',0);
+  let lvlIdx=0; for(let i=LEVELS.length-1;i>=0;i--){ if(xp>=LEVELS[i].min){lvlIdx=i;break;} }
+  const lvl=LEVELS[Math.max(0,lvlIdx)];
+  const nextLvl=LEVELS[Math.min(LEVELS.length-1,lvlIdx+1)];
+  const xpForNext=nextLvl.min-lvl.min;
+  const xpProgress=xp-lvl.min;
+  const pct=xpForNext>0?Math.min(100,(xpProgress/xpForNext*100)):100;
+  const initials=(session.name||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const lessonsTotal=LESSONS.length;
+  const lessonsDone=LESSONS.filter(l=>completed[l.id]).length;
+  const clipsWatched=LS.get('clipsWatched',0);
+  const quizzesDone=LS.get('quizzesDone',0);
+  const unlocked=getUnlocked();
+
+  container.innerHTML=`
+    <!-- Avatar + Name -->
+    <div class="me-hero">
+      <div class="me-avatar">${initials}</div>
+      <div class="me-hero-info">
+        <div class="me-name">${session.name||'Football Fan'}</div>
+        <div class="me-email">${session.email||''}</div>
+        <div class="me-level-badge">${lvl.emoji} ${lvl.name}</div>
+      </div>
+    </div>
+
+    <!-- XP Bar -->
+    <div class="card" style="padding:14px 16px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <span class="caption" style="color:var(--rose);">LEVEL ${lvlIdx+1}</span>
+        <span class="label">${xp} XP</span>
+      </div>
+      <div class="xp-track">
+        <div class="xp-fill" style="width:${pct}%;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;">
+        <span class="caption" style="color:var(--text-tertiary);">${lvl.name}</span>
+        <span class="caption" style="color:var(--text-tertiary);">${nextLvl.min} XP → ${nextLvl.name}</span>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="me-stats-row">
+      <div class="me-stat"><div class="me-stat-val">${lessonsDone}</div><div class="me-stat-label">Lessons</div></div>
+      <div class="me-stat"><div class="me-stat-val">${clipsWatched}</div><div class="me-stat-label">Clips</div></div>
+      <div class="me-stat"><div class="me-stat-val">${quizzesDone}</div><div class="me-stat-label">Quizzes</div></div>
+      <div class="me-stat"><div class="me-stat-val">${streak}🔥</div><div class="me-stat-label">Streak</div></div>
+    </div>
+
+    <!-- Streak Calendar -->
+    <div class="card">
+      <div class="section-label" style="margin-bottom:12px;">Last 7 Days</div>
+      ${renderStreakCalendar()}
+    </div>
+
+    <!-- Score History -->
+    <div class="card">
+      <div class="section-label" style="margin-bottom:12px;">Quiz History</div>
+      ${renderScoreHistory()}
+    </div>
+
+    <!-- Achievements -->
+    <div class="card">
+      <div class="section-label" style="margin-bottom:12px;">Achievements</div>
+      <div class="me-achievements">
+        ${ACHIEVEMENTS.map(a=>{
+          const done=unlocked.includes(a.id);
+          return `<div class="me-badge${done?' unlocked':''}">
+            <span class="me-badge-icon">${a.icon}</span>
+            <span class="me-badge-name">${a.name}</span>
+            <span class="me-badge-desc">${done ? a.desc : '🔒 Locked'}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <!-- Sign Out -->
+    <button class="btn-ghost" onclick="signOut()" style="margin-top:4px;">Sign Out</button>
+    <div style="height:8px;"></div>
+  `;
+}
+
+function renderStreakCalendar(){
+  const visits=LS.get('hp_visit_days',[]);
+  const days=[];
+  for(let i=6;i>=0;i--){
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const ds=d.toISOString().slice(0,10);
+    const label=['S','M','T','W','T','F','S'][d.getDay()];
+    days.push({ds,label,active:visits.includes(ds)});
+  }
+  return `<div class="streak-calendar">${days.map(d=>`
+    <div class="streak-day">
+      <div class="streak-dot${d.active?' active':''}"></div>
+      <div class="streak-day-label">${d.label}</div>
+    </div>`).join('')}</div>`;
+}
+
+function renderScoreHistory(){
+  const history=LS.get('hp_quiz_history',{});
+  const rows=[];
+  QUIZZES.filter(q=>['easy','medium','hard'].includes(q.id)).forEach(q=>{
+    const results=history[q.id]||[];
+    if(results.length>0){
+      const latest=results[0];
+      const pct=Math.round(latest.score/latest.total*100);
+      const color=pct>=80?'var(--success)':pct>=50?'var(--warning)':'var(--spark)';
+      rows.push(`<div class="score-history-row">
+        <div>
+          <div class="headline" style="font-size:14px;">${q.title.replace('— ','')}</div>
+          <div class="label">${latest.date} · ${results.length} attempt${results.length>1?'s':''}</div>
+        </div>
+        <div style="font-size:18px;font-weight:700;color:${color};">${latest.score}/${latest.total}</div>
+      </div>`);
+    }
+  });
+  if(rows.length===0) return '<div class="label" style="text-align:center;padding:12px 0;">No quizzes completed yet</div>';
+  return rows.join('');
 }
 function renderQuizListPreview(){
   const container=document.getElementById('quiz-list-preview');
@@ -2514,6 +2808,7 @@ function renderQuizResults(){
   awardXP(xpEarned, reason);
   if(ratio===1){ LS.set('perfectQuiz',true); setTimeout(triggerConfetti, 600); }
   LS.set('quizzesDone',(LS.get('quizzesDone',0)+1));
+  saveQuizResult(activeQuiz.id, score, total);
   checkAchievements();
   const color=ratio>=0.8?'var(--success)':ratio>=0.5?'var(--warning)':'var(--spark)';
   const headline=ratio===1?'Perfect score.':ratio>=0.8?'Solid work.':ratio>=0.5?'Getting there.':'Keep practicing.';
@@ -2570,10 +2865,10 @@ const LEVELS = [
 
 const ACHIEVEMENTS = [
   {id:'first-lesson', icon:'🏈', name:'First Down',    desc:'Complete your first lesson.',  check:()=>Object.keys(completed).length>=1},
-  {id:'all-lessons',  icon:'📚', name:'Scholar',       desc:'Complete all 4 lessons.',       check:()=>LESSONS.every(l=>completed[l.id])},
+  {id:'all-lessons',  icon:'📚', name:'Scholar',       desc:'Complete all lessons.',         check:()=>LESSONS.every(l=>completed[l.id])},
   {id:'first-quiz',   icon:'⚡', name:'Sharp Mind',    desc:'Complete your first quiz.',     check:()=>LS.get('quizzesDone',0)>=1},
   {id:'perfect-quiz', icon:'🎯', name:'Perfect Play',  desc:'Get 100% on any quiz.',        check:()=>LS.get('perfectQuiz',false)},
-  {id:'watch-all',    icon:'👁️', name:'Film Room',     desc:'Watch all 3 clips.',           check:()=>Object.keys(likedClips).length>=3||LS.get('clipsWatched',0)>=3},
+  {id:'watch-all',    icon:'👁️', name:'Film Room',     desc:'Watch all 7 clips.',           check:()=>LS.get('clipsWatched',0)>=7},
   {id:'streak-3',     icon:'🔥', name:'On Fire',       desc:'Reach a 3-day streak.',        check:()=>streak>=3},
 ];
 
@@ -2723,10 +3018,12 @@ function renderAchievements(){
   const unlocked = getUnlocked();
   container.innerHTML = ACHIEVEMENTS.map(a=>{
     const done = unlocked.includes(a.id);
-    return `<div class="badge-card${done?' unlocked':''}" title="${a.desc}">
+    return `<div class="badge-card${done?' unlocked':''}">
       <span class="badge-icon">${a.icon}</span>
       <span class="badge-name">${a.name}</span>
-      ${!done?'<span class="badge-locked-icon">🔒</span>':''}
+      ${done
+        ? `<span class="badge-desc-small">${a.desc}</span>`
+        : '<span class="badge-locked-icon">🔒</span>'}
     </div>`;
   }).join('');
 }
