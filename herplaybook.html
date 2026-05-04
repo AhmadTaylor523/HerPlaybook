@@ -42,9 +42,13 @@ img{max-width:100%;display:block;}
 
 /* ─── LAYOUT ─────────────────────────────────────────────────── */
 #app{position:relative;width:100%;min-height:100dvh;}
-.page{display:none;flex-direction:column;min-height:100dvh;padding-bottom:calc(var(--tab-h) + var(--safe-bottom) + 12px);}
+.page{display:none;flex-direction:column;min-height:100dvh;}
 .page.active{display:flex;}
-.scroll-content{flex:1;overflow-y:auto;padding:16px 20px 0;}
+/* padding-bottom lives on scroll-content so it works inside the scroll area */
+.scroll-content{
+  flex:1;overflow-y:auto;
+  padding:16px 20px calc(var(--tab-h) + var(--safe-bottom) + 20px);
+}
 
 /* Watch page overrides – no padding, full screen */
 #page-watch{padding-bottom:0;}
@@ -663,8 +667,8 @@ img{max-width:100%;display:block;}
 
 /* Video counter indicator (TikTok dots) */
 .clip-counter{
-  position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);left:50%;transform:translateX(-50%);
-  display:flex;gap:6px;z-index:10;
+  position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);
+  display:none;gap:6px;z-index:10025;
 }
 .counter-dot{
   width:6px;height:6px;border-radius:50%;
@@ -673,15 +677,28 @@ img{max-width:100%;display:block;}
 }
 .counter-dot.active{background:#fff;transform:scale(1.3);}
 
-/* Watch page header (visible at top before entering feed) */
+/* Watch page header */
 .watch-header{
-  position:absolute;top:0;left:0;right:0;z-index:10;
-  padding:calc(env(safe-area-inset-top,0px) + 12px) 20px 12px;
-  background:linear-gradient(to bottom,rgba(10,10,10,0.9) 0%,transparent 100%);
-  pointer-events:none;
+  position:fixed;top:0;left:0;right:0;z-index:10020;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 12px;
+  background:linear-gradient(to bottom,rgba(10,10,10,0.92) 0%,transparent 100%);
+  pointer-events:none; /* header gradient itself is non-interactive */
+  display:none; /* hidden by default; shown only when Watch is active */
 }
-.watch-header-title{font-size:16px;font-weight:700;text-align:center;}
-.watch-header-sub{font-size:12px;color:rgba(255,255,255,0.5);text-align:center;margin-top:2px;}
+#page-watch.active .watch-header{display:flex;align-items:center;gap:10px;}
+.watch-back-btn{
+  pointer-events:auto; /* override parent none — button must be clickable */
+  flex-shrink:0;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,0.14);border:0.5px solid rgba(255,255,255,0.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:#fff;cursor:pointer;
+  transition:background 0.15s;
+}
+.watch-back-btn:active{background:rgba(255,255,255,0.25);}
+.watch-header-text{flex:1;}
+.watch-header-title{font-size:16px;font-weight:700;}
+.watch-header-sub{font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;}
 
 /* ─── GAMIFICATION ──────────────────────────────────────────── */
 
@@ -1443,12 +1460,10 @@ img{max-width:100%;display:block;}
   <!-- ── WATCH (TikTok) ────────────────────────────────────── -->
   <div class="page" id="page-watch">
     <div class="watch-header">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <button onclick="switchTab('home')" style="background:rgba(255,255,255,0.12);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:16px;flex-shrink:0;">‹</button>
-        <div>
-          <div class="watch-header-title">Watch & Learn</div>
-          <div class="watch-header-sub">Swipe up for next clip</div>
-        </div>
+      <button class="watch-back-btn" onclick="switchTab('home')" aria-label="Back">‹</button>
+      <div class="watch-header-text">
+        <div class="watch-header-title">Watch & Learn</div>
+        <div class="watch-header-sub">Swipe up · tap Explain for breakdown</div>
       </div>
     </div>
     <!-- Counter dots -->
@@ -2078,9 +2093,9 @@ function switchTab(tab){
   const btn=document.querySelector('[data-tab="'+tab+'"]');
   if(btn) btn.classList.add('active');
 
-  // Hide tab bar on Watch tab so clips aren't covered
-  const tabBar = document.getElementById('tab-bar');
-  if(tabBar){ tabBar.style.display = tab==='watch' ? 'none' : 'flex'; }
+  // Show clip-counter dots only on Watch
+  const cc = document.getElementById('clip-counter');
+  if(cc){ cc.style.display = tab==='watch' ? 'flex' : 'none'; }
 
   if(tab==='home'){ renderStats(); renderContinueLearning(); renderTermOfDay(); }
   if(tab==='watch'){ syncClipCounter(); }
