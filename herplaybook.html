@@ -542,76 +542,128 @@ img{max-width:100%;display:block;}
   50%{box-shadow:0 0 0 20px rgba(255,61,135,0);}
 }
 
-/* Bottom gradient overlay */
+/* ── TIKTOK-STYLE WATCH OVERLAY ───────────────────── */
+
+/* Big gradient: dark at bottom, clear at top */
 .clip-gradient{
-  position:absolute;bottom:0;left:0;right:0;
-  height:50%;
-  background:linear-gradient(to top,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.4) 60%,transparent 100%);
+  position:absolute;inset:0;
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,0.88) 0%,
+    rgba(0,0,0,0.55) 28%,
+    rgba(0,0,0,0.1)  55%,
+    transparent      75%
+  );
   pointer-events:none;
 }
 
-/* Clip metadata - bottom left */
+/* Progress bar at the very bottom (looping CSS animation) */
+.clip-progress{
+  position:absolute;bottom:calc(var(--tab-h) + var(--safe-bottom));
+  left:0;right:0;height:2px;
+  background:rgba(255,255,255,0.15);
+}
+.clip-progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--spark),var(--rose));
+  animation:progressLoop 20s linear infinite;
+  transform-origin:left;
+}
+@keyframes progressLoop{
+  0%{width:0%;}100%{width:100%;}
+}
+
+/* Bottom-left meta: creator + title + caption + music */
 .clip-meta{
-  position:absolute;bottom:0;left:0;right:80px;
-  padding:20px 16px calc(var(--tab-h) + var(--safe-bottom) + 20px);
+  position:absolute;bottom:calc(var(--tab-h) + var(--safe-bottom) + 12px);
+  left:0;right:88px;
+  padding:0 16px 8px;
 }
-.clip-duration{
-  display:inline-block;
-  font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;
-  color:var(--rose);margin-bottom:6px;
+.clip-creator{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:10px;
 }
-.clip-title{font-size:22px;font-weight:800;line-height:1.2;margin-bottom:6px;}
-.clip-subtitle{font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:12px;}
-.clip-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
-.clip-tag{
-  font-size:11px;font-weight:600;
-  padding:3px 10px;border-radius:var(--r-full);
-  background:rgba(255,61,135,0.2);
-  border:0.5px solid rgba(255,61,135,0.3);
-  color:var(--rose);
-}
-.explain-btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:11px 20px;
-  background:var(--spark);color:#fff;
-  border-radius:var(--r-full);
-  font-size:14px;font-weight:700;
-  box-shadow:0 4px 20px rgba(255,61,135,0.4);
-  transition:transform 0.15s,opacity 0.15s;
-}
-.explain-btn:active{transform:scale(0.96);opacity:0.9;}
-
-/* Right sidebar actions */
-.clip-actions{
-  position:absolute;right:12px;bottom:0;
-  padding-bottom:calc(var(--tab-h) + var(--safe-bottom) + 20px);
-  display:flex;flex-direction:column;align-items:center;gap:22px;
-}
-.action-item{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;}
-.action-circle{
-  width:48px;height:48px;border-radius:50%;
-  background:rgba(255,255,255,0.12);
-  backdrop-filter:blur(8px);
-  border:0.5px solid rgba(255,255,255,0.15);
+.clip-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--spark),var(--rose));
+  border:1.5px solid rgba(255,255,255,0.6);
   display:flex;align-items:center;justify-content:center;
-  font-size:20px;
-  transition:background 0.15s,transform 0.15s;
+  font-size:14px;font-weight:800;color:#fff;flex-shrink:0;
 }
-.action-circle:active{background:rgba(255,255,255,0.2);transform:scale(0.9);}
-.action-circle.liked{background:rgba(255,61,135,0.3);border-color:rgba(255,61,135,0.5);}
-.action-circle.saved{background:rgba(255,213,61,0.2);border-color:rgba(255,213,61,0.4);}
-.action-label{font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);}
+.clip-handle{font-size:14px;font-weight:700;color:#fff;}
+.clip-verified{font-size:12px;margin-left:2px;}
+.clip-title{font-size:18px;font-weight:800;line-height:1.25;margin-bottom:5px;color:#fff;}
+.clip-caption{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.45;margin-bottom:10px;}
+.clip-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+.clip-tag{
+  font-size:12px;font-weight:700;color:#fff;
+  letter-spacing:0.2px;
+}
+/* Music row */
+.clip-music{
+  display:flex;align-items:center;gap:8px;
+}
+.clip-music-disc{
+  width:26px;height:26px;border-radius:50%;
+  background:linear-gradient(135deg,#333,#111);
+  border:2px solid rgba(255,255,255,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;
+  animation:spinDisc 4s linear infinite;
+  flex-shrink:0;
+}
+@keyframes spinDisc{to{transform:rotate(360deg);}}
+.clip-music-text{
+  font-size:12px;color:rgba(255,255,255,0.75);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:180px;
+}
 
-/* Scroll hint arrows */
-.scroll-hint{
-  position:absolute;right:50%;transform:translateX(50%);
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  opacity:0.5;font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;
+/* Right sidebar */
+.clip-actions{
+  position:absolute;right:0;bottom:calc(var(--tab-h) + var(--safe-bottom) + 16px);
+  width:80px;
+  display:flex;flex-direction:column;align-items:center;gap:20px;
+  padding-bottom:4px;
 }
-.scroll-hint.up{top:calc(var(--safe-bottom) + 16px);}
-.scroll-hint.down{bottom:calc(var(--tab-h) + var(--safe-bottom) + 90px);}
-.scroll-hint-arrow{font-size:18px;animation:bounce 1.5s ease-in-out infinite;}
-@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.action-item{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  cursor:pointer;
+}
+.action-circle{
+  width:52px;height:52px;border-radius:50%;
+  background:rgba(30,30,30,0.65);
+  backdrop-filter:blur(10px);
+  border:0.5px solid rgba(255,255,255,0.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;
+  transition:transform 0.15s,background 0.15s;
+}
+.action-circle:active{transform:scale(0.88);}
+.action-circle.liked{background:rgba(255,61,135,0.35);border-color:rgba(255,61,135,0.6);}
+.action-circle.saved{background:rgba(255,213,61,0.25);border-color:rgba(255,213,61,0.5);}
+.action-label{
+  font-size:11px;font-weight:600;
+  color:rgba(255,255,255,0.85);
+  text-shadow:0 1px 4px rgba(0,0,0,0.8);
+}
+
+/* Swipe hint — top center */
+.swipe-hint{
+  position:absolute;top:calc(env(safe-area-inset-top,0px) + 70px);
+  left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  opacity:0;animation:fadeHint 3s ease-in-out 1s forwards;
+  pointer-events:none;
+}
+@keyframes fadeHint{
+  0%{opacity:0;transform:translateX(-50%) translateY(0);}
+  20%{opacity:0.65;transform:translateX(-50%) translateY(0);}
+  80%{opacity:0.65;transform:translateX(-50%) translateY(-8px);}
+  100%{opacity:0;transform:translateX(-50%) translateY(-8px);}
+}
+.swipe-hint-arrow{font-size:22px;color:rgba(255,255,255,0.7);}
+.swipe-hint-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);}
 
 /* Explanation panel (slides up from bottom) */
 .explain-panel{
@@ -696,9 +748,13 @@ img{max-width:100%;display:block;}
   transition:background 0.15s;
 }
 .watch-back-btn:active{background:rgba(255,255,255,0.25);}
-.watch-header-text{flex:1;}
-.watch-header-title{font-size:16px;font-weight:700;}
-.watch-header-sub{font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;}
+.watch-header-tabs{flex:1;display:flex;justify-content:center;gap:24px;}
+.watch-tab-label{
+  font-size:16px;font-weight:600;color:rgba(255,255,255,0.45);
+  padding-bottom:4px;cursor:pointer;transition:color 0.15s;
+  border-bottom:2.5px solid transparent;
+}
+.watch-tab-label.active{color:#fff;border-bottom-color:#fff;}
 
 /* ─── GAMIFICATION ──────────────────────────────────────────── */
 
@@ -1461,10 +1517,11 @@ img{max-width:100%;display:block;}
   <div class="page" id="page-watch">
     <div class="watch-header">
       <button class="watch-back-btn" onclick="switchTab('home')" aria-label="Back">‹</button>
-      <div class="watch-header-text">
-        <div class="watch-header-title">Watch & Learn</div>
-        <div class="watch-header-sub">Swipe up · tap Explain for breakdown</div>
+      <div class="watch-header-tabs">
+        <span class="watch-tab-label active">For You</span>
+        <span class="watch-tab-label">Saved</span>
       </div>
+      <div style="width:36px;"></div>
     </div>
     <!-- Counter dots -->
     <div class="clip-counter" id="clip-counter"></div>
@@ -2646,54 +2703,67 @@ function buildWatchFeed(){
     slide.className='clip-slide';
     slide.id='clip-'+i;
 
+    const liked = likedClips[clip.id];
+    const saved = savedClips[clip.id];
+    const hashtags = clip.tags.map(t=>`<span class="clip-tag">#${t}</span>`).join(' ');
+
     slide.innerHTML=`
+      <!-- Animated field background -->
       <div class="clip-bg" style="background:#0c2e10;">
         ${getPlaySVG(clip.id)}
       </div>
+
+      <!-- Gradient overlay -->
       <div class="clip-gradient"></div>
 
-      ${i>0?`<div class="scroll-hint up" style="top:calc(env(safe-area-inset-top,0px)+60px);">
-        <div class="scroll-hint-arrow" style="transform:rotate(180deg);">↓</div>
-        <div>Previous</div>
+      <!-- Progress bar -->
+      <div class="clip-progress"><div class="clip-progress-fill"></div></div>
+
+      <!-- Swipe-up hint (only on first slide) -->
+      ${i===0?`<div class="swipe-hint">
+        <div class="swipe-hint-arrow">↑</div>
+        <div class="swipe-hint-label">Swipe up</div>
       </div>`:''}
 
+      <!-- Bottom-left: creator + title + caption + music -->
       <div class="clip-meta">
-        <div class="clip-duration">${clip.duration}</div>
+        <div class="clip-creator">
+          <div class="clip-avatar">HP</div>
+          <span class="clip-handle">@HerPlaybook</span>
+          <span class="clip-verified">✦</span>
+        </div>
         <div class="clip-title">${clip.title}</div>
-        <div class="clip-subtitle">${clip.subtitle}</div>
-        <div class="clip-tags">${clip.tags.map(t=>`<span class="clip-tag">${t}</span>`).join('')}</div>
-        <button class="explain-btn" onclick="openExplainPanel(${i})">
-          💡 Explain This Play
-        </button>
+        <div class="clip-caption">${clip.subtitle}</div>
+        <div class="clip-tags">${hashtags}</div>
+        <div class="clip-music">
+          <div class="clip-music-disc">🏈</div>
+          <span class="clip-music-text">HerPlaybook · Football 101 · Original</span>
+        </div>
       </div>
 
+      <!-- Right sidebar: actions -->
       <div class="clip-actions">
         <div class="action-item" onclick="toggleLike(${i},this)">
-          <div class="action-circle ${likedClips[clip.id]?'liked':''}">
-            ${likedClips[clip.id]?'❤️':'🤍'}
+          <div class="action-circle ${liked?'liked':''}" id="like-circle-${i}">
+            ${liked?'❤️':'🤍'}
           </div>
-          <span class="action-label" id="like-count-${i}">${likedClips[clip.id]?'Liked':'Like'}</span>
-        </div>
-        <div class="action-item" onclick="toggleSave(${i},this)">
-          <div class="action-circle ${savedClips[clip.id]?'saved':''}">
-            ${savedClips[clip.id]?'🔖':'🏷️'}
-          </div>
-          <span class="action-label" id="save-label-${i}">${savedClips[clip.id]?'Saved':'Save'}</span>
-        </div>
-        <div class="action-item" onclick="shareClip(${i})">
-          <div class="action-circle">↗</div>
-          <span class="action-label">Share</span>
+          <span class="action-label" id="like-count-${i}">${liked?'Liked':'Like'}</span>
         </div>
         <div class="action-item" onclick="openExplainPanel(${i})">
-          <div class="action-circle">💡</div>
+          <div class="action-circle">💬</div>
           <span class="action-label">Explain</span>
         </div>
+        <div class="action-item" onclick="toggleSave(${i},this)">
+          <div class="action-circle ${saved?'saved':''}" id="save-circle-${i}">
+            ${saved?'🔖':'⬆️'}
+          </div>
+          <span class="action-label" id="save-label-${i}">${saved?'Saved':'Save'}</span>
+        </div>
+        <div class="action-item" onclick="shareClip(${i})">
+          <div class="action-circle">➦</div>
+          <span class="action-label">Share</span>
+        </div>
       </div>
-
-      ${i<CLIPS.length-1?`<div class="scroll-hint down">
-        <div>Next</div>
-        <div class="scroll-hint-arrow">↓</div>
-      </div>`:''}
     `;
     feed.appendChild(slide);
   });
