@@ -50,16 +50,9 @@ img{max-width:100%;display:block;}
   padding:16px 20px calc(var(--tab-h) + var(--safe-bottom) + 20px);
 }
 
-/* Watch page overrides – full-screen fixed overlay */
+/* Watch page — minimal wrapper, feed handles its own layout */
 #page-watch{padding-bottom:0;}
-#page-watch.active{
-  display:block;
-  position:fixed;
-  inset:0;
-  z-index:50;
-  overflow:hidden;
-  background:#0A0A0A;
-}
+#page-watch.active{display:block;}
 
 /* ─── FLOATING TAB BAR ──────────────────────────────────────── */
 #tab-bar{
@@ -490,21 +483,31 @@ img{max-width:100%;display:block;}
 .score-sub{font-size:15px;color:var(--text-secondary);text-align:center;margin-top:6px;line-height:1.5;}
 
 /* ─── ═══ WATCH / TIKTOK ═══ ────────────────────────────────── */
+
+/* The feed IS the full-screen scroll container */
 #watch-feed{
-  width:100%;
-  height:100%;        /* fills the fixed #page-watch.active container */
+  display:none; /* hidden when Watch tab is not active */
+}
+#page-watch.active #watch-feed{
+  display:block;
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  z-index:200;
   overflow-y:scroll;
+  overflow-x:hidden;
   scroll-snap-type:y mandatory;
   -webkit-overflow-scrolling:touch;
+  background:#0A0A0A;
 }
 
 .clip-slide{
-  height:100vh;       /* fallback for browsers without dvh */
+  height:100vh;         /* fallback */
   height:100dvh;
   width:100%;
   scroll-snap-align:start;
-  position:relative;overflow:hidden;
-  background:#0c2e10; /* failsafe green field color */
+  position:relative;
+  overflow:hidden;
+  background:#0c2e10;   /* dark green field — always visible */
 }
 
 /* Animated gradient background replacing actual video */
@@ -765,6 +768,7 @@ img{max-width:100%;display:block;}
   font-size:16px;font-weight:600;color:rgba(255,255,255,0.45);
   padding-bottom:4px;cursor:pointer;transition:color 0.15s;
   border-bottom:2.5px solid transparent;
+  pointer-events:auto; /* override parent pointer-events:none */
 }
 .watch-tab-label.active{color:#fff;border-bottom-color:#fff;}
 
@@ -1528,8 +1532,8 @@ img{max-width:100%;display:block;}
     <div class="watch-header">
       <button class="watch-back-btn" onclick="switchTab('home')" aria-label="Back">‹</button>
       <div class="watch-header-tabs">
-        <span class="watch-tab-label active">For You</span>
-        <span class="watch-tab-label">Saved</span>
+        <span class="watch-tab-label active" id="watch-tab-foryou" onclick="switchWatchTab('foryou')">For You</span>
+        <span class="watch-tab-label" id="watch-tab-saved" onclick="switchWatchTab('saved')">Saved</span>
       </div>
       <div style="width:36px;"></div>
     </div>
@@ -2166,7 +2170,10 @@ function switchTab(tab){
   if(cc){ cc.style.display = tab==='watch' ? 'flex' : 'none'; }
 
   if(tab==='home'){ renderStats(); renderContinueLearning(); renderTermOfDay(); }
-  if(tab==='watch'){ syncClipCounter(); }
+  if(tab==='watch'){
+    // Always reset to "For You" tab when entering Watch
+    switchWatchTab('foryou');
+  }
   if(tab==='me'){ renderMeTab(); }
 }
 
@@ -2823,6 +2830,47 @@ function syncClipCounter(){
     const dot=document.getElementById('dot-'+i);
     if(dot) dot.className='counter-dot'+(i===currentClipIndex?' active':'');
   });
+}
+
+// ─── WATCH TAB SWITCHER (For You / Saved) ──────────────────────
+let activeWatchTab = 'foryou';
+function switchWatchTab(mode){
+  activeWatchTab = mode;
+  // Update tab label styles
+  document.getElementById('watch-tab-foryou').className = 'watch-tab-label' + (mode==='foryou'?' active':'');
+  document.getElementById('watch-tab-saved').className  = 'watch-tab-label' + (mode==='saved'?' active':'');
+
+  const feed = document.getElementById('watch-feed');
+  if(!feed) return;
+  feed.scrollTo({top:0,behavior:'instant'});
+  currentClipIndex = 0;
+
+  if(mode==='foryou'){
+    // Show all clips
+    document.querySelectorAll('.clip-slide').forEach(s=>{ s.style.display=''; });
+    const empty = document.getElementById('watch-empty');
+    if(empty) empty.remove();
+  } else {
+    // Show only saved clips; hide unsaved
+    const hasSaved = CLIPS.some(c=>savedClips[c.id]);
+    document.querySelectorAll('.clip-slide').forEach((s,i)=>{
+      s.style.display = savedClips[CLIPS[i].id] ? '' : 'none';
+    });
+    // Show an empty state if nothing saved
+    let empty = document.getElementById('watch-empty');
+    if(!hasSaved){
+      if(!empty){
+        empty = document.createElement('div');
+        empty.id = 'watch-empty';
+        empty.style.cssText = 'position:fixed;inset:0;z-index:201;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#0A0A0A;';
+        empty.innerHTML = '<div style="font-size:40px">🔖</div><div style="font-size:18px;font-weight:700;color:#fff;">No saved plays yet</div><div style="font-size:14px;color:rgba(255,255,255,0.5);text-align:center;padding:0 32px;">Tap the Save button on any play to bookmark it here.</div>';
+        document.body.appendChild(empty);
+      }
+    } else {
+      if(empty) empty.remove();
+    }
+  }
+  syncClipCounter();
 }
 function scrollToClip(idx){
   idx=Math.max(0,Math.min(CLIPS.length-1,idx));
